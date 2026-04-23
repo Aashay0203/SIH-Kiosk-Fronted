@@ -1,0 +1,77 @@
+@import url("https://fonts.googleapis.com/css2?family=Urbanist:wght@700;800&family=Nunito:wght@600;700&display=swap");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #e8ecee;
+  --card-bg: #ffffff;
+  --blue: #3e7df5;
+  --blue-dark: #2d62d4;
+  --blue-light: #dce9ff;
+  --green: #d5eab3;
+  --black: #010101;
+  --text-muted: #7a8799;
+  --border: #dde3ea;
+  --error-bg: #fff0f0;
+  --error-text: #d94f4f;
+  --radius-card: 24px;
+  --radius-input: 12px;
+  --radius-btn: 14px;
+  --shadow-card: 0 12px 48px rgba(62, 125, 245, 0.10), 0 2px 8px rgba(0, 0, 0, 0.06);
+  --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  --font: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Font fallback to prevent layout shift while Google Fonts load */
+body {
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--black);
+  -webkit-font-smoothing: antialiased;
+}
+
+
+
+/* Report.css */
+.rp-card {
+  background: var(--card-bg);
+  /* ✅ uses index.css variable */
+  border-radius: var(--radius-card);
+  /* ✅ */
+  box-shadow: var(--shadow-card);
+  /* ✅ */
+  border: 1px solid var(--border);
+  /* ✅ */
+  transition: var(--transition);
+  /* ✅ */
+}
+
+.rp-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 48px rgba(62, 125, 245, 0.16);
+}
+
+.rp-title {
+  font-family: 'Urbanist', sans-serif;
+  color: var(--black);
+  /* ✅ */
+}
+
+.rp-btn.MuiButton-root {
+  /* MUI override using compound selector */
+  background: var(--blue);
+  border-radius: var(--radius-btn);
+  transition: var(--transition);
+}

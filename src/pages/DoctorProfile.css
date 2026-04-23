@@ -1,0 +1,567 @@
+/* === DoctorProfile.css === */
+
+/* ─────────────────────────────────────────────────────────── */
+/* PAGE LAYOUT                                                  */
+/* ─────────────────────────────────────────────────────────── */
+
+.dp-page {
+    min-height: 100vh;
+    width: 100%;
+    background: var(--bg);
+    font-family: 'Nunito', sans-serif;
+    padding: 0 0 32px;
+}
+
+.dp-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* BACK BUTTON ROW                                              */
+/* ─────────────────────────────────────────────────────────── */
+
+.dp-back-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 0 12px;
+}
+
+.dp-back-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+        color 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+}
+
+.dp-back-btn:hover {
+    background: var(--blue-light);
+    color: var(--blue);
+    border-color: var(--blue-light);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(62, 125, 245, 0.15);
+}
+
+.dp-back-label {
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--black);
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* HERO CARD                                                    */
+/* ─────────────────────────────────────────────────────────── */
+
+.dp-hero {
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: 0 12px 48px rgba(62, 125, 245, 0.10);
+    margin-bottom: 16px;
+}
+
+.dp-hero-top {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.dp-hero-photo {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 3px solid #3e7df5;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.dp-hero-photo-fallback {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 3px solid #3e7df5;
+    background: #dce9ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.dp-hero-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.dp-hero-name {
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    color: var(--black);
+    margin: 0 0 6px;
+    line-height: 1.2;
+}
+
+.dp-hero-speciality {
+    display: inline-block;
+    background: #dce9ff;
+    color: #3e7df5;
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.dp-hero-rating {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0 0 2px;
+}
+
+.dp-hero-experience {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* STAT BOXES                                                   */
+/* ─────────────────────────────────────────────────────────── */
+
+.dp-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.dp-stat {
+    background: var(--bg);
+    border-radius: 14px;
+    padding: 14px 8px;
+    text-align: center;
+    transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dp-stat:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(62, 125, 245, 0.12);
+}
+
+.dp-stat-number {
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    color: #3e7df5;
+    line-height: 1.2;
+}
+
+.dp-stat-label {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* SECTION CARDS (Video, About, Clinic, Education)              */
+/* ─────────────────────────────────────────────────────────── */
+
+.dp-card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: 0 12px 48px rgba(62, 125, 245, 0.10);
+    margin-bottom: 16px;
+}
+
+.dp-card-title {
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--black);
+    margin: 0 0 14px;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* INTRO VIDEO                                                  */
+/* ─────────────────────────────────────────────────────────── */
+
+.dp-video-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.dp-video-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.dp-video-verified {
+    text-align: center;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: #2d62d4;
+    margin-top: 4px;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* ABOUT                                                        */
+/* ─────────────────────────────────────────────────────────── */
+
+.dp-about-text {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--black);
+    margin: 0;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* CLINIC INFO                                                  */
+/* ─────────────────────────────────────────────────────────── */
+
+.dp-clinic-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #dde3ea;
+}
+
+.dp-clinic-row:last-child {
+    border-bottom: none;
+}
+
+.dp-clinic-icon {
+    color: #3e7df5;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.dp-clinic-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.dp-clinic-label {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.dp-clinic-value {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--black);
+    margin: 0;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* EDUCATION                                                    */
+/* ─────────────────────────────────────────────────────────── */
+
+.dp-edu-entry {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+}
+
+.dp-edu-degree {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--black);
+    margin: 0;
+}
+
+.dp-edu-institute {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.dp-edu-year {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.dp-edu-divider {
+    height: 1px;
+    background: #dde3ea;
+    border: none;
+    margin: 0;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* BOOK APPOINTMENT BUTTON                                      */
+/* ─────────────────────────────────────────────────────────── */
+
+.dp-book-btn {
+    width: 100%;
+    height: 52px;
+    background: #3e7df5;
+    color: #ffffff;
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: background 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 8px;
+}
+
+.dp-book-btn:hover {
+    background: #2d62d4;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(62, 125, 245, 0.35);
+}
+
+.dp-book-btn:active {
+    transform: translateY(0);
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* STICKY BOTTOM BAR (mobile)                                   */
+/* ─────────────────────────────────────────────────────────── */
+
+.dp-sticky-bar {
+    display: none;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* LOADING / ERROR STATES                                       */
+/* ─────────────────────────────────────────────────────────── */
+
+.dp-loading {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.dp-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px;
+    text-align: center;
+    gap: 16px;
+}
+
+.dp-error-text {
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    color: var(--black);
+    margin: 0;
+}
+
+.dp-error-btn {
+    padding: 12px 28px;
+    border-radius: 14px;
+    border: 1.5px solid #3e7df5;
+    background: #dce9ff;
+    color: #3e7df5;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+        color 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dp-error-btn:hover {
+    background: #3e7df5;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* FADE-IN ANIMATION                                            */
+/* ─────────────────────────────────────────────────────────── */
+
+@keyframes dp-fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dp-animate {
+    animation: dp-fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.dp-animate-delay-1 {
+    animation-delay: 0.06s;
+}
+
+.dp-animate-delay-2 {
+    animation-delay: 0.12s;
+}
+
+.dp-animate-delay-3 {
+    animation-delay: 0.18s;
+}
+
+.dp-animate-delay-4 {
+    animation-delay: 0.24s;
+}
+
+.dp-animate-delay-5 {
+    animation-delay: 0.30s;
+}
+
+.dp-animate-delay-6 {
+    animation-delay: 0.36s;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* RESPONSIVE — max-width 600px (mobile)                       */
+/* ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+    .dp-page {
+        padding-bottom: 80px;
+    }
+
+    .dp-book-desktop {
+        display: none;
+    }
+
+    .dp-sticky-bar {
+        display: block;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #ffffff;
+        padding: 16px;
+        box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.08);
+        z-index: 100;
+    }
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* RESPONSIVE — min-width 601px (desktop)                      */
+/* ─────────────────────────────────────────────────────────── */
+
+@media (min-width: 601px) {
+
+    .dp-card,
+    .dp-hero {
+        padding: 28px;
+    }
+
+    .dp-hero-photo,
+    .dp-hero-photo-fallback {
+        width: 88px;
+        height: 88px;
+    }
+
+    .dp-sticky-bar {
+        display: none;
+    }
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* RESPONSIVE — small mobile 480px                             */
+/* ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+    .dp-container {
+        padding: 0 12px;
+    }
+
+    .dp-hero-name {
+        font-size: 18px;
+    }
+
+    .dp-stat-number {
+        font-size: 20px;
+    }
+}
+
+/* Map */
+
+.dp-map-wrapper {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-top: 4px;
+}
+
+.dp-map-wrapper iframe {
+    display: block;
+}
+
+.dp-directions-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 11px 20px;
+    font-family: "Nunito", sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 4px;
+}
+
+.dp-directions-btn:hover {
+    background: var(--blue-dark);
+    transform: translateY(-1px);
+}

@@ -1,0 +1,634 @@
+/* ══════════════════════════════════════════════
+   PatientDetails.css — DelhiMed Design System
+   Fonts: Urbanist (headings) · Nunito (body)
+   ══════════════════════════════════════════════ */
+
+/* ── CSS Variables ── */
+:root {
+    --pd-bg: #e8ecee;
+    --pd-card: #ffffff;
+    --pd-blue: #3e7df5;
+    --pd-blue-dark: #2d62d4;
+    --pd-blue-light: #dce9ff;
+    --pd-green: #d5eab3;
+    --pd-green-dark: #4a8c3f;
+    --pd-black: #010101;
+    --pd-muted: #7a8799;
+    --pd-border: #dde3ea;
+    --pd-err-bg: #fff0f0;
+    --pd-err-text: #d94f4f;
+    --pd-orange-bg: #fff4e6;
+    --pd-orange-text: #c07a00;
+    --pd-red-bg: #fff0f0;
+    --pd-red-text: #d94f4f;
+    --pd-shadow: 0 12px 48px rgba(62, 125, 245, 0.10);
+    --pd-shadow-sm: 0 4px 16px rgba(62, 125, 245, 0.07);
+    --pd-radius-card: 24px;
+    --pd-radius-chip: 100px;
+    --pd-radius-btn: 14px;
+    --pd-transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Root / Layout ── */
+.pd-root {
+    min-height: 100vh;
+    background: var(--pd-bg);
+    padding: 0 16px 24px;
+    max-width: 680px;
+    margin: 0 auto;
+    font-family: 'Nunito', sans-serif;
+    color: var(--pd-black);
+}
+
+/* ── Utilities ── */
+.pd-capitalize {
+    text-transform: capitalize;
+}
+
+.pd-text-green {
+    color: var(--pd-green-dark);
+    font-weight: 800;
+}
+
+.pd-text-warn {
+    color: var(--pd-orange-text);
+    font-weight: 800;
+}
+
+/* ── Keyframes ── */
+@keyframes pd-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pd-fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pd-pulse-dot {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.6;
+        transform: scale(1.4);
+    }
+}
+
+/* ── Loading / Error States ── */
+.pd-loading-screen,
+.pd-error-screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background: var(--pd-bg);
+}
+
+.pd-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--pd-border);
+    border-top-color: var(--pd-blue);
+    border-radius: 50%;
+    animation: pd-spin 0.8s linear infinite;
+}
+
+.pd-loading-text {
+    color: var(--pd-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* ── Top Navigation Bar ── */
+/* ── Navbar ── */
+.pd-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--pd-card);
+    border-bottom: 1.5px solid var(--pd-border);
+    margin-bottom: 16px;
+}
+
+.pd-navbar-title {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--pd-black);
+    margin: 0;
+    flex: 1;
+    text-align: center;
+}
+
+/* ── Profile Hero ── */
+.pd-hero {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--pd-card);
+    border-radius: var(--pd-radius-card);
+    padding: 20px 22px;
+    margin: 8px 0 12px;
+    box-shadow: var(--pd-shadow-sm);
+    transition: box-shadow var(--pd-transition);
+}
+
+.pd-hero:hover {
+    box-shadow: var(--pd-shadow);
+}
+
+.pd-hero-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--pd-blue-light);
+    color: var(--pd-blue-dark);
+    font-family: 'Urbanist', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.pd-hero-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.pd-hero-name {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--pd-black);
+    margin: 0 0 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pd-hero-sub {
+    font-size: 0.78rem;
+    color: var(--pd-muted);
+    font-weight: 600;
+    margin: 0;
+}
+
+.pd-hero-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--pd-blue);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 800;
+    padding: 5px 14px;
+    border-radius: var(--pd-radius-chip);
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(62, 125, 245, 0.2);
+}
+
+.pd-hero-badge-dot {
+    width: 6px;
+    height: 6px;
+    background: #ffffff;
+    border-radius: 50%;
+    animation: pd-pulse-dot 1.8s ease-in-out infinite;
+}
+
+/* ── Appointment Meta Banner ── */
+.pd-alert-banner {
+    background: var(--pd-card);
+    border: 1.5px solid var(--pd-border);
+    border-radius: var(--pd-radius-card);
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    animation: pd-fade-up var(--pd-transition) both;
+}
+
+.pd-meta-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.pd-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 90px;
+}
+
+.pd-meta-label {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--pd-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.pd-meta-value {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--pd-black);
+}
+
+/* ── Tabs ── */
+.pd-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    background: var(--pd-card);
+    padding: 6px;
+    border-radius: var(--pd-radius-card);
+    box-shadow: var(--pd-shadow-sm);
+}
+
+.pd-tab {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 18px;
+    background: transparent;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--pd-muted);
+    cursor: pointer;
+    transition: all var(--pd-transition);
+    white-space: nowrap;
+}
+
+.pd-tab:hover {
+    color: var(--pd-blue);
+    background: var(--pd-blue-light);
+}
+
+.pd-tab--active {
+    background: var(--pd-blue) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(62, 125, 245, 0.30);
+}
+
+/* ── Tab Content & Cards ── */
+.pd-tab-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.pd-fade-in {
+    animation: pd-fade-up 0.28s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.pd-card {
+    background: var(--pd-card);
+    border-radius: var(--pd-radius-card);
+    padding: 20px 22px;
+    box-shadow: var(--pd-shadow-sm);
+    transition: box-shadow var(--pd-transition), transform var(--pd-transition);
+}
+
+.pd-card:hover {
+    box-shadow: var(--pd-shadow);
+    transform: translateY(-2px);
+}
+
+.pd-section-label {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--pd-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 14px;
+}
+
+/* ── Chips ── */
+.pd-chips-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.pd-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 14px;
+    border-radius: var(--pd-radius-chip);
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    transition: all var(--pd-transition);
+    cursor: default;
+    user-select: none;
+}
+
+.pd-chip:hover {
+    transform: translateY(-2px) scale(1.03);
+}
+
+.pd-chip-emoji {
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
+.pd-chip--default {
+    background: var(--pd-border);
+    color: var(--pd-muted);
+}
+
+.pd-chip--blue {
+    background: var(--pd-blue-light);
+    color: var(--pd-blue-dark);
+}
+
+.pd-chip--green {
+    background: var(--pd-green);
+    color: var(--pd-green-dark);
+}
+
+.pd-chip--warn {
+    background: var(--pd-orange-bg);
+    color: var(--pd-orange-text);
+}
+
+.pd-chip--red {
+    background: var(--pd-red-bg);
+    color: var(--pd-red-text);
+}
+
+.pd-chip--light {
+    background: var(--pd-bg);
+    color: var(--pd-black);
+    border: 1.5px solid var(--pd-border);
+}
+
+.pd-chip--light:hover {
+    background: var(--pd-blue-light);
+    border-color: var(--pd-blue);
+    color: var(--pd-blue-dark);
+}
+
+/* ── Lab Grid (Highly Responsive) ── */
+.pd-lab-grid {
+    display: grid;
+    /* This auto-fit makes it incredibly responsive without media queries! */
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+}
+
+.pd-lab-item {
+    background: var(--pd-bg);
+    border-radius: 16px;
+    padding: 14px 14px 12px;
+    transition: all var(--pd-transition);
+    border: 1.5px solid transparent;
+}
+
+.pd-lab-item:hover {
+    background: var(--pd-blue-light);
+    border-color: var(--pd-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(62, 125, 245, 0.12);
+}
+
+.pd-lab-header {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 8px;
+}
+
+.pd-lab-icon {
+    font-size: 0.85rem;
+    line-height: 1;
+}
+
+.pd-lab-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--pd-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.pd-lab-value-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.pd-lab-value {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--pd-black);
+    line-height: 1.1;
+}
+
+.pd-lab-unit {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--pd-muted);
+}
+
+/* ── Info Rows ── */
+.pd-info-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--pd-border);
+    gap: 12px;
+}
+
+.pd-info-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.pd-info-row--stack {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.pd-info-key {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--pd-muted);
+}
+
+.pd-info-val {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--pd-black);
+}
+
+/* ── Insights & Dot Lists ── */
+.pd-insights-list,
+.pd-dot-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pd-insight-item {
+    background: var(--pd-bg);
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--pd-black);
+    line-height: 1.55;
+    transition: all var(--pd-transition);
+    border-left: 3px solid transparent;
+}
+
+.pd-insight-item:hover {
+    background: var(--pd-blue-light);
+    border-left-color: var(--pd-blue);
+    transform: translateX(4px);
+}
+
+.pd-dot-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--pd-bg);
+    border-radius: 12px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--pd-black);
+    transition: all var(--pd-transition);
+}
+
+.pd-dot-item:hover {
+    background: var(--pd-blue-light);
+    transform: translateX(4px);
+}
+
+/* ── Past Events ── */
+.pd-past-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--pd-border);
+}
+
+.pd-past-block:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.pd-past-type {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--pd-muted);
+}
+
+/* ── Empty State ── */
+.pd-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: var(--pd-card);
+    border-radius: var(--pd-radius-card);
+    padding: 48px 24px;
+    text-align: center;
+    box-shadow: var(--pd-shadow-sm);
+    margin-top: 16px;
+}
+
+.pd-empty-icon {
+    font-size: 2.5rem;
+}
+
+.pd-empty-msg {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--pd-muted);
+    max-width: 260px;
+    line-height: 1.55;
+    margin: 0;
+}
+
+
+/* ══════════════════════════════════════════════
+   Responsive Breakpoints
+   ══════════════════════════════════════════════ */
+
+/* Tablet & Mobile Tweaks */
+@media (max-width: 600px) {
+    .pd-root {
+        padding: 0 12px 24px;
+    }
+
+    .pd-card {
+        padding: 18px 18px;
+    }
+
+    .pd-tab {
+        font-size: 0.82rem;
+        padding: 10px 10px;
+    }
+
+    .pd-hero-name {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .pd-hero {
+        flex-wrap: wrap;
+    }
+
+    .pd-hero-badge {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .pd-nav-btn {
+        font-size: 0.78rem;
+        padding: 7px 14px;
+    }
+
+    .pd-meta-item {
+        min-width: 45%;
+    }
+
+    /* Forces 2-column wrap on tiny screens */
+}

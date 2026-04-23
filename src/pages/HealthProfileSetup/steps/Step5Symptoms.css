@@ -1,0 +1,68 @@
+/* Step5Symptoms.css */
+
+.step5-root {}
+
+/* Card */
+.step5-symptoms-card {
+    background: linear-gradient(135deg, #DCE9FF 0%, #ffffff 55%) !important;
+    border: 1.5px solid var(--border) !important;
+}
+
+/* Default (unselected) symptom chip */
+.step5-symptom-chip.MuiChip-root {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(4px);
+    color: var(--text-muted);
+    border: 1.5px solid var(--border);
+    font-weight: 700;
+    transition: border-color 0.15s, background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.step5-symptom-chip.MuiChip-root:hover {
+    background: var(--blue-light);
+    border-color: rgba(62, 125, 245, 0.35);
+    color: var(--blue-dark);
+}
+
+/* Selected symptom chip */
+.step5-symptom-chip--selected.MuiChip-root {
+    background: var(--blue) !important;
+    color: #ffffff !important;
+    border-color: var(--blue) !important;
+    box-shadow: 0 3px 10px rgba(62, 125, 245, 0.28);
+}
+
+.step5-symptom-chip--selected.MuiChip-root:hover {
+    background: var(--blue-dark) !important;
+}
+
+/* Selected count pill */
+.step5-selected-note {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 4px;
+}
+
+.step5-count-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--blue-light);
+    border: 1px solid rgba(62, 125, 245, 0.2);
+    border-radius: 999px;
+    padding: 6px 16px;
+}
+
+.step5-count-number {
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    color: var(--blue);
+}
+
+.step5-count-label {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--blue-dark);
+}

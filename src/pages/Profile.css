@@ -1,0 +1,520 @@
+/* === Profile.css === */
+
+/* ─── Page root ─── */
+.profile-root {
+    background-color: var(--bg);
+    min-height: 100vh;
+    padding-bottom: 80px;
+}
+
+/* ─── Skeleton loading ─── */
+.profile-skeleton-bar {
+    background-color: var(--card-bg);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-skeleton-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ─── AppBar ─── */
+.profile-appbar {
+    background-color: var(--bg) !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+.profile-toolbar {
+    justify-content: space-between;
+    min-height: 56px !important;
+    padding: 0 12px !important;
+}
+
+.profile-appbar-left {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.profile-appbar-title {
+    font-family: 'Urbanist', sans-serif !important;
+    font-weight: 800 !important;
+    font-size: 18px !important;
+    color: var(--black) !important;
+}
+
+.profile-appbar-actions {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.profile-back-btn {
+    color: var(--black) !important;
+}
+
+.profile-cancel-btn {
+    color: var(--text-muted) !important;
+}
+
+/* ─── Edit / Save buttons ─── */
+.profile-edit-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 16px;
+    border-radius: 10px;
+    background-color: var(--blue-light);
+    color: var(--blue);
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    transition: background-color 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+}
+
+.profile-edit-btn:hover {
+    background-color: #c6d9ff;
+}
+
+.profile-save-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 16px;
+    border-radius: 10px;
+    background-color: var(--blue);
+    color: #fff;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    transition: background-color 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+}
+
+.profile-save-btn:hover {
+    background-color: var(--blue-dark);
+}
+
+.profile-save-btn--saving {
+    background-color: var(--border) !important;
+    color: var(--text-muted) !important;
+    cursor: not-allowed !important;
+}
+
+/* ─── Content area ─── */
+.profile-content {
+    padding: 16px 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ─── Section card base ─── */
+.profile-section-card {
+    border-radius: 24px;
+    padding: 20px 18px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--border);
+}
+
+/* ─── Cycling gradient backgrounds per card ─── */
+.profile-card--green {
+    background: linear-gradient(135deg, #D5EAB3 0%, #ffffff 55%);
+}
+
+.profile-card--blue {
+    background: linear-gradient(135deg, #DCE9FF 0%, #ffffff 55%);
+}
+
+.profile-card--pink {
+    background: linear-gradient(135deg, #FFE6F0 0%, #ffffff 55%);
+}
+
+.profile-card--orange {
+    background: linear-gradient(135deg, #FFF4E6 0%, #ffffff 55%);
+}
+
+/* ─── Section title ─── */
+.profile-section-title {
+    font-family: 'Urbanist', sans-serif !important;
+    font-weight: 800 !important;
+    font-size: 17px !important;
+    color: var(--black) !important;
+    margin-bottom: 14px !important;
+    letter-spacing: -0.2px;
+    border-left: 3px solid var(--blue);
+    padding-left: 10px;
+}
+
+/* ─── Avatar section ─── */
+.profile-avatar-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-avatar-wrap {
+    position: relative;
+}
+
+.profile-avatar {
+    width: 90px !important;
+    height: 90px !important;
+    background-color: var(--blue-light) !important;
+    color: var(--blue) !important;
+    font-family: 'Urbanist', sans-serif !important;
+    font-weight: 800 !important;
+    font-size: 34px !important;
+    border: 3px solid #fff !important;
+    box-shadow: 0 4px 20px rgba(62, 125, 245, 0.22) !important;
+}
+
+.profile-avatar-name {
+    font-family: 'Urbanist', sans-serif !important;
+    font-weight: 800 !important;
+    font-size: 20px !important;
+    color: var(--black) !important;
+}
+
+.profile-avatar-phone {
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 13px !important;
+    color: var(--text-muted) !important;
+    font-weight: 600 !important;
+    margin-top: -4px !important;
+}
+
+/* ─── Camera overlay button ─── */
+.profile-camera-btn {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+    width: 28px;
+    height: 28px;
+    background-color: var(--blue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2.5px solid #fff;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(62, 125, 245, 0.3);
+    transition: background-color 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.profile-camera-btn:hover {
+    background-color: var(--blue-dark);
+}
+
+.profile-camera-btn--uploading {
+    cursor: not-allowed !important;
+}
+
+/* ─── Patient ID chip ─── */
+.profile-patient-id-chip {
+    background-color: var(--blue-light) !important;
+    color: var(--blue-dark) !important;
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    height: 24px !important;
+    border-radius: 8px !important;
+}
+
+/* ─── Info rows ─── */
+.profile-info-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.profile-info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 4px 0;
+}
+
+.profile-info-row__text {
+    flex: 1;
+    min-width: 0;
+}
+
+.profile-info-row__label-wrap {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 3px;
+}
+
+/* ─── Info icon box — subtle blue tint per rule #7 ─── */
+.profile-icon-box {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: rgba(62, 125, 245, 0.08);
+    border: 1px solid rgba(62, 125, 245, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--blue);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.profile-info-label {
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 11px !important;
+    color: var(--text-muted) !important;
+    font-weight: 700 !important;
+}
+
+.profile-info-value {
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: var(--black);
+    word-break: break-word;
+}
+
+.profile-info-value--empty {
+    color: #b0bac5 !important;
+}
+
+.profile-locked-note {
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 11px !important;
+    color: #b0bac5 !important;
+    margin-top: 12px !important;
+    display: flex !important;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ─── ABHA ID ─── */
+.profile-abha-value-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-abha-linked {
+    background-color: var(--green) !important;
+    color: #2d6a0f !important;
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 10px !important;
+    height: 20px !important;
+    border-radius: 6px !important;
+}
+
+/* ─── Health Snapshot ─── */
+.profile-health-data {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.profile-blood-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile-blood-icon-box {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background-color: var(--error-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.profile-blood-group-value {
+    font-family: 'Urbanist', sans-serif !important;
+    font-weight: 800 !important;
+    font-size: 18px !important;
+    color: var(--error-text) !important;
+    line-height: 1.1 !important;
+}
+
+.profile-chip-group-label {
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 11px !important;
+    color: var(--text-muted) !important;
+    font-weight: 700 !important;
+    margin-bottom: 7px !important;
+}
+
+.profile-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+/* ─── Chip variants — semantic colors per rule #2 ─── */
+.chip-allergy {
+    background-color: #FFF4E6 !important;
+    color: #c07000 !important;
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(192, 112, 0, 0.2) !important;
+}
+
+.chip-medication {
+    background-color: var(--blue-light) !important;
+    color: var(--blue-dark) !important;
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(62, 125, 245, 0.2) !important;
+}
+
+.chip-condition {
+    background-color: #FFE6F0 !important;
+    color: #b0305c !important;
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(176, 48, 92, 0.2) !important;
+}
+
+.chip-more {
+    background-color: #f0f0f0 !important;
+    color: #555555 !important;
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+}
+
+/* ─── Health empty state — rule #10 ─── */
+.profile-health-empty {
+    padding: 24px 16px 20px;
+    text-align: center;
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-health-empty__icon-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue-light), #f0f5ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+}
+
+.profile-health-empty__emoji {
+    font-size: 26px;
+    display: block;
+    line-height: 1;
+}
+
+.profile-health-empty__title {
+    font-family: 'Urbanist', sans-serif !important;
+    font-size: 15px !important;
+    color: var(--black) !important;
+    font-weight: 800 !important;
+}
+
+.profile-health-empty__sub {
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 12px !important;
+    color: var(--text-muted) !important;
+    margin-top: 2px !important;
+    max-width: 240px;
+}
+
+/* ─── Health CTA banner — glassmorphism on accent bg ─── */
+.profile-health-cta {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #DCE9FF 0%, #edf4ff 100%);
+    border: 1.5px solid rgba(62, 125, 245, 0.2);
+    cursor: pointer;
+    transition:
+        background 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.profile-health-cta:hover {
+    background: linear-gradient(135deg, #c6d9ff 0%, #dce9ff 100%);
+    border-color: var(--blue);
+    box-shadow: 0 4px 16px rgba(62, 125, 245, 0.12);
+}
+
+.profile-health-cta__left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-health-cta__icon {
+    color: var(--blue) !important;
+    font-size: 24px !important;
+}
+
+.profile-health-cta__title {
+    font-family: 'Urbanist', sans-serif !important;
+    font-weight: 800 !important;
+    font-size: 14px !important;
+    color: var(--blue) !important;
+}
+
+.profile-health-cta__sub {
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 11px !important;
+    color: var(--text-muted) !important;
+    margin-top: 2px !important;
+}
+
+.profile-health-cta__arrow {
+    color: var(--blue);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* ─── Snackbar ─── */
+.profile-snack-alert {
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 600 !important;
+}
+
+.fb-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 0;
+    margin-left: 12px;
+    color: black;
+}

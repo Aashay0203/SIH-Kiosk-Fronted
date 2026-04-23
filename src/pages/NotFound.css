@@ -1,0 +1,85 @@
+.nf-root {
+    min-height: 100vh;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.nf-card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    box-shadow: 0 12px 48px rgba(62, 125, 245, 0.10);
+    padding: 48px 32px;
+    text-align: center;
+    max-width: 360px;
+    width: 100%;
+}
+
+.nf-emoji {
+    font-size: 80px;
+    display: block;
+    margin-bottom: 8px;
+    animation: nf-float 3s ease-in-out infinite;
+}
+
+@keyframes nf-float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.nf-code {
+    font-family: "Urbanist", sans-serif;
+    font-weight: 800;
+    font-size: 64px;
+    color: var(--blue);
+    display: block;
+    line-height: 1;
+    margin-bottom: 12px;
+}
+
+.nf-title {
+    font-family: "Urbanist", sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    color: var(--black);
+    margin: 0 0 8px;
+}
+
+.nf-sub {
+    font-family: "Nunito", sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-muted);
+    margin: 0 0 28px;
+}
+
+.nf-btn {
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-family: "Nunito", sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 12px 28px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nf-btn:hover {
+    background: var(--blue-dark);
+    transform: translateY(-1px);
+}

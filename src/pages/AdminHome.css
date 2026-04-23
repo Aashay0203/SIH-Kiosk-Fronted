@@ -1,0 +1,831 @@
+/* === AdminHome.css === */
+
+/* ─────────────────────────────────────────────
+   LAYOUT
+───────────────────────────────────────────── */
+.ah-page {
+    min-height: 100vh;
+    background: var(--bg);
+    font-family: var(--font);
+    display: flex;
+    flex-direction: column;
+}
+
+.ah-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+/* ─────────────────────────────────────────────
+   HEADER
+───────────────────────────────────────────── */
+.ah-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 16px 14px;
+    background: var(--card-bg);
+    border-bottom: 1.5px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.ah-header-left {
+    flex: 1;
+    min-width: 0;
+}
+
+.ah-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+/* ─────────────────────────────────────────────
+   TYPOGRAPHY
+───────────────────────────────────────────── */
+.ah-title {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--black);
+    margin: 0 0 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ah-date {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* ─────────────────────────────────────────────
+   BUTTONS
+───────────────────────────────────────────── */
+.ah-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+    border-radius: var(--radius-btn);
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    min-height: 44px;
+    padding: 0 14px;
+    transition: var(--transition);
+    white-space: nowrap;
+    text-decoration: none;
+    will-change: transform;
+}
+
+.ah-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(62, 125, 245, 0.18);
+}
+
+/* Primary */
+.ah-btn--primary {
+    background: var(--blue);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(62, 125, 245, 0.28);
+}
+
+.ah-btn--primary:hover {
+    background: var(--blue-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(62, 125, 245, 0.38);
+}
+
+.ah-btn--primary:active {
+    transform: translateY(0);
+}
+
+/* Ghost */
+.ah-btn--ghost {
+    background: var(--bg);
+    color: var(--text-muted);
+    border: 1.5px solid var(--border);
+    padding: 0 12px;
+}
+
+.ah-btn--ghost:hover {
+    background: var(--border);
+    color: var(--black);
+}
+
+/* Danger */
+.ah-btn--danger {
+    background: transparent;
+    color: var(--error-text);
+    border: 1.5px solid transparent;
+    padding: 0 12px;
+}
+
+.ah-btn--danger:hover {
+    background: var(--error-bg);
+    border-color: #fee2e2;
+}
+
+.ah-btn-icon {
+    font-size: 18px !important;
+    display: block;
+}
+
+/* Label hides on tiny screens */
+.ah-btn-label {
+    display: none;
+}
+
+/* Refresh spin */
+.ah-refresh-btn {
+    min-width: 44px;
+    justify-content: center;
+}
+
+.ah-refresh-btn .ah-btn-icon {
+    transition: transform 0.5s ease;
+}
+
+.ah-refresh-btn--spinning .ah-btn-icon {
+    animation: ah-spin-once 0.6s linear;
+}
+
+@keyframes ah-spin-once {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ─────────────────────────────────────────────
+   STATS BAR
+───────────────────────────────────────────── */
+.ah-stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: var(--card-bg);
+    border-bottom: 1.5px solid var(--border);
+    padding: 10px 0;
+}
+
+.ah-stat {
+    text-align: center;
+    padding: 8px 4px;
+    position: relative;
+}
+
+.ah-stat+.ah-stat::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 20%;
+    height: 60%;
+    width: 1px;
+    background: var(--border);
+}
+
+.ah-stat-num {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--black);
+    margin: 0 0 2px;
+    line-height: 1.1;
+}
+
+.ah-stat-num--waiting {
+    color: #f59e0b;
+}
+
+.ah-stat-num--arrived {
+    color: #22c55e;
+}
+
+.ah-stat-num--served {
+    color: var(--text-muted);
+}
+
+.ah-stat-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+/* ─────────────────────────────────────────────
+   SEARCH
+───────────────────────────────────────────── */
+.ah-search-wrap {
+    padding: 16px 0 8px;
+}
+
+.ah-search {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-input);
+    background: var(--card-bg);
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--black);
+    outline: none;
+    transition: var(--transition);
+    box-sizing: border-box;
+}
+
+.ah-search::placeholder {
+    color: var(--text-muted);
+}
+
+.ah-search:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 4px rgba(62, 125, 245, 0.12);
+}
+
+/* ─────────────────────────────────────────────
+   ERROR
+───────────────────────────────────────────── */
+.ah-error {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 0 8px;
+    background: var(--error-bg);
+    color: var(--error-text);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid #fecaca;
+}
+
+.ah-error-retry {
+    background: var(--error-text);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: var(--transition);
+}
+
+.ah-error-retry:hover {
+    opacity: 0.88;
+}
+
+/* ─────────────────────────────────────────────
+   LIST
+───────────────────────────────────────────── */
+.ah-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 48px;
+}
+
+/* ─────────────────────────────────────────────
+   EMPTY STATE
+───────────────────────────────────────────── */
+.ah-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 64px 20px;
+    text-align: center;
+    gap: 6px;
+}
+
+.ah-empty-icon {
+    font-size: 48px;
+    line-height: 1;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.ah-empty-title {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--black);
+    margin: 0;
+}
+
+.ah-empty-sub {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin: 0 0 12px;
+}
+
+.ah-empty-cta {
+    margin-top: 4px;
+}
+
+/* ─────────────────────────────────────────────
+   CARD
+───────────────────────────────────────────── */
+.ah-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 16px;
+    border: 1.5px solid var(--border);
+    box-shadow: 0 4px 16px rgba(62, 125, 245, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: var(--transition);
+    will-change: transform;
+}
+
+.ah-card:hover {
+    box-shadow: 0 8px 28px rgba(62, 125, 245, 0.12);
+    transform: translateY(-2px);
+}
+
+.ah-card--arrived {
+    border-color: rgba(34, 197, 94, 0.35);
+    background: #f0fdf4;
+}
+
+.ah-card--served {
+    opacity: 0.62;
+}
+
+.ah-card--served:hover {
+    transform: none;
+    box-shadow: 0 4px 16px rgba(62, 125, 245, 0.06);
+}
+
+/* Card Top */
+.ah-card-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ah-card-avatar {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 13px;
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    color: #ffffff;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.ah-card-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.ah-card-name {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--black);
+    margin: 0 0 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ah-card-phone {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* Badge */
+.ah-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 11px;
+    border-radius: 999px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    font-family: var(--font);
+    flex-shrink: 0;
+}
+
+.ah-badge--waiting {
+    background: #fff8e6;
+    color: #d97706;
+}
+
+.ah-badge--arrived {
+    background: var(--green);
+    color: #3a7d11;
+}
+
+.ah-badge--served {
+    background: var(--bg);
+    color: var(--text-muted);
+}
+
+/* Card Meta */
+.ah-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.ah-meta-chip {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--bg);
+    padding: 5px 10px;
+    border-radius: 8px;
+}
+
+.ah-meta-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.ah-meta-value {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--black);
+}
+
+/* Check In Button */
+.ah-checkin-btn {
+    width: 100%;
+    padding: 13px;
+    border-radius: var(--radius-btn);
+    border: none;
+    background: var(--blue);
+    color: #ffffff;
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 4px 14px rgba(62, 125, 245, 0.28);
+    min-height: 48px;
+    will-change: transform;
+}
+
+.ah-checkin-btn:hover {
+    background: var(--blue-dark);
+    box-shadow: 0 6px 20px rgba(62, 125, 245, 0.4);
+    transform: translateY(-1px);
+}
+
+.ah-checkin-btn:active {
+    transform: translateY(0);
+}
+
+.ah-checkin-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(62, 125, 245, 0.18);
+}
+
+/* Status Notes */
+.ah-status-note {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.ah-status-note--arrived {
+    color: #3a7d11;
+    background: var(--green);
+}
+
+.ah-status-note--served {
+    color: var(--text-muted);
+    background: var(--bg);
+    font-weight: 600;
+}
+
+/* ─────────────────────────────────────────────
+   SKELETON LOADERS
+───────────────────────────────────────────── */
+@keyframes ah-shimmer {
+    0% {
+        background-position: -400px 0;
+    }
+
+    100% {
+        background-position: 400px 0;
+    }
+}
+
+.ah-skeleton {
+    border-radius: 8px;
+    background: linear-gradient(90deg,
+            var(--border) 25%,
+            #f0f3f5 50%,
+            var(--border) 75%);
+    background-size: 800px 100%;
+    animation: ah-shimmer 1.4s ease-in-out infinite;
+}
+
+.ah-skeleton-header {
+    padding: 16px 16px 14px;
+    background: var(--card-bg);
+    border-bottom: 1.5px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ah-skeleton--title {
+    height: 22px;
+    width: 180px;
+    border-radius: 8px;
+}
+
+.ah-skeleton--date {
+    height: 12px;
+    width: 120px;
+    border-radius: 6px;
+}
+
+.ah-skeleton-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: var(--card-bg);
+    border-bottom: 1.5px solid var(--border);
+    padding: 14px 0;
+}
+
+.ah-skeleton-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 8px;
+}
+
+.ah-skeleton--num {
+    height: 24px;
+    width: 32px;
+    border-radius: 6px;
+}
+
+.ah-skeleton--label {
+    height: 10px;
+    width: 40px;
+    border-radius: 4px;
+}
+
+.ah-skeleton--search {
+    height: 48px;
+    border-radius: var(--radius-input);
+    width: 100%;
+}
+
+.ah-skeleton-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 16px;
+    border: 1.5px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ah-skeleton-card-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ah-skeleton-card-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ah-skeleton-card-meta {
+    display: flex;
+    gap: 6px;
+}
+
+.ah-skeleton--avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+    flex-shrink: 0;
+}
+
+.ah-skeleton--name {
+    height: 15px;
+    width: 55%;
+    border-radius: 6px;
+}
+
+.ah-skeleton--phone {
+    height: 12px;
+    width: 38%;
+    border-radius: 5px;
+}
+
+.ah-skeleton--badge {
+    height: 24px;
+    width: 58px;
+    border-radius: 999px;
+}
+
+.ah-skeleton--chip {
+    height: 28px;
+    width: 80px;
+    border-radius: 8px;
+}
+
+.ah-skeleton--btn {
+    height: 48px;
+    border-radius: var(--radius-btn);
+    width: 100%;
+}
+
+/* ─────────────────────────────────────────────
+   ANIMATIONS
+───────────────────────────────────────────── */
+@keyframes ah-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ─────────────────────────────────────────────
+   RESPONSIVE — 480px (small mobile)
+───────────────────────────────────────────── */
+@media (min-width: 480px) {
+    .ah-btn-label {
+        display: inline;
+    }
+
+    .ah-title {
+        font-size: 20px;
+    }
+
+    .ah-stat-num {
+        font-size: 24px;
+    }
+
+    .ah-card {
+        padding: 18px;
+    }
+}
+
+/* ─────────────────────────────────────────────
+   RESPONSIVE — 768px (tablet)
+───────────────────────────────────────────── */
+@media (min-width: 768px) {
+    .ah-header {
+        padding: 20px 24px 18px;
+    }
+
+    .ah-title {
+        font-size: 22px;
+    }
+
+    .ah-header-actions {
+        gap: 10px;
+    }
+
+    .ah-main {
+        padding: 0 24px;
+        max-width: 720px;
+    }
+
+    .ah-search-wrap {
+        padding: 20px 0 10px;
+    }
+
+    .ah-list {
+        gap: 14px;
+    }
+
+    .ah-card {
+        padding: 20px;
+        border-radius: 22px;
+    }
+
+    .ah-card-avatar {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        border-radius: 14px;
+        font-size: 18px;
+    }
+
+    .ah-stat-num {
+        font-size: 26px;
+    }
+
+    .ah-stat-label {
+        font-size: 11px;
+    }
+}
+
+/* ─────────────────────────────────────────────
+   RESPONSIVE — 1024px (desktop)
+───────────────────────────────────────────── */
+@media (min-width: 1024px) {
+    .ah-header {
+        padding: 22px 40px 20px;
+    }
+
+    .ah-title {
+        font-size: 24px;
+    }
+
+    .ah-main {
+        padding: 0 40px;
+        max-width: 860px;
+    }
+
+    .ah-list {
+        gap: 16px;
+        padding-bottom: 60px;
+    }
+
+    .ah-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 36px rgba(62, 125, 245, 0.14);
+    }
+}
+
+/* ─────────────────────────────────────────────
+   RESPONSIVE — 1280px (large desktop)
+───────────────────────────────────────────── */
+@media (min-width: 1280px) {
+    .ah-main {
+        max-width: 960px;
+    }
+
+    .ah-header {
+        padding: 24px 60px 20px;
+    }
+}
+
+/* ─────────────────────────────────────────────
+   ACCESSIBILITY — Focus Visible
+───────────────────────────────────────────── */
+.ah-search:focus-visible,
+.ah-btn:focus-visible,
+.ah-checkin-btn:focus-visible,
+.ah-error-retry:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(62, 125, 245, 0.18);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    .ah-card,
+    .ah-btn,
+    .ah-checkin-btn,
+    .ah-skeleton,
+    .ah-refresh-btn .ah-btn-icon {
+        animation: none;
+        transition: none;
+    }
+
+    .ah-card:hover,
+    .ah-checkin-btn:hover,
+    .ah-btn--primary:hover {
+        transform: none;
+    }
+}

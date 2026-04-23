@@ -1,0 +1,403 @@
+/* === PatientIdCard.css === */
+
+/* ─────────────────────────────────────────────────────────── */
+/* LAYOUT                                                       */
+/* ─────────────────────────────────────────────────────────── */
+
+.pid-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* CARD SHELL                                                   */
+/* Rule #9: top = blue gradient, depth = Layer 3               */
+/* ─────────────────────────────────────────────────────────── */
+
+.pid-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    padding: 18px 18px 14px;
+    min-height: 185px;
+    isolation: isolate;
+    background: linear-gradient(135deg,
+            var(--blue) 0%,
+            #2d62d4 65%,
+            #1a4fa8 100%);
+    box-shadow:
+        0 16px 48px rgba(62, 125, 245, 0.38),
+        0 2px 8px rgba(62, 125, 245, 0.2);
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* DECORATIVE CIRCLES                                           */
+/* ─────────────────────────────────────────────────────────── */
+
+.pid-deco {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.pid-deco--tl {
+    width: 160px;
+    height: 160px;
+    top: -55px;
+    right: -45px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.pid-deco--br {
+    width: 110px;
+    height: 110px;
+    bottom: -40px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.pid-deco--mid {
+    width: 60px;
+    height: 60px;
+    top: 10px;
+    left: -15px;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* HEADER                                                       */
+/* ─────────────────────────────────────────────────────────── */
+
+.pid-header {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.pid-brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pid-logo-badge {
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.22);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 17px;
+    font-weight: 900;
+    font-family: 'Urbanist', sans-serif;
+    line-height: 1;
+}
+
+.pid-logo-text.MuiTypography-root {
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 800;
+    font-size: 17px;
+    color: #ffffff;
+    letter-spacing: 0.2px;
+    line-height: 1;
+}
+
+.pid-year-label.MuiTypography-root {
+    font-family: 'Nunito', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.7px;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* BODY                                                         */
+/* ─────────────────────────────────────────────────────────── */
+
+.pid-body {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.pid-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    flex: 1;
+    min-width: 0;
+}
+
+/* ─── Avatar ─── */
+
+.pid-avatar-img {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    flex-shrink: 0;
+}
+
+.pid-avatar-fallback {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.18);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.pid-avatar-initial.MuiTypography-root {
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    color: #ffffff;
+    line-height: 1;
+}
+
+/* ─── Patient info ─── */
+
+.pid-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.pid-name.MuiTypography-root {
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    color: #ffffff;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+}
+
+.pid-id-label.MuiTypography-root {
+    font-family: 'Nunito', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.65);
+    letter-spacing: 0.5px;
+}
+
+.pid-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+/* ─── Blood group badge ─── */
+/* Rule #7-adjacent: subtle tinted badge on card */
+
+.pid-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+.pid-badge--blood {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.pid-badge-text.MuiTypography-root {
+    font-family: 'Nunito', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.pid-phone.MuiTypography-root {
+    font-family: 'Nunito', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+/* ─── QR box ─── */
+/* Glassmorphism per depth rule: rgba white + blur on colored bg */
+
+.pid-qr-box {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+    padding: 8px 8px 6px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.pid-qr-label.MuiTypography-root {
+    font-family: 'Nunito', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.4px;
+    text-align: center;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* FOOTER                                                       */
+/* ─────────────────────────────────────────────────────────── */
+
+.pid-footer {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 13px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.pid-abha-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Rule: ABHA linked = green accent (--accent-green) on blue card */
+.pid-abha-icon.MuiSvgIcon-root {
+    font-size: 12px;
+    color: var(--green);
+}
+
+.pid-abha-text.MuiTypography-root {
+    font-family: 'Nunito', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--green);
+}
+
+.pid-abha-unlinked.MuiTypography-root {
+    color: rgba(255, 255, 255, 0.32);
+    font-style: italic;
+    font-weight: 600;
+}
+
+.pid-tagline.MuiTypography-root {
+    font-family: 'Nunito', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* ACTION BUTTONS                                               */
+/* Rule: outline = blue tint, filled = var(--blue) solid        */
+/* ─────────────────────────────────────────────────────────── */
+
+.pid-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.pid-btn.MuiButton-root {
+    flex: 1;
+    border-radius: var(--radius-btn);
+    padding: 10px 16px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: none;
+    letter-spacing: 0;
+    box-shadow: none;
+    min-height: 44px;
+    transition:
+        background var(--transition),
+        border-color var(--transition),
+        color var(--transition),
+        transform var(--transition),
+        box-shadow var(--transition);
+    will-change: transform;
+}
+
+.pid-btn.MuiButton-root:hover {
+    box-shadow: none;
+    transform: translateY(-2px);
+}
+
+.pid-btn.MuiButton-root:active {
+    transform: translateY(0);
+}
+
+/* Outline — Download */
+.pid-btn--outline.MuiButton-outlined {
+    background: transparent;
+    border: 1.5px solid var(--blue);
+    color: var(--blue);
+}
+
+.pid-btn--outline.MuiButton-outlined:hover {
+    background: var(--blue-light);
+    border-color: var(--blue);
+    box-shadow: 0 4px 14px rgba(62, 125, 245, 0.15) !important;
+}
+
+/* Downloading state */
+.pid-btn--downloading.MuiButton-outlined,
+.pid-btn--downloading.MuiButton-outlined:hover {
+    border-color: var(--border);
+    color: var(--text-muted);
+    background: transparent;
+    cursor: not-allowed;
+    pointer-events: auto;
+    transform: none;
+    box-shadow: none !important;
+}
+
+/* Filled — Share */
+.pid-btn--filled.MuiButton-contained {
+    background: var(--blue);
+    border: 1.5px solid var(--blue);
+    color: #ffffff;
+    box-shadow: 0 4px 16px rgba(62, 125, 245, 0.32);
+}
+
+.pid-btn--filled.MuiButton-contained:hover {
+    background: var(--blue-dark);
+    border-color: var(--blue-dark);
+    box-shadow: 0 8px 24px rgba(62, 125, 245, 0.4) !important;
+}
+
+.pid-btn .MuiButton-startIcon .MuiSvgIcon-root {
+    font-size: 18px;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* SNACKBAR                                                     */
+/* ─────────────────────────────────────────────────────────── */
+
+.pid-snack-alert .MuiAlert-message {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+}

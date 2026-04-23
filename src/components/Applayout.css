@@ -1,0 +1,68 @@
+/* ══════════════════════════════════════════
+   AppLayout.css  —  al-* namespace
+   
+   Breakpoint Strategy:
+   • < 768px (mobile): temporary drawer, default closed
+   • ≥ 768px (tablet+): persistent sidebar, default open, 280px wide
+   ══════════════════════════════════════════ */
+
+/* ── Root flex container ── */
+.al-root {
+    display: flex;
+    min-height: 100vh;
+    background: var(--bg, #e8ecee);
+    position: relative;
+}
+
+/* ── Right-side body (navbar + page) ── */
+.al-body {
+    flex: 1;
+    min-width: 0;
+    /* prevent flex overflow */
+    display: flex;
+    flex-direction: column;
+
+    /* Smooth shift when persistent sidebar opens/closes */
+    transition: margin-left 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-left: 0;
+}
+
+/* When persistent sidebar is open, body shifts right by 280px */
+.al-body--shifted {
+    margin-left: 280px;
+    /* matches SlideBar width: 280px */
+}
+
+/* ── Page content area ── */
+.al-main {
+    flex: 1;
+    overflow-x: hidden;
+}
+
+/* ── Mobile (< 768px): sidebar is temporary overlay ── */
+@media (max-width: 767px) {
+    .al-body--shifted {
+        margin-left: 0;
+        /* overlay doesn't push content */
+    }
+}
+
+/* ── Tablet/Desktop (≥ 768px): persistent sidebar (280px wide) ── */
+@media (min-width: 768px) {
+    .al-root .MuiDrawer-paper {
+        width: 280px;
+        box-shadow: 2px 0 16px rgba(62, 125, 245, 0.07);
+        border-right: 1px solid var(--border, #dde3ea);
+    }
+}
+
+.layout-root {
+    display: flex;
+    min-height: 100vh;
+}
+
+.layout-main {
+    flex: 1;
+    min-width: 0;
+    transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}

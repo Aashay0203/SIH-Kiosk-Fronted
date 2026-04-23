@@ -1,0 +1,306 @@
+/* ── Root ── */
+.sup-root {
+    min-height: 100vh;
+    background: #e8ecee;
+    font-family: "Nunito", sans-serif;
+    padding: 0 0 100px;
+    color: #010101;
+}
+
+/* ── Header ── */
+.sup-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 28px 20px 20px;
+}
+
+.sup-back-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    border: 1.5px solid #dde3ea;
+    background: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s;
+}
+
+.sup-back-btn:hover {
+    background: #dce9ff;
+}
+
+.sup-title {
+    font-family: "Urbanist", sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.sup-subtitle {
+    font-size: 13px;
+    color: #7a8799;
+    margin: 2px 0 0;
+    font-weight: 600;
+}
+
+/* ── Search ── */
+.sup-search-wrap {
+    margin: 0 20px 24px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.sup-search-icon {
+    position: absolute;
+    left: 14px;
+    font-size: 15px;
+    pointer-events: none;
+}
+
+.sup-search {
+    width: 100%;
+    padding: 13px 40px 13px 40px;
+    border-radius: 12px;
+    border: 1.5px solid #dde3ea;
+    background: #fff;
+    font-size: 14px;
+    font-family: "Nunito", sans-serif;
+    font-weight: 600;
+    color: #010101;
+    outline: none;
+    transition: border 0.2s;
+    box-sizing: border-box;
+}
+
+.sup-search:focus {
+    border-color: #3e7df5;
+}
+
+.sup-search-clear {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #7a8799;
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* ── Section ── */
+.sup-section {
+    padding: 0 20px;
+    margin-bottom: 28px;
+}
+
+.sup-section-title {
+    font-family: "Urbanist", sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    margin: 0 0 14px;
+    color: #010101;
+}
+
+.sup-faq-count {
+    font-family: "Nunito", sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: #7a8799;
+}
+
+/* ── Contact Cards ── */
+.sup-contact-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sup-contact-card {
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    gap: 0 12px;
+    padding: 16px;
+    border-radius: 16px;
+    text-decoration: none;
+    color: #010101;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.sup-contact-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(62, 125, 245, 0.12);
+}
+
+.sup-contact-icon {
+    font-size: 22px;
+    grid-row: 1 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+}
+
+.sup-contact-label {
+    font-family: "Urbanist", sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.sup-contact-sub {
+    font-size: 12px;
+    color: #7a8799;
+    grid-column: 2;
+    grid-row: 2;
+    font-weight: 600;
+}
+
+.sup-contact-action {
+    font-family: "Urbanist", sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    color: #3e7df5;
+    grid-column: 3;
+    grid-row: 1 / 3;
+    white-space: nowrap;
+}
+
+/* ── FAQ ── */
+.sup-faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sup-faq-item {
+    background: #fff;
+    border-radius: 16px;
+    border: 1.5px solid #dde3ea;
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+
+.sup-faq-item.sup-faq-open {
+    border-color: #3e7df5;
+}
+
+.sup-faq-q {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+    font-family: "Nunito", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #010101;
+    cursor: pointer;
+}
+
+.sup-faq-chevron {
+    font-size: 10px;
+    color: #7a8799;
+    flex-shrink: 0;
+    transition: color 0.15s;
+}
+
+.sup-faq-open .sup-faq-chevron {
+    color: #3e7df5;
+}
+
+.sup-faq-a {
+    padding: 0 16px 16px;
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #7a8799;
+    line-height: 1.7;
+    border-top: 1px solid #f0f3f6;
+    padding-top: 12px;
+}
+
+/* ── Empty ── */
+.sup-empty {
+    background: #fff;
+    border-radius: 20px;
+    padding: 36px 20px;
+    text-align: center;
+    border: 1.5px dashed #dde3ea;
+}
+
+.sup-empty-icon {
+    font-size: 36px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.sup-empty p {
+    margin: 0 0 16px;
+    font-size: 14px;
+    color: #7a8799;
+    font-weight: 600;
+}
+
+.sup-empty-feedback {
+    background: #dce9ff;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-family: "Urbanist", sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: #3e7df5;
+    cursor: pointer;
+}
+
+/* ── Feedback CTA ── */
+.sup-feedback-cta {
+    margin: 0 20px;
+    background: linear-gradient(135deg, #3e7df5 0%, #2d62d4 100%);
+    border-radius: 20px;
+    padding: 24px 20px;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 12px 48px rgba(62, 125, 245, 0.22);
+}
+
+.sup-feedback-cta p {
+    margin: 0 0 16px;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.sup-feedback-btn {
+    background: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 12px 28px;
+    font-family: "Urbanist", sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    color: #3e7df5;
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+
+.sup-feedback-btn:hover {
+    transform: scale(1.03);
+}

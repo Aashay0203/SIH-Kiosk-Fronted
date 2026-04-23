@@ -1,0 +1,220 @@
+.lp-root {
+    background: var(--bg);
+    min-height: 100vh;
+    padding: 16px;
+}
+
+.lp-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding-bottom: 40px;
+}
+
+/* Top Nav */
+.lp-top-nav {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.lp-nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 8px 16px;
+    font-family: "Nunito", sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--black);
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lp-nav-btn:hover {
+    background: var(--blue-light);
+    border-color: var(--blue);
+    color: var(--blue);
+}
+
+/* Header */
+.lp-header {
+    margin-bottom: 24px;
+}
+
+.lp-title {
+    font-family: "Urbanist", sans-serif;
+    font-weight: 800;
+    font-size: 1.75rem;
+    color: var(--black);
+    margin: 0 0 4px;
+}
+
+.lp-subtitle {
+    font-family: "Nunito", sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* Tabs */
+.lp-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 6px;
+}
+
+.lp-tab-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-family: "Nunito", sans-serif;
+    font-weight: 700;
+    font-size: 0.875rem;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lp-tab-btn:hover {
+    background: var(--blue-light);
+}
+
+.lp-tab-underline {
+    position: absolute;
+    bottom: -2px;
+    left: 20%;
+    width: 60%;
+    height: 3px;
+    background: var(--blue);
+    border-radius: 999px;
+}
+
+.lp-tab-icon {
+    font-size: 1rem !important;
+}
+
+/* Sections */
+.lp-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* Card */
+.lp-card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    box-shadow: 0 12px 48px rgba(62, 125, 245, 0.10);
+    padding: 20px 24px;
+}
+
+.lp-section-title {
+    font-family: "Urbanist", sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--blue);
+    margin: 0 0 10px;
+}
+
+.lp-section-body {
+    font-family: "Nunito", sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--black);
+    line-height: 1.65;
+}
+
+/* List */
+.lp-list {
+    padding-left: 20px;
+    margin: 0;
+}
+
+.lp-list--mt {
+    margin-top: 10px;
+}
+
+.lp-list li {
+    margin-bottom: 6px;
+}
+
+/* Note */
+.lp-note {
+    margin-top: 10px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Highlight Box */
+.lp-highlight-box {
+    background: #fff8e6;
+    border: 1px solid #f5c842;
+    border-radius: 16px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-family: "Nunito", sans-serif;
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--black);
+    line-height: 1.6;
+}
+
+.lp-highlight-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* Link */
+.lp-link {
+    color: var(--blue);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.lp-link:hover {
+    text-decoration: underline;
+}
+
+/* Footer note */
+.lp-footer-note {
+    margin-top: 28px;
+    text-align: center;
+    font-family: "Nunito", sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+    .lp-root {
+        padding: 24px;
+    }
+
+    .lp-title {
+        font-size: 2rem;
+    }
+
+    .lp-card {
+        padding: 24px 28px;
+    }
+}

@@ -1,0 +1,448 @@
+/* === DoctorList.css === */
+
+/* ─────────────────────────────────────────────────────────── */
+/* LAYOUT                                                       */
+/* ─────────────────────────────────────────────────────────── */
+
+.dl-page {
+    min-height: 100vh;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font);
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* TOP NAV                                                      */
+/* ─────────────────────────────────────────────────────────── */
+
+.dl-nav {
+    background: var(--card-bg);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    box-shadow: 0 2px 16px rgba(62, 125, 245, 0.07);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.dl-nav-btn {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-input);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition), transform var(--transition), box-shadow var(--transition);
+    will-change: transform;
+}
+
+.dl-nav-btn:hover {
+    background: var(--blue-light);
+    color: var(--blue);
+    border-color: var(--blue-light);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(62, 125, 245, 0.15);
+}
+
+.dl-nav-btn:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 4px rgba(62, 125, 245, 0.18);
+}
+
+.dl-nav-center {
+    flex: 1;
+    text-align: center;
+}
+
+.dl-nav-title {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--black);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.dl-nav-sub {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin: 2px 0 0;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* SEARCH BAR                                                   */
+/* ─────────────────────────────────────────────────────────── */
+
+.dl-search-wrap {
+    padding: 16px 16px 0;
+}
+
+.dl-search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 50px;
+    padding: 0 14px;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.dl-search-box:focus-within {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 4px rgba(62, 125, 245, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.dl-search-icon {
+    color: var(--text-muted);
+    flex-shrink: 0;
+    pointer-events: none;
+}
+
+.dl-search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 14px 10px;
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--black);
+    outline: none;
+    min-height: 48px;
+}
+
+.dl-search-input::placeholder {
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+/* remove default browser search clear button */
+.dl-search-input::-webkit-search-cancel-button {
+    display: none;
+}
+
+.dl-search-clear {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: var(--bg);
+    border-radius: 50%;
+    color: var(--text-muted);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background var(--transition), color var(--transition);
+}
+
+.dl-search-clear:hover {
+    background: var(--blue-light);
+    color: var(--blue);
+}
+
+.dl-search-clear:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba(62, 125, 245, 0.18);
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* MAIN CONTENT AREA                                            */
+/* ─────────────────────────────────────────────────────────── */
+
+.dl-content {
+    flex: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.dl-results-count {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* DOCTOR GRID                                                  */
+/* ─────────────────────────────────────────────────────────── */
+
+.dl-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* STATE SCREENS (error / empty)                               */
+/* ─────────────────────────────────────────────────────────── */
+
+.dl-state-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    text-align: center;
+    gap: 10px;
+}
+
+.dl-state-emoji {
+    font-size: 52px;
+    margin-bottom: 4px;
+}
+
+.dl-state-title {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--black);
+    margin: 0;
+}
+
+.dl-state-body {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin: 0 0 8px;
+    max-width: 280px;
+    line-height: 1.5;
+}
+
+.dl-retry-btn {
+    padding: 12px 28px;
+    border-radius: var(--radius-btn);
+    border: 1.5px solid var(--blue);
+    background: var(--blue-light);
+    color: var(--blue);
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition), transform var(--transition), box-shadow var(--transition);
+    min-height: 48px;
+    will-change: transform;
+}
+
+.dl-retry-btn:hover {
+    background: var(--blue);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(62, 125, 245, 0.3);
+}
+
+.dl-retry-btn:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 4px rgba(62, 125, 245, 0.18);
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* SKELETON LOADER                                              */
+/* ─────────────────────────────────────────────────────────── */
+
+.dl-skeleton {
+    background: linear-gradient(90deg,
+            var(--border) 25%,
+            rgba(221, 227, 234, 0.45) 50%,
+            var(--border) 75%);
+    background-size: 200% 100%;
+    animation: dl-shimmer 1.4s infinite;
+    border-radius: 8px;
+}
+
+.dl-skeleton-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-card);
+    padding: 20px;
+    border: 1.5px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.dl-skeleton-card__top {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.dl-skeleton-card__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 4px;
+}
+
+.dl-skeleton-card__vitals {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.dl-skeleton--avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.dl-skeleton--name {
+    width: 65%;
+    height: 20px;
+}
+
+.dl-skeleton--spec {
+    width: 45%;
+    height: 13px;
+}
+
+.dl-skeleton--price {
+    width: 35%;
+    height: 15px;
+}
+
+.dl-skeleton--vital {
+    width: 100%;
+    height: 52px;
+    border-radius: var(--radius-btn);
+}
+
+.dl-skeleton--btn {
+    width: 100%;
+    height: 46px;
+    border-radius: var(--radius-btn);
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* ANIMATIONS                                                   */
+/* ─────────────────────────────────────────────────────────── */
+
+@keyframes dl-shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* RESPONSIVE — 480px (small mobile)                           */
+/* ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+    .dl-nav {
+        padding: 10px 12px;
+    }
+
+    .dl-nav-title {
+        font-size: 16px;
+    }
+
+    .dl-search-wrap,
+    .dl-content {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .dl-skeleton--avatar {
+        width: 68px;
+        height: 68px;
+    }
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* RESPONSIVE — 768px (tablet)                                 */
+/* ─────────────────────────────────────────────────────────── */
+
+@media (min-width: 768px) {
+    .dl-nav {
+        padding: 14px 24px;
+    }
+
+    .dl-search-wrap {
+        padding: 20px 24px 0;
+        max-width: 680px;
+        margin: 0 auto;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .dl-content {
+        padding: 20px 24px;
+    }
+
+    .dl-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* RESPONSIVE — 1024px (desktop)                               */
+/* ─────────────────────────────────────────────────────────── */
+
+@media (min-width: 1024px) {
+    .dl-nav {
+        padding: 16px 40px;
+    }
+
+    .dl-search-wrap {
+        padding: 24px 40px 0;
+        max-width: 1200px;
+    }
+
+    .dl-content {
+        padding: 24px 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .dl-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* RESPONSIVE — 1280px (large desktop)                         */
+/* ─────────────────────────────────────────────────────────── */
+
+@media (min-width: 1280px) {
+    .dl-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.fb-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 0;
+    margin-left: 12px;
+}

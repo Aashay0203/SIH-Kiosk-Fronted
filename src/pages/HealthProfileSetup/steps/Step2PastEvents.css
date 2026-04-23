@@ -1,0 +1,28 @@
+/* Step2PastEvents.css */
+
+.step2-root {}
+
+.step2-addable-card {
+    border: 1.5px solid var(--border) !important;
+}
+
+/* Chip: blue-tinted info style */
+.step2-chip.MuiChip-root {
+    background: var(--blue-light);
+    color: var(--blue-dark);
+    border: 1px solid rgba(62, 125, 245, 0.2);
+    font-weight: 700;
+}
+
+.step2-chip.MuiChip-root:hover {
+    background: #c8dcff;
+}
+
+.step2-chip.MuiChip-root .MuiChip-deleteIcon {
+    color: var(--blue-dark);
+    opacity: 0.6;
+}
+
+.step2-chip.MuiChip-root .MuiChip-deleteIcon:hover {
+    opacity: 1;
+}

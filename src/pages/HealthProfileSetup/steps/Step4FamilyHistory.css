@@ -1,0 +1,57 @@
+/* Step4FamilyHistory.css */
+
+.step4-root {}
+
+/* Conditions card */
+.step4-conditions-card {
+    background: linear-gradient(135deg, #FFE6F0 0%, #ffffff 55%) !important;
+    border: 1.5px solid var(--border) !important;
+}
+
+/* Row inside card */
+.step4-condition-row {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(4px);
+    border-radius: 14px;
+    padding: 12px 14px !important;
+    margin-bottom: 8px;
+    border: 1.5px solid transparent;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.step4-condition-row:last-child {
+    margin-bottom: 0;
+}
+
+.step4-condition-row--active {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: var(--blue) !important;
+    box-shadow: 0 4px 14px rgba(62, 125, 245, 0.1);
+}
+
+/* Genetic card */
+.step4-genetic-card {
+    background: linear-gradient(135deg, #FFF4E6 0%, #ffffff 55%) !important;
+    border: 1.5px solid var(--border) !important;
+}
+
+/* Chips: orange-warm for genetic/hereditary */
+.step4-chip.MuiChip-root {
+    background: #FFF4E6;
+    color: #c07000;
+    border: 1px solid rgba(192, 112, 0, 0.2);
+    font-weight: 700;
+}
+
+.step4-chip.MuiChip-root:hover {
+    background: #ffe8c4;
+}
+
+.step4-chip.MuiChip-root .MuiChip-deleteIcon {
+    color: #c07000;
+    opacity: 0.65;
+}
+
+.step4-chip.MuiChip-root .MuiChip-deleteIcon:hover {
+    opacity: 1;
+}
