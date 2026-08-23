@@ -2,8 +2,16 @@ import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import instance from "../api/axios";
 import "./PatientDetails.css";
-import { IconButton, Avatar } from "@mui/material";
+import { IconButton, Avatar, Button } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import SpaIcon from "@mui/icons-material/Spa";
+import VerifiedIcon from "@mui/icons-material/Verified";
+import MedicalTimeline from "../components/MedicalTimeline";
+import FhirViewerModal from "../components/FhirViewerModal";
+import PrescriptionCdssModal from "../components/PrescriptionCdssModal";
+import { generateAbdmFhirBundle } from "../utils/fhirService";
 
 /* ─── Config maps ─── */
 const FLAG_CONFIG = {
@@ -35,21 +43,7 @@ const CONDITION_MAP = {
   thyroid: { label: "Thyroid", emoji: "🦋" },
 };
 
-const SYMPTOM_EMOJI = {
-  "Hair Loss": "💇",
-  "Frequent Urination": "🚽",
-  "Weight Loss": "⚖️",
-  Headaches: "🤕",
-  "Joint Pain": "🦴",
-  "Back Pain": "🪑",
-  Anxiety: "😰",
-  "Low Mood": "😔",
-  "Poor Sleep": "😴",
-  "Irregular Heartbeat": "💓",
-};
-
 const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
-const getSymptomEmoji = (s) => SYMPTOM_EMOJI[s] || "🔹";
 
 /* ─── Sub-components ─── */
 function SectionLabel({ children }) {
@@ -100,8 +94,13 @@ export default function PatientDetail() {
 
   const [appointment] = useState(location.state?.appointment || null);
   const [healthProfile, setHealthProfile] = useState(null);
+  const [clinicalSummary, setClinicalSummary] = useState(null);
+  const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("ai");
+  const [activeTab, setActiveTab] = useState("summary"); // 'summary', 'ai', 'history', 'timeline'
+  const [isVerified, setIsVerified] = useState(false);
+  const [showFhirModal, setShowFhirModal] = useState(false);
+  const [showRxModal, setShowRxModal] = useState(false);
 
   useEffect(() => {
     const patientId = appointment?.patientId?._id;
@@ -110,21 +109,31 @@ export default function PatientDetail() {
       return;
     }
 
-    const fetchHealthProfile = async () => {
+    const fetchHealthProfileAndSummary = async () => {
       try {
-        const res = await instance.get(`/doctors/patient-profile/${patientId}`);
-        setHealthProfile(res.data.profile);
+        const [profileRes, summaryRes] = await Promise.allSettled([
+          instance.get(`/doctors/patient-profile/${patientId}`),
+          instance.get(`/healthProfile/summary/${patientId}`),
+        ]);
+
+        if (profileRes.status === "fulfilled" && profileRes.value.data?.profile) {
+          setHealthProfile(profileRes.value.data.profile);
+        }
+
+        if (summaryRes.status === "fulfilled" && summaryRes.value.data?.summary) {
+          setClinicalSummary(summaryRes.value.data.summary);
+        }
       } catch (err) {
-        setHealthProfile(null);
+        console.error("Failed to fetch patient records:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchHealthProfile();
+    fetchHealthProfileAndSummary();
   }, [appointment]);
 
-  const patient = appointment.patientId || {};
+  const patient = appointment?.patientId || {};
   const ai = healthProfile?.aiExtracted || {};
   const ud = healthProfile?.userProvided || {};
 
@@ -132,6 +141,9 @@ export default function PatientDetail() {
   const labValues = ai?.labValues || {};
   const insights = ai?.personalizedInsights || [];
   const activeFlags = Object.entries(flags).filter(([, v]) => v);
+  const redFlag = ud?.redFlagAlert || {};
+  const ayush = ud?.ayushAssessment || null;
+  const socrates = ud?.socratesHpi || null;
 
   const mergedAllergies = useMemo(() => {
     const aiAllergies = ai.detectedAllergies || [];
@@ -167,7 +179,7 @@ export default function PatientDetail() {
     return (
       <div className="pd-loading-screen">
         <div className="pd-spinner" />
-        <p className="pd-loading-text">Loading patient profile…</p>
+        <p className="pd-loading-text">Loading patient OPD intake profile…</p>
       </div>
     );
   }
@@ -187,14 +199,13 @@ export default function PatientDetail() {
           <ChevronLeftIcon sx={{ color: "#010101" }} />
         </IconButton>
 
-        <h4 className="pd-navbar-title">Patient Details</h4>
+        <h4 className="pd-navbar-title">Doctor Consultation Console</h4>
 
         <Avatar
           sx={{
             width: 40,
             height: 40,
-            bgcolor: "#3e7df5",
-            fontFamily: "'Urbanist', sans-serif",
+            bgcolor: "#2563eb",
             fontWeight: 800,
             fontSize: 16,
           }}
@@ -203,21 +214,88 @@ export default function PatientDetail() {
         </Avatar>
       </div>
 
+      {/* ── Emergency Red Flag Alert Bar ── */}
+      {redFlag?.isTriggered && (
+        <div className="pd-redflag-banner">
+          <WarningAmberIcon sx={{ fontSize: 28, color: "#ffffff" }} />
+          <div>
+            <strong>🚨 EMERGENCY TRIAGE ALERT: {redFlag.severity} SEVERITY</strong>
+            <p>{redFlag.reasons?.join(" • ") || "Critical symptom pattern flagged by Kiosk AI."}</p>
+          </div>
+        </div>
+      )}
+
       {/* ── Profile Hero ── */}
       <div className="pd-hero">
         <div className="pd-hero-avatar">
           {patient.name?.[0]?.toUpperCase() || "P"}
         </div>
         <div className="pd-hero-info">
-          <h1 className="pd-hero-name">{patient.name || "Patient"}</h1>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <h1 className="pd-hero-name">{patient.name || "Patient"}</h1>
+            {ud?.consentAndAbha?.abhaId && (
+              <span className="pd-abha-badge">
+                <VerifiedIcon sx={{ fontSize: 14 }} /> ABHA: {ud.consentAndAbha.abhaId}
+              </span>
+            )}
+          </div>
           <p className="pd-hero-sub">
-            {patient.phone || patient.email || "No contact provided"}
+            {patient.phone || patient.email || "No contact provided"} • Token #{appointment.appointmentNumber}
           </p>
         </div>
-        <div className="pd-hero-badge">
-          <span className="pd-hero-badge-dot" />#{appointment.appointmentNumber}
+
+        {/* Doctor Verification & FHIR Export Actions */}
+        <div className="pd-action-box" style={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
+          <button
+            type="button"
+            className="btn-verify-intake"
+            style={{ background: "#7c3aed", border: "none" }}
+            onClick={() => setShowRxModal(true)}
+          >
+            💊 Write Rx (CDSS Safety)
+          </button>
+          <button
+            type="button"
+            className="btn-verify-intake"
+            style={{ background: "#0f172a", border: "1px solid #334155" }}
+            onClick={() => setShowFhirModal(true)}
+          >
+            📜 ABDM FHIR Bundle
+          </button>
+          <button
+            type="button"
+            className={`btn-verify-intake ${isVerified ? "verified" : ""}`}
+            onClick={() => setIsVerified(!isVerified)}
+          >
+            {isVerified ? <CheckCircleIcon sx={{ fontSize: 18 }} /> : <LocalHospitalIcon sx={{ fontSize: 18 }} />}
+            {isVerified ? "Intake Verified & Accepted" : "1-Click Verify Intake"}
+          </button>
         </div>
       </div>
+
+      {/* ABDM FHIR JSON Viewer Modal */}
+      <FhirViewerModal
+        isOpen={showFhirModal}
+        onClose={() => setShowFhirModal(false)}
+        fhirBundle={generateAbdmFhirBundle({
+          patient,
+          healthProfile,
+          clinicalSummary,
+          doctor: null,
+          appointment,
+        })}
+      />
+
+      {/* AI CDSS Prescription Safety Modal */}
+      <PrescriptionCdssModal
+        isOpen={showRxModal}
+        onClose={() => setShowRxModal(false)}
+        patient={{ name: patient?.name, appointmentNumber: appointment?.appointmentNumber }}
+        patientAllergies={mergedAllergies}
+        currentMedications={[...(ud?.medications || []), ...(ai?.currentMedications || [])]}
+        labFlags={flags}
+        doctorName="Doctor"
+      />
 
       {/* ── Appointment Meta Banner ── */}
       <div className="pd-alert-banner">
@@ -227,10 +305,8 @@ export default function PatientDetail() {
             <span className="pd-meta-value">{appointment.slotTime}</span>
           </div>
           <div className="pd-meta-item">
-            <span className="pd-meta-label">Status</span>
-            <span className="pd-meta-value pd-capitalize">
-              {appointment.status}
-            </span>
+            <span className="pd-meta-label">Consultation Status</span>
+            <span className="pd-meta-value pd-capitalize">{appointment.status}</span>
           </div>
           <div className="pd-meta-item">
             <span className="pd-meta-label">Payment</span>
@@ -246,15 +322,17 @@ export default function PatientDetail() {
       {!healthProfile ? (
         <EmptyState
           icon="📋"
-          message="No health profile found for this patient."
+          message="No Kiosk health intake found for this patient yet."
         />
       ) : (
         <>
           {/* ── Tabs ── */}
           <div className="pd-tabs">
             {[
-              { id: "ai", label: "🤖 AI Analysis" },
-              { id: "history", label: "📋 Patient History" },
+              { id: "summary", label: "⚡ 10-Sec Clinical Summary" },
+              { id: "ai", label: "🧪 Lab & AI Analysis" },
+              { id: "history", label: "📋 Full History & SOCRATES" },
+              { id: "timeline", label: "📅 Medical Timeline" },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -266,13 +344,117 @@ export default function PatientDetail() {
             ))}
           </div>
 
-          {/* ════════════════ AI Analysis Tab ════════════════ */}
+          {/* ════════════════ 10-Second Doctor OPD Summary Tab ════════════════ */}
+          {activeTab === "summary" && (
+            <div className="pd-tab-content pd-fade-in">
+              {/* Executive One-Liner */}
+              <Card className="pd-summary-hero-card">
+                <SectionLabel>EXECUTIVE CLINICAL SUMMARY</SectionLabel>
+                <h3 className="pd-oneliner-text">
+                  {clinicalSummary?.oneLiner ||
+                    ud?.chiefComplaint ||
+                    "Patient presented for clinical consultation."}
+                </h3>
+              </Card>
+
+              {/* Chief Complaint & SOCRATES HPI */}
+              <Card>
+                <SectionLabel>CHIEF COMPLAINT & HPI (SOCRATES)</SectionLabel>
+                <p className="pd-narrative-text">
+                  {clinicalSummary?.chiefComplaintHpi ||
+                    (socrates
+                      ? `${ud.chiefComplaint || "Discomfort"} characterized as ${socrates.character || "acute"} pain at ${socrates.site || "site"}, onset ${socrates.onset || "recent"}, severity ${socrates.severity || 5}/10, radiation to ${socrates.radiation || "none"}.`
+                      : ud.chiefComplaint || "No acute complaint documented.")}
+                </p>
+                {socrates && (
+                  <div className="socrates-pill-row">
+                    <span className="s-pill">📍 Site: {socrates.site || "Local"}</span>
+                    <span className="s-pill">⏱️ Onset: {socrates.onset || "Recent"}</span>
+                    <span className="s-pill">⚡ Severity: {socrates.severity || 5}/10</span>
+                    <span className="s-pill">🔄 Timing: {socrates.timing || "Constant"}</span>
+                  </div>
+                )}
+              </Card>
+
+              {/* AYUSH Assessment Card (if present) */}
+              {ayush && ayush.prakriti && (
+                <Card className="pd-ayush-card">
+                  <div className="ayush-title-row">
+                    <SpaIcon sx={{ color: "#166534" }} />
+                    <SectionLabel>AYUSH / AYURVEDIC OPD PARIKSHA</SectionLabel>
+                  </div>
+                  <div className="ayush-meta-grid">
+                    <div className="ayush-metric">
+                      <span className="metric-k">Prakriti:</span>
+                      <strong className="metric-v">{ayush.prakriti}</strong>
+                    </div>
+                    <div className="ayush-metric">
+                      <span className="metric-k">Agni:</span>
+                      <strong className="metric-v">{ayush.agni || "Normal"}</strong>
+                    </div>
+                    <div className="ayush-metric">
+                      <span className="metric-k">Koshtha:</span>
+                      <strong className="metric-v">{ayush.koshtha || "Madhyama"}</strong>
+                    </div>
+                    <div className="ayush-metric">
+                      <span className="metric-k">Sleep / Diet:</span>
+                      <strong className="metric-v">{ayush.sleepQuality || "Normal"}</strong>
+                    </div>
+                  </div>
+                </Card>
+              )}
+
+              {/* Current Meds & Allergies */}
+              <div className="pd-dual-cards">
+                <Card className="pd-card-half">
+                  <SectionLabel>💊 CURRENT MEDICATIONS</SectionLabel>
+                  {ud?.medications?.length > 0 || ai?.currentMedications?.length > 0 ? (
+                    <div className="pd-chips-row">
+                      {[...(ud?.medications || []), ...(ai?.currentMedications || [])].map((m, i) => (
+                        <Chip key={i} label={m} variant="blue" />
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="pd-dim-text">No active medications documented</p>
+                  )}
+                </Card>
+
+                <Card className="pd-card-half">
+                  <SectionLabel>⚠️ ALLERGIES</SectionLabel>
+                  {mergedAllergies.length > 0 ? (
+                    <div className="pd-chips-row">
+                      {mergedAllergies.map((a, i) => (
+                        <Chip key={i} label={a} variant="warn" />
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="pd-dim-text">No known drug/food allergies</p>
+                  )}
+                </Card>
+              </div>
+
+              {/* AI Clinical Differential Considerations */}
+              {clinicalSummary?.differentialSuggestions?.length > 0 && (
+                <Card>
+                  <SectionLabel>DIFFERENTIAL CONSIDERATIONS (AI ASSIST)</SectionLabel>
+                  <ul className="pd-insights-list">
+                    {clinicalSummary.differentialSuggestions.map((item, idx) => (
+                      <li key={idx} className="pd-insight-item">
+                        💡 {item}
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
+              )}
+            </div>
+          )}
+
+          {/* ════════════════ Lab & AI Analysis Tab ════════════════ */}
           {activeTab === "ai" && (
             <div className="pd-tab-content pd-fade-in">
-              {/* Flags */}
               {activeFlags.length > 0 && (
                 <Card>
-                  <SectionLabel>CRITICAL FLAGS</SectionLabel>
+                  <SectionLabel>CRITICAL LAB FLAGS</SectionLabel>
                   <div className="pd-chips-row">
                     {activeFlags.map(([key]) => {
                       const cfg = FLAG_CONFIG[key];
@@ -289,12 +471,11 @@ export default function PatientDetail() {
                 </Card>
               )}
 
-              {/* Lab Values */}
               {Object.values(labValues).some(
                 (v) => v !== null && v !== undefined && v !== "",
               ) ? (
                 <Card>
-                  <SectionLabel>LAB VALUES</SectionLabel>
+                  <SectionLabel>EXTRACTED LAB VALUES</SectionLabel>
                   <div className="pd-lab-grid">
                     {Object.entries(LAB_META).map(
                       ([key, { label, unit, icon }]) => {
@@ -321,48 +502,9 @@ export default function PatientDetail() {
                 </Card>
               ) : null}
 
-              {/* Blood Group / Detected Allergies / Meds */}
-              {ai?.bloodGroup ||
-              mergedAllergies.length ||
-              ai?.currentMedications?.length ? (
-                <Card>
-                  <SectionLabel>DETECTED INFO</SectionLabel>
-
-                  {ai?.bloodGroup && (
-                    <div className="pd-info-row">
-                      <span className="pd-info-key">🩸 Blood Group</span>
-                      <span className="pd-info-val">{ai.bloodGroup}</span>
-                    </div>
-                  )}
-
-                  {mergedAllergies.length > 0 && (
-                    <div className="pd-info-row pd-info-row--stack">
-                      <span className="pd-info-key">⚠️ Allergies</span>
-                      <div className="pd-chips-row">
-                        {mergedAllergies.map((a, i) => (
-                          <Chip key={i} label={a} variant="warn" />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {ai?.currentMedications?.length > 0 && (
-                    <div className="pd-info-row pd-info-row--stack">
-                      <span className="pd-info-key">💊 Medications</span>
-                      <div className="pd-chips-row">
-                        {ai.currentMedications.map((m, i) => (
-                          <Chip key={i} label={m} variant="blue" />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </Card>
-              ) : null}
-
-              {/* Insights */}
               {insights.length > 0 && (
                 <Card>
-                  <SectionLabel>AI INSIGHTS</SectionLabel>
+                  <SectionLabel>AI INSIGHTS & INTERPRETATIONS</SectionLabel>
                   <ul className="pd-insights-list">
                     {insights.map((insight, i) => (
                       <li key={i} className="pd-insight-item">
@@ -375,13 +517,12 @@ export default function PatientDetail() {
             </div>
           )}
 
-          {/* ════════════════ Patient History Tab ════════════════ */}
+          {/* ════════════════ Full History Tab ════════════════ */}
           {activeTab === "history" && (
             <div className="pd-tab-content pd-fade-in">
-              {/* Known Conditions */}
               {ud?.conditions && Object.values(ud.conditions).some(Boolean) && (
                 <Card>
-                  <SectionLabel>KNOWN CONDITIONS</SectionLabel>
+                  <SectionLabel>KNOWN CHRONIC CONDITIONS</SectionLabel>
                   <div className="pd-chips-row">
                     {Object.entries(ud.conditions)
                       .filter(([, v]) => v)
@@ -407,45 +548,9 @@ export default function PatientDetail() {
                 </Card>
               )}
 
-              {/* Current Symptoms */}
-              {ud?.currentSymptoms?.length > 0 && (
+              {ud?.pastEvents && (
                 <Card>
-                  <SectionLabel>CURRENT SYMPTOMS</SectionLabel>
-                  <div className="pd-chips-row">
-                    {ud.currentSymptoms.map((s, i) => (
-                      <Chip
-                        key={i}
-                        emoji={getSymptomEmoji(s)}
-                        label={s}
-                        variant="light"
-                      />
-                    ))}
-                  </div>
-                </Card>
-              )}
-
-              {/* Medications */}
-              {ud?.medications?.length > 0 && (
-                <Card>
-                  <SectionLabel>PATIENT REPORTED MEDICATIONS</SectionLabel>
-                  <ul className="pd-dot-list">
-                    {ud.medications.map((m, i) => (
-                      <li key={i} className="pd-dot-item">
-                        <span className="pd-dot-icon">💊</span>
-                        <span>{m}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </Card>
-              )}
-
-              {/* Past Events */}
-              {ud?.pastEvents?.surgeries?.length ||
-              ud?.pastEvents?.injuries?.length ||
-              ud?.pastEvents?.majorIllness?.length ? (
-                <Card>
-                  <SectionLabel>PAST EVENTS</SectionLabel>
-
+                  <SectionLabel>PAST SURGERIES & ILLNESSES</SectionLabel>
                   {ud.pastEvents.surgeries?.length > 0 && (
                     <div className="pd-past-block">
                       <span className="pd-past-type">🔪 Surgeries</span>
@@ -456,18 +561,6 @@ export default function PatientDetail() {
                       </div>
                     </div>
                   )}
-
-                  {ud.pastEvents.injuries?.length > 0 && (
-                    <div className="pd-past-block">
-                      <span className="pd-past-type">🩹 Injuries</span>
-                      <div className="pd-chips-row">
-                        {ud.pastEvents.injuries.map((inj, i) => (
-                          <Chip key={i} label={inj} variant="light" />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
                   {ud.pastEvents.majorIllness?.length > 0 && (
                     <div className="pd-past-block">
                       <span className="pd-past-type">🏥 Major Illness</span>
@@ -479,50 +572,28 @@ export default function PatientDetail() {
                     </div>
                   )}
                 </Card>
-              ) : null}
-
-              {/* Family History */}
-              {ud?.familyHistory && (
-                <Card>
-                  <SectionLabel>FAMILY HISTORY</SectionLabel>
-                  <div className="pd-chips-row">
-                    {ud.familyHistory.diabetes && (
-                      <Chip emoji="🍭" label="Diabetes" variant="light" />
-                    )}
-                    {ud.familyHistory.heartDisease && (
-                      <Chip emoji="❤️" label="Heart Disease" variant="light" />
-                    )}
-                    {ud.familyHistory.cancer && (
-                      <Chip emoji="🎗️" label="Cancer" variant="light" />
-                    )}
-                    {ud.familyHistory.geneticConditions?.map((g, i) => (
-                      <Chip key={i} emoji="🧬" label={g} variant="light" />
-                    ))}
-                  </div>
-                </Card>
               )}
 
-              {/* Lifestyle */}
               {ud?.lifestyle && (
                 <Card>
-                  <SectionLabel>LIFESTYLE</SectionLabel>
+                  <SectionLabel>LIFESTYLE HABITS</SectionLabel>
                   <div className="pd-chips-row">
                     {ud.lifestyle.smoking && (
-                      <Chip emoji="🚬" label="Smoking" variant="warn" />
+                      <Chip emoji="🚬" label={`Smoking: ${ud.lifestyle.smoking}`} variant="warn" />
                     )}
                     {ud.lifestyle.alcohol && (
-                      <Chip emoji="🍺" label="Alcohol" variant="warn" />
-                    )}
-                    {!ud.lifestyle.smoking && !ud.lifestyle.alcohol && (
-                      <Chip
-                        emoji="✅"
-                        label="Healthy Lifestyle"
-                        variant="green"
-                      />
+                      <Chip emoji="🍺" label={`Alcohol: ${ud.lifestyle.alcohol}`} variant="warn" />
                     )}
                   </div>
                 </Card>
               )}
+            </div>
+          )}
+
+          {/* ════════════════ Medical Timeline Tab ════════════════ */}
+          {activeTab === "timeline" && (
+            <div className="pd-tab-content pd-fade-in">
+              <MedicalTimeline appointments={[appointment]} reports={reports} />
             </div>
           )}
         </>

@@ -32,6 +32,8 @@ const GiveFeedback = lazy(() => import("./pages/GiveFeedback.jsx"));
 const DoctorProfile = lazy(() => import("./pages/DoctorProfile.jsx"));
 const NotFound = lazy(() => import("./pages/NotFound.jsx"));
 const LegalPages = lazy(() => import("./pages/LegalPages.jsx"));
+const KioskIntake = lazy(() => import("./pages/KioskIntake.jsx"));
+const HospitalAnalytics = lazy(() => import("./pages/HospitalAnalytics.jsx"));
 
 function PageLoader() {
   return (
@@ -59,6 +61,9 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/doctorSignup" element={<DoctorSignup />} />
+            <Route path="/kiosk" element={<KioskIntake />} />
+            <Route path="/kiosk/intake" element={<KioskIntake />} />
+            <Route path="/analytics" element={<HospitalAnalytics />} />
 
             <Route element={<ProtectedRoute />}>
               <Route element={<AppLayout />}>

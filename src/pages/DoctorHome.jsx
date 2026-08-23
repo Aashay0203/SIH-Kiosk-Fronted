@@ -109,6 +109,46 @@ export default function DoctorHome() {
           aria-label="Doctor dashboard actions"
         >
           <button
+            type="button"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.35rem",
+              padding: "0.45rem 0.85rem",
+              borderRadius: "12px",
+              border: "1px solid #10b981",
+              background: "#ecfdf5",
+              color: "#047857",
+              fontWeight: 700,
+              fontSize: "0.82rem",
+              cursor: "pointer",
+              marginRight: "0.5rem"
+            }}
+            onClick={() => navigate("/analytics")}
+          >
+            📊 OPD Analytics
+          </button>
+          <button
+            type="button"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.35rem",
+              padding: "0.45rem 0.85rem",
+              borderRadius: "12px",
+              border: "1px solid #3b82f6",
+              background: "#eff6ff",
+              color: "#1d4ed8",
+              fontWeight: 700,
+              fontSize: "0.82rem",
+              cursor: "pointer",
+              marginRight: "0.5rem"
+            }}
+            onClick={() => navigate("/kiosk/intake")}
+          >
+            🎙️ Launch Kiosk
+          </button>
+          <button
             className={`dh-icon-btn${refreshing ? " dh-icon-btn--spinning" : ""}`}
             onClick={() => fetchTodayData(true)}
             aria-label="Refresh appointments"
