@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api/",
-  // This is the critical addition for httpOnly cookies:
+  baseURL:
+    "https://sih-kiosk-backend.onrender.com/api/" /* "http://localhost:8080/api/"|| import.meta.env.VITE_API_URL */,
   withCredentials: true,
 });
 

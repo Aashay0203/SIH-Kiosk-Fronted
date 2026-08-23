@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthProvider";
 import { Box, CircularProgress } from "@mui/material";
 import AppLayout from "./components/Applayout.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 const Login = lazy(() => import("./pages/Login.jsx"));
 const Signup = lazy(() => import("./pages/Signup"));
@@ -59,32 +60,37 @@ export default function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/doctorSignup" element={<DoctorSignup />} />
 
-            <Route element={<AppLayout />}>
-              <Route path="/doctor-profile/:id" element={<DoctorProfile />} />
-              <Route path="/doctorList" element={<DoctorList />} />
-              <Route path="/booking/:doctorId" element={<AppointmentBook />} />
-              <Route path="/payment" element={<Payment />} />
-              <Route path="/my-appointments" element={<MyAppointment />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/reports" element={<Report />} />
-              <Route path="/reports/upload" element={<ReportUpload />} />
-              <Route path="/reports/:id" element={<ReportDetails />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/health-profile" element={<HealthProfile />} />
-              <Route
-                path="/health-profile/setup"
-                element={<HealthProfileSetup />}
-              />
-              <Route path="/doctor/home" element={<DoctorHome />} />
-              <Route
-                path="/doctor/patient/:appointmentId"
-                element={<PatientDetail />}
-              />
-              <Route path="/queue/:appointmentId" element={<LiveQueue />} />
-              <Route path="/admin/home" element={<AdminHome />} />
-              <Route path="/support" element={<Support />} />
-              <Route path="/feedback" element={<GiveFeedback />} />
-              <Route path="/terms" element={<LegalPages />} />
+            <Route element={<ProtectedRoute />}>
+              <Route element={<AppLayout />}>
+                <Route path="/doctor-profile/:id" element={<DoctorProfile />} />
+                <Route path="/doctorList" element={<DoctorList />} />
+                <Route
+                  path="/booking/:doctorId"
+                  element={<AppointmentBook />}
+                />
+                <Route path="/payment" element={<Payment />} />
+                <Route path="/my-appointments" element={<MyAppointment />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/reports" element={<Report />} />
+                <Route path="/reports/upload" element={<ReportUpload />} />
+                <Route path="/reports/:id" element={<ReportDetails />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/health-profile" element={<HealthProfile />} />
+                <Route
+                  path="/health-profile/setup"
+                  element={<HealthProfileSetup />}
+                />
+                <Route path="/doctor/home" element={<DoctorHome />} />
+                <Route
+                  path="/doctor/patient/:appointmentId"
+                  element={<PatientDetail />}
+                />
+                <Route path="/queue/:appointmentId" element={<LiveQueue />} />
+                <Route path="/admin/home" element={<AdminHome />} />
+                <Route path="/support" element={<Support />} />
+                <Route path="/feedback" element={<GiveFeedback />} />
+                <Route path="/terms" element={<LegalPages />} />
+              </Route>
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
