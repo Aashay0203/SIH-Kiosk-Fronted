@@ -31,15 +31,15 @@
 /* Light Clinical Medical Mode Variables */
 [data-theme="light"] {
   --hud-bg-base: #f8fafc;
-  --hud-bg-gradient: radial-gradient(circle at 10% 10%, #ffffff 0%, #f1f5f9 60%, #e2e8f0 100%);
-  --hud-bg-card: rgba(255, 255, 255, 0.92);
+  --hud-bg-gradient: #f8fafc;
+  --hud-bg-card: #ffffff;
   --hud-bg-card-hover: #ffffff;
   --hud-bg-subtle: #f1f5f9;
   --hud-border: #cbd5e1;
-  --hud-border-hover: #3b82f6;
-  --hud-border-glow: rgba(59, 130, 246, 0.25);
+  --hud-border-hover: #0284c7;
+  --hud-border-glow: rgba(2, 132, 199, 0.25);
 
-  --hud-cyan: #0284c7;
+  --hud-cyan: #0369a1;
   --hud-blue: #2563eb;
   --hud-purple: #7c3aed;
   --hud-emerald: #059669;
@@ -47,9 +47,9 @@
   --hud-amber: #d97706;
 
   --hud-text-primary: #0f172a;
-  --hud-text-secondary: #475569;
-  --hud-text-muted: #64748b;
-  --hud-grid-opacity: 0.05;
+  --hud-text-secondary: #334155;
+  --hud-text-muted: #475569;
+  --hud-grid-opacity: 0.04;
 }
 
 :root {

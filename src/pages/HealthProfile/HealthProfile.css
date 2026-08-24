@@ -119,25 +119,28 @@
 }
 
 .hp-nav-btn {
-    background: var(--hp-card);
-    border: 1.5px solid var(--hp-border);
-    border-radius: var(--hp-radius-btn);
-    padding: 8px 18px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(37, 99, 235, 0.25));
+    border: 1.5px solid rgba(56, 189, 248, 0.4);
+    border-radius: 12px;
+    padding: 10px 20px;
     font-family: 'Nunito', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--hp-black);
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--hp-blue);
     cursor: pointer;
     transition: all var(--hp-transition);
-    box-shadow: var(--hp-shadow-sm);
+    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .hp-nav-btn:hover {
-    background: var(--hp-blue-light);
-    border-color: var(--hp-blue);
-    color: var(--hp-blue-dark);
-    transform: translateY(-1px);
-    box-shadow: var(--hp-shadow);
+    background: linear-gradient(135deg, #38bdf8, #2563eb);
+    border-color: #38bdf8;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(56, 189, 248, 0.4);
 }
 
 .hp-nav-btn:active {

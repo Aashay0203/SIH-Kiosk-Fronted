@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import instance from "../../api/axios"; // Restored your original import path
+import instance from "../../api/axios";
 import Biometrics3DCore from "../../components/Biometrics3DCore.jsx";
+import InteractiveAnatomyDummy3D from "../../components/InteractiveAnatomyDummy3D.jsx";
 import "./HealthProfile.css";
 import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
 
@@ -168,9 +169,27 @@ export default function HealthProfile() {
   if (!profile) {
     return (
       <div className="hp-root">
+        <div className="hp-topbar">
+          <div>
+            <h1 className="fb-title">Health Profile & Triage</h1>
+            <p className="fb-subtitle">AI-Powered Smart Biomarkers & Digital Health Matrix · DelhiMed</p>
+          </div>
+          <button
+            className="hp-nav-btn"
+            onClick={() => navigate("/health-profile/setup")}
+            style={{ display: "flex", alignItems: "center", gap: "8px" }}
+          >
+            <MedicalInformationIcon fontSize="small" />
+            Set Up Health Profile
+          </button>
+        </div>
+
+        {/* Interactive Anatomy Dummy always available */}
+        <InteractiveAnatomyDummy3D />
+
         <EmptyState
           icon="📝"
-          message="No profile found. Complete setup once to generate your health summary."
+          message="Complete 6-step health profile setup to unlock automated continuous AI clinical summaries."
           cta="Start Setup"
           onCta={() => navigate("/health-profile/setup")}
         />
@@ -184,7 +203,7 @@ export default function HealthProfile() {
       <div className="hp-topbar">
         <div>
           <h1 className="fb-title">Health Profile</h1>
-          <p className="fb-subtitle">Your voice shapes SaharaMed 🚀</p>
+          <p className="fb-subtitle">AI-Powered Smart Biomarkers & Digital Health Matrix · DelhiMed</p>
         </div>
         <button
           className="hp-nav-btn"
@@ -192,16 +211,16 @@ export default function HealthProfile() {
           style={{ display: "flex", alignItems: "center", gap: "8px" }}
         >
           <MedicalInformationIcon fontSize="small" />
-          Set Up Health Profile
+          Update Health Profile
         </button>
       </div>
 
-      {/* ── Profile Hero (Removed buggy AuthContext dependency) ── */}
+      {/* ── Profile Hero ── */}
       <div className="hp-hero">
         <div className="hp-hero-avatar">👤</div>
         <div className="hp-hero-info">
-          <h1 className="hp-hero-name">Your Profile</h1>
-          <p className="hp-hero-sub">Complete health overview · DelhiMed</p>
+          <h1 className="hp-hero-name">Your Health Matrix</h1>
+          <p className="hp-hero-sub">Complete clinical biomarker overview · DelhiMed</p>
         </div>
         <div className="hp-hero-badge">
           <span className="hp-hero-badge-dot" />
@@ -232,7 +251,8 @@ export default function HealthProfile() {
       {/* ── Tabs ── */}
       <div className="hp-tabs">
         {[
-          { id: "ai", label: "🤖 AI Analysis" },
+          { id: "ai", label: "🤖 AI Biomarkers" },
+          { id: "dummy", label: "🧬 3D Body Symptom Dummy" },
           { id: "history", label: "📋 Patient History" },
         ].map((tab) => (
           <button
@@ -244,6 +264,13 @@ export default function HealthProfile() {
           </button>
         ))}
       </div>
+
+      {/* ════════════════ 3D Body Symptom Dummy Tab ════════════════ */}
+      {activeTab === "dummy" && (
+        <div className="hp-tab-content hp-fade-in">
+          <InteractiveAnatomyDummy3D />
+        </div>
+      )}
 
       {/* ════════════════ AI Analysis Tab ════════════════ */}
       {activeTab === "ai" && (
