@@ -15,6 +15,7 @@ import {
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import DnaHelix3D from "../components/DnaHelix3D.jsx";
 import "./ReportUpload.css";
 
 const REPORT_TYPES = [
@@ -123,6 +124,9 @@ function ReportUpload() {
         </Typography>
         <Box sx={{ width: 40 }} />
       </Box>
+
+      {/* 3D Genomics Header */}
+      <DnaHelix3D />
 
       {/* Upload Form */}
       <Box component="form" onSubmit={handleSubmit} className="upload-form">

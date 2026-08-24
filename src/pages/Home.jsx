@@ -61,7 +61,11 @@ function Home() {
   const fetchDoctors = async () => {
     try {
       const res = await instance.get("/doctors/allDoctors");
-      setDoctors(res.data.allDoctors);
+      if (res.data?.allDoctors && Array.isArray(res.data.allDoctors)) {
+        setDoctors(res.data.allDoctors);
+      } else if (Array.isArray(res.data)) {
+        setDoctors(res.data);
+      }
     } catch (err) {
       setError("Failed to load doctors. Please try again later.");
     } finally {
@@ -69,14 +73,15 @@ function Home() {
     }
   };
 
-  const filteredDoctors = doctors.filter((doc) => {
+  const filteredDoctors = (Array.isArray(doctors) ? doctors : []).filter((doc) => {
     if (activeCategory === "all") return true;
+    const spec = (doc?.speciality || doc?.specialization || "").toLowerCase();
     if (activeCategory === "cardio")
-      return doc.speciality?.toLowerCase().includes("cardio") || doc.speciality?.toLowerCase().includes("heart");
+      return spec.includes("cardio") || spec.includes("heart");
     if (activeCategory === "derma")
-      return doc.speciality?.toLowerCase().includes("derma") || doc.speciality?.toLowerCase().includes("skin");
+      return spec.includes("derma") || spec.includes("skin");
     if (activeCategory === "general")
-      return doc.speciality?.toLowerCase().includes("general") || doc.speciality?.toLowerCase().includes("physician");
+      return spec.includes("general") || spec.includes("physician");
     return true;
   });
 

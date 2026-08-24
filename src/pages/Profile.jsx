@@ -96,11 +96,16 @@ const Profile = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState(authUser || null);
   const [healthData, setHealthData] = useState(null);
   const [editMode, setEditMode] = useState(false);
-  const [editForm, setEditForm] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [editForm, setEditForm] = useState({
+    dob: authUser?.dob ? String(authUser.dob).split("T")[0] : "",
+    gender: authUser?.gender || "",
+    address: authUser?.address || "",
+    abhaId: authUser?.abhaId || "",
+  });
+  const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [uploadingPic, setUploadingPic] = useState(false);
   const [snack, setSnack] = useState({
@@ -117,16 +122,40 @@ const Profile = () => {
   const fetchProfile = async () => {
     try {
       const res = await instance.get("/user/profile");
-      const u = res.data.user;
-      setProfile(u);
-      setEditForm({
-        dob: u.dob ? u.dob.split("T")[0] : "",
-        gender: u.gender || "",
-        address: u.address || "",
-        abhaId: u.abhaId || "",
-      });
+      const u = res.data?.user || res.data?.profile || res.data || authUser;
+      if (u) {
+        setProfile(u);
+        setEditForm({
+          dob: u.dob ? String(u.dob).split("T")[0] : "",
+          gender: u.gender || "",
+          address: u.address || "",
+          abhaId: u.abhaId || "",
+        });
+      } else if (authUser) {
+        setProfile(authUser);
+        setEditForm({
+          dob: authUser.dob ? String(authUser.dob).split("T")[0] : "",
+          gender: authUser.gender || "",
+          address: authUser.address || "",
+          abhaId: authUser.abhaId || "",
+        });
+      }
     } catch {
-      showSnack("Failed to load profile", "error");
+      if (authUser) {
+        setProfile(authUser);
+        setEditForm({
+          dob: authUser.dob ? String(authUser.dob).split("T")[0] : "",
+          gender: authUser.gender || "",
+          address: authUser.address || "",
+          abhaId: authUser.abhaId || "",
+        });
+      } else {
+        setProfile({
+          name: "Patient",
+          phone: "Not linked",
+          email: "",
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -134,8 +163,8 @@ const Profile = () => {
 
   const fetchHealth = async () => {
     try {
-      const res = await instance.get("/user/profile");
-      setHealthData(res.data.profile);
+      const res = await instance.get("/healthProfile");
+      setHealthData(res.data?.profile || res.data || null);
     } catch {
       // health profile may not exist yet
     }
@@ -201,6 +230,30 @@ const Profile = () => {
     setEditForm((f) => ({ ...f, [field]: e.target.value }));
 
   const phone = profile?.phone || profile?.mobile;
+
+  const allergiesList = Array.isArray(healthData?.allergies)
+    ? healthData.allergies
+    : typeof healthData?.allergies === "string"
+    ? healthData.allergies.split(",").map((s) => s.trim()).filter(Boolean)
+    : Array.isArray(healthData?.userProvided?.allergies)
+    ? healthData.userProvided.allergies
+    : [];
+
+  const medsList = Array.isArray(healthData?.currentMedications)
+    ? healthData.currentMedications
+    : typeof healthData?.currentMedications === "string"
+    ? healthData.currentMedications.split(",").map((s) => s.trim()).filter(Boolean)
+    : Array.isArray(healthData?.userProvided?.medications)
+    ? healthData.userProvided.medications
+    : [];
+
+  const conditionsList = Array.isArray(healthData?.chronicConditions)
+    ? healthData.chronicConditions
+    : typeof healthData?.chronicConditions === "string"
+    ? healthData.chronicConditions.split(",").map((s) => s.trim()).filter(Boolean)
+    : Array.isArray(healthData?.userProvided?.conditions)
+    ? healthData.userProvided.conditions
+    : [];
 
   if (loading) {
     return (
@@ -546,23 +599,23 @@ const Profile = () => {
                 </div>
               )}
 
-              {healthData.allergies?.length > 0 && (
+              {allergiesList.length > 0 && (
                 <div>
                   <Typography className="profile-chip-group-label">
                     ⚠️ Known Allergies
                   </Typography>
                   <div className="profile-chip-row">
-                    {healthData.allergies.slice(0, 4).map((a, i) => (
+                    {allergiesList.slice(0, 4).map((a, i) => (
                       <Chip
                         key={i}
-                        label={a}
+                        label={typeof a === "object" ? a.name || a.label || JSON.stringify(a) : String(a)}
                         size="small"
                         className="chip-allergy"
                       />
                     ))}
-                    {healthData.allergies.length > 4 && (
+                    {allergiesList.length > 4 && (
                       <Chip
-                        label={`+${healthData.allergies.length - 4} more`}
+                        label={`+${allergiesList.length - 4} more`}
                         size="small"
                         className="chip-more"
                       />
@@ -571,23 +624,23 @@ const Profile = () => {
                 </div>
               )}
 
-              {healthData.currentMedications?.length > 0 && (
+              {medsList.length > 0 && (
                 <div>
                   <Typography className="profile-chip-group-label">
                     💊 Current Medications
                   </Typography>
                   <div className="profile-chip-row">
-                    {healthData.currentMedications.slice(0, 3).map((m, i) => (
+                    {medsList.slice(0, 3).map((m, i) => (
                       <Chip
                         key={i}
-                        label={m}
+                        label={typeof m === "object" ? m.name || m.medicine || JSON.stringify(m) : String(m)}
                         size="small"
                         className="chip-medication"
                       />
                     ))}
-                    {healthData.currentMedications.length > 3 && (
+                    {medsList.length > 3 && (
                       <Chip
-                        label={`+${healthData.currentMedications.length - 3} more`}
+                        label={`+${medsList.length - 3} more`}
                         size="small"
                         className="chip-more"
                       />
@@ -596,16 +649,16 @@ const Profile = () => {
                 </div>
               )}
 
-              {healthData.chronicConditions?.length > 0 && (
+              {conditionsList.length > 0 && (
                 <div>
                   <Typography className="profile-chip-group-label">
                     🫀 Chronic Conditions
                   </Typography>
                   <div className="profile-chip-row">
-                    {healthData.chronicConditions.slice(0, 3).map((c, i) => (
+                    {conditionsList.slice(0, 3).map((c, i) => (
                       <Chip
                         key={i}
-                        label={c}
+                        label={typeof c === "object" ? c.name || c.condition || JSON.stringify(c) : String(c)}
                         size="small"
                         className="chip-condition"
                       />

@@ -53,10 +53,12 @@ export default function PatientIdCard3D({ user, healthData, onDownload }) {
     setIsFlipped(!isFlipped);
   };
 
-  const patientId = user?.patientId || `DM-${user?.phone?.slice(-5) || "88658"}`;
-  const bloodGroup = healthData?.bloodGroup || user?.bloodGroup || "O+";
-  const age = healthData?.age || user?.age || "24";
-  const gender = healthData?.gender || user?.gender || "Male";
+  const patientId = user?.patientId || `DM-${String(user?.phone || user?.mobile || "88658").slice(-5)}`;
+  const bloodGroup = String(healthData?.bloodGroup || user?.bloodGroup || "O+");
+  const age = String(healthData?.age || user?.age || "24");
+  const gender = String(healthData?.gender || user?.gender || "Male");
+  const displayName = String(user?.name || "Patient User");
+  const displayPhone = String(user?.phone || user?.mobile || "+91 88658 36914");
 
   return (
     <div className="id-card-3d-wrapper">
@@ -116,11 +118,11 @@ export default function PatientIdCard3D({ user, healthData, onDownload }) {
             <div className="id-card-center-row">
               <div className="id-card-avatar-wrap">
                 <div className="id-card-avatar">
-                  {user?.name?.slice(0, 2).toUpperCase() || "DM"}
+                  {displayName.slice(0, 2).toUpperCase() || "DM"}
                 </div>
               </div>
               <div className="id-card-patient-meta">
-                <h3 className="id-card-patient-name">{user?.name || "Faizan Akhtar"}</h3>
+                <h3 className="id-card-patient-name">{displayName}</h3>
                 <p className="id-card-patient-id">{patientId}</p>
                 <div className="id-card-tags">
                   <span className="id-tag">{gender}</span>
@@ -137,7 +139,7 @@ export default function PatientIdCard3D({ user, healthData, onDownload }) {
             <div className="id-card-bottom-row">
               <div className="id-card-bottom-stat">
                 <span className="stat-label">Emergency Contact</span>
-                <span className="stat-value">{user?.phone || "+91 88658 36914"}</span>
+                <span className="stat-value">{displayPhone}</span>
               </div>
               <div className="id-card-bottom-stat text-right">
                 <span className="stat-label">Issue Date</span>

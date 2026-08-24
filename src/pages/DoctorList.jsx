@@ -61,11 +61,12 @@ export default function DoctorList() {
     }
   };
 
-  const filteredDoctors = doctors.filter(
-    (doc) =>
-      doc.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      doc.speciality.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  const filteredDoctors = (Array.isArray(doctors) ? doctors : []).filter((doc) => {
+    const name = (doc?.name || "").toLowerCase();
+    const spec = (doc?.speciality || doc?.specialization || "").toLowerCase();
+    const q = searchTerm.toLowerCase();
+    return name.includes(q) || spec.includes(q);
+  });
 
   const hasSearch = searchTerm.trim().length > 0;
 

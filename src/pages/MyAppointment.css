@@ -119,7 +119,13 @@
     border-width: 1.5px;
 }
 
-/* ── Tab List ─────────────────────────────────────────────────────────────── */
+/* ── Content & Tabs ───────────────────────────────────────────────────────── */
+
+.my-appointment-content {
+    width: 100%;
+    padding: 0.5rem 1.5rem 2rem;
+    box-sizing: border-box;
+}
 
 .appointment-tabs {
     margin-top: 1rem;

@@ -134,9 +134,6 @@ function Report() {
 
   return (
     <div className="report-page">
-      {/* 3D Holographic Genomics Header */}
-      <DnaHelix3D />
-
       {/* Tabs Section */}
       <Box sx={{ borderBottom: 1, borderColor: "var(--border)", px: 2, bgcolor: "var(--bg)" }}>
         <Tabs

@@ -40,6 +40,7 @@ export default function MyAppointment() {
   const [myAppointments, setMyAppointments] = useState([]);
   const [value, setValue] = useState("1");
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
   const { t } = useLanguage();
 
   const navigate = useNavigate();
@@ -47,12 +48,17 @@ export default function MyAppointment() {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
+        setLoading(true);
         const res = await instance.get("/appointments/my-appointements");
-        if (res.data?.appointments) {
+        if (res.data?.appointments && Array.isArray(res.data.appointments)) {
           setMyAppointments(res.data.appointments);
+        } else if (Array.isArray(res.data)) {
+          setMyAppointments(res.data);
         }
       } catch (err) {
         console.error("Error loading appointments", err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchAppointments();
@@ -62,30 +68,39 @@ export default function MyAppointment() {
     setValue(newValue);
   };
 
-  // ── Filter by date ──
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const getSafeDateStr = (dateVal) => {
+    if (!dateVal) return "";
+    try {
+      const d = new Date(dateVal);
+      if (isNaN(d.getTime())) return "";
+      return d.toISOString().split("T")[0];
+    } catch {
+      return "";
+    }
+  };
+
+  const todayStr = new Date().toISOString().split("T")[0];
 
   const filterBySearch = (list) =>
-    list.filter((a) =>
-      a.doctorId?.name?.toLowerCase().includes(search.toLowerCase()) ||
-      a.doctorId?.specialization?.toLowerCase().includes(search.toLowerCase())
-    );
+    list.filter((a) => {
+      const name = a?.doctorId?.name || a?.doctorName || "";
+      const spec = a?.doctorId?.specialization || a?.doctorId?.speciality || "";
+      const q = search.toLowerCase();
+      return name.toLowerCase().includes(q) || spec.toLowerCase().includes(q);
+    });
 
   const upcoming = filterBySearch(
     myAppointments.filter((a) => {
-      const appointmentDateStr = new Date(a.date).toISOString().split("T")[0];
-      const todayStr = new Date().toISOString().split("T")[0];
-      return appointmentDateStr >= todayStr;
-    }),
+      const dateStr = getSafeDateStr(a?.date || a?.createdAt);
+      return !dateStr || dateStr >= todayStr;
+    })
   );
 
   const past = filterBySearch(
     myAppointments.filter((a) => {
-      const appointmentDateStr = new Date(a.date).toISOString().split("T")[0];
-      const todayStr = new Date().toISOString().split("T")[0];
-      return appointmentDateStr < todayStr;
-    }),
+      const dateStr = getSafeDateStr(a?.date || a?.createdAt);
+      return dateStr && dateStr < todayStr;
+    })
   );
 
   return (
@@ -135,8 +150,10 @@ export default function MyAppointment() {
             }}
           />
         </div>
+      </div>
 
-        {/* ── Tabs ── */}
+      {/* ── Tabs & Content ── */}
+      <div className="my-appointment-content">
         <TabContext value={value}>
           <TabList onChange={handleTabChange} className="appointment-tabs">
             <Tab
@@ -157,8 +174,8 @@ export default function MyAppointment() {
               {upcoming.length === 0 ? (
                 <EmptyState label="upcoming" />
               ) : (
-                upcoming.map((a) => (
-                  <AppointmentCard key={a._id} appointment={a} />
+                upcoming.map((a, idx) => (
+                  <AppointmentCard key={a._id || idx} appointment={a} />
                 ))
               )}
             </TabPanel>
@@ -167,7 +184,9 @@ export default function MyAppointment() {
               {past.length === 0 ? (
                 <EmptyState label="past" />
               ) : (
-                past.map((a) => <AppointmentCard key={a._id} appointment={a} />)
+                past.map((a, idx) => (
+                  <AppointmentCard key={a._id || idx} appointment={a} />
+                ))
               )}
             </TabPanel>
           </Box>

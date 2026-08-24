@@ -2,20 +2,20 @@
 
 .step1-root {}
 
-/* Card: gradient cycling */
+/* Card: theme-adaptive card */
 .step1-conditions-card {
-    background: linear-gradient(135deg, #D5EAB3 0%, #ffffff 55%) !important;
+    background: var(--card-bg) !important;
     border: 1.5px solid var(--border) !important;
+    box-shadow: var(--shadow-card) !important;
 }
 
-/* Each row — subtle tinted surface on top of gradient card */
+/* Each row — subtle tinted surface on top of card */
 .step1-condition-row {
-    background: rgba(255, 255, 255, 0.72);
-    backdrop-filter: blur(4px);
+    background: var(--card-bg-subtle);
     border-radius: 14px;
     padding: 14px 16px !important;
     margin-bottom: 10px;
-    border: 1.5px solid transparent;
+    border: 1.5px solid var(--border);
     transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
 
@@ -24,9 +24,9 @@
 }
 
 .step1-condition-row--active {
-    background: rgba(255, 255, 255, 0.92);
-    border-color: var(--blue) !important;
-    box-shadow: 0 4px 16px rgba(62, 125, 245, 0.1);
+    background: rgba(56, 189, 248, 0.12);
+    border-color: var(--blue, #38bdf8) !important;
+    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.15);
 }
 
 .step1-label-group {

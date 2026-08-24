@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext";
 import { playTap, playSuccess, playChime } from "../utils/audioFX";
-import { Mic, MicOff, X, Sparkles, Volume2, ArrowRight } from "lucide-react";
+import { Mic, MicOff, X, Sparkles, Volume2, ArrowRight, Send } from "lucide-react";
 import "./VoiceAssistantModal.css";
 
 const LANG_CODE_MAP = {
@@ -18,79 +18,28 @@ const LANG_CODE_MAP = {
   pa: "pa-IN",
 };
 
+const SUGGESTED_SYMPTOMS = [
+  { label: "🫀 Chest Pain / Heart Doctor", query: "I have chest pain and need a cardiologist" },
+  { label: "🧴 Skin Rash / Allergy", query: "Skin rash and itching dermatologist" },
+  { label: "🧠 Headache / Neurologist", query: "Severe headache neurologist" },
+  { label: "🎫 Check My Token", query: "Check my booked appointment queue token" },
+  { label: "📄 Lab Reports", query: "Show my blood test medical reports" },
+];
+
 export default function VoiceAssistantModal({ open, onClose }) {
   const navigate = useNavigate();
   const { language, t, currentLangObj } = useLanguage();
 
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState("");
+  const [inputText, setInputText] = useState("");
   const [detectedIntent, setDetectedIntent] = useState(null);
   const [statusMessage, setStatusMessage] = useState("Listening for your voice...");
   const recognitionRef = useRef(null);
 
-  useEffect(() => {
-    if (!open) {
-      if (recognitionRef.current) {
-        recognitionRef.current.stop();
-      }
-      setIsListening(false);
-      setTranscript("");
-      setDetectedIntent(null);
-      return;
-    }
-
-    // Initialize Web Speech API
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    if (!SpeechRecognition) {
-      setStatusMessage("Voice recognition is not supported in this browser.");
-      return;
-    }
-
-    const recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = true;
-    recognition.lang = LANG_CODE_MAP[language] || "en-IN";
-
-    recognition.onstart = () => {
-      setIsListening(true);
-      setStatusMessage(`Listening in ${currentLangObj.name}... Speak symptoms or action`);
-    };
-
-    recognition.onresult = (event) => {
-      const currentTranscript = Array.from(event.results)
-        .map((result) => result[0].transcript)
-        .join("");
-      setTranscript(currentTranscript);
-    };
-
-    recognition.onerror = (event) => {
-      console.warn("Speech error:", event.error);
-      setIsListening(false);
-      setStatusMessage("Tap the microphone to try speaking again.");
-    };
-
-    recognition.onend = () => {
-      setIsListening(false);
-    };
-
-    recognitionRef.current = recognition;
-    recognition.start();
-
-    return () => {
-      try {
-        recognition.stop();
-      } catch (e) {}
-    };
-  }, [open, language, currentLangObj.name]);
-
-  // Process transcript to detect medical intention & matching specialist
-  useEffect(() => {
-    if (!transcript) return;
-    const lower = transcript.toLowerCase();
-
-    // Symptom and routing dictionary
+  const processQuery = (text) => {
+    if (!text) return;
+    const lower = text.toLowerCase();
     let match = null;
 
     if (
@@ -98,106 +47,205 @@ export default function VoiceAssistantModal({ open, onClose }) {
       lower.includes("chest") ||
       lower.includes("cardio") ||
       lower.includes("दिल") ||
-      lower.includes("छाती") ||
-      lower.includes("हार्ट")
+      lower.includes("हार्ट") ||
+      lower.includes("छाती")
     ) {
       match = {
-        title: "Cardiologist (Heart Specialist)",
-        sub: "Found matching cardiologists for chest/heart concerns",
+        title: "Cardiologist Specialists",
+        sub: "Found 3 top heart & cardiovascular physicians",
         route: "/doctorList",
-        speciality: "Cardiologist",
       };
     } else if (
       lower.includes("skin") ||
-      lower.includes("itch") ||
+      lower.includes("derma") ||
       lower.includes("rash") ||
       lower.includes("त्वचा") ||
+      lower.includes("स्किन") ||
       lower.includes("खुजली")
     ) {
       match = {
-        title: "Dermatologist (Skin Specialist)",
-        sub: "Found specialists for skin, allergies and rashes",
+        title: "Dermatologists",
+        sub: "Found top skin & allergy specialist doctors",
         route: "/doctorList",
-        speciality: "Dermatologist",
       };
     } else if (
-      lower.includes("teeth") ||
-      lower.includes("tooth") ||
-      lower.includes("dental") ||
-      lower.includes("दांत")
-    ) {
-      match = {
-        title: "Dentist (Oral Health)",
-        sub: "Found dental clinics and surgeons",
-        route: "/doctorList",
-        speciality: "Dentist",
-      };
-    } else if (
-      lower.includes("fever") ||
-      lower.includes("cold") ||
-      lower.includes("cough") ||
       lower.includes("headache") ||
-      lower.includes("बुखार") ||
-      lower.includes("खांसी") ||
-      lower.includes("सिरदर्द")
+      lower.includes("neuro") ||
+      lower.includes("brain") ||
+      lower.includes("सिर") ||
+      lower.includes("दर्द") ||
+      lower.includes("दिमाग")
     ) {
       match = {
-        title: "General Physician",
-        sub: "General consultation for fever, cold & routine care",
+        title: "Neurology & General Medicine",
+        sub: "Found physicians for headache & neurological care",
         route: "/doctorList",
-        speciality: "General Physician",
       };
     } else if (
       lower.includes("appointment") ||
       lower.includes("token") ||
+      lower.includes("queue") ||
       lower.includes("अपॉइंटमेंट") ||
       lower.includes("टोकन")
     ) {
       match = {
-        title: "My Appointments",
-        sub: "View your booked tokens and clinic queue",
+        title: "My Appointments & Live Queue",
+        sub: "View your booked tokens and clinic queue status",
         route: "/my-appointments",
       };
     } else if (
       lower.includes("report") ||
       lower.includes("blood test") ||
+      lower.includes("lab") ||
       lower.includes("रिपोर्ट") ||
       lower.includes("जांच")
     ) {
       match = {
-        title: "Medical Reports",
-        sub: "View AI analyzed lab reports and prescriptions",
+        title: "AI Medical Reports",
+        sub: "View AI analyzed lab reports and pathology tests",
         route: "/reports",
       };
     } else if (
       lower.includes("card") ||
       lower.includes("profile") ||
+      lower.includes("id") ||
       lower.includes("कार्ड")
     ) {
       match = {
         title: "Smart Health ID Card",
-        sub: "Open your digital ABHA health ID card",
+        sub: "Open your 3D digital ABHA health ID card",
         route: "/profile",
+      };
+    } else {
+      match = {
+        title: "Doctor Directory",
+        sub: "Browse all available specialists & clinics",
+        route: "/doctorList",
       };
     }
 
     if (match) {
       setDetectedIntent(match);
       playSuccess();
+
+      // Speech Synthesis Audio Feedback
+      if ("speechSynthesis" in window) {
+        try {
+          const utterance = new SpeechSynthesisUtterance(`Matched ${match.title}`);
+          utterance.lang = LANG_CODE_MAP[language] || "en-IN";
+          window.speechSynthesis.speak(utterance);
+        } catch (e) {}
+      }
     }
-  }, [transcript]);
+  };
+
+  const startListening = () => {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      setStatusMessage("Voice not supported on this browser. Use quick chips or type below.");
+      return;
+    }
+
+    try {
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch (e) {}
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = true;
+      recognition.lang = LANG_CODE_MAP[language] || "en-IN";
+
+      recognition.onstart = () => {
+        setIsListening(true);
+        setStatusMessage(`Listening in ${currentLangObj.name}... Speak symptoms`);
+      };
+
+      recognition.onresult = (event) => {
+        const currentTranscript = Array.from(event.results)
+          .map((result) => result[0].transcript)
+          .join("");
+        setTranscript(currentTranscript);
+        processQuery(currentTranscript);
+      };
+
+      recognition.onerror = (event) => {
+        console.warn("Speech error:", event.error);
+        setIsListening(false);
+        if (event.error === "not-allowed") {
+          setStatusMessage("Microphone permission denied. Tap a quick chip below.");
+        } else {
+          setStatusMessage("Mic ready. Tap mic or select a symptom below.");
+        }
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+      setIsListening(true);
+    } catch (err) {
+      console.warn("Speech start err:", err);
+      setIsListening(false);
+      setStatusMessage("Tap mic to start or use quick symptom buttons.");
+    }
+  };
+
+  useEffect(() => {
+    if (!open) {
+      try {
+        recognitionRef.current?.stop();
+      } catch (e) {}
+      setIsListening(false);
+      setTranscript("");
+      setInputText("");
+      setDetectedIntent(null);
+      return;
+    }
+
+    startListening();
+
+    return () => {
+      try {
+        recognitionRef.current?.stop();
+      } catch (e) {}
+    };
+  }, [open, language, currentLangObj.name]);
 
   const handleToggleMic = () => {
     playTap();
     if (isListening) {
-      recognitionRef.current?.stop();
+      try {
+        recognitionRef.current?.stop();
+      } catch (e) {}
       setIsListening(false);
+      setStatusMessage("Paused. Tap mic to speak again.");
     } else {
       setTranscript("");
       setDetectedIntent(null);
-      recognitionRef.current?.start();
-      setIsListening(true);
+      startListening();
     }
+  };
+
+  const handleChipClick = (item) => {
+    playTap();
+    setTranscript(item.query);
+    processQuery(item.query);
+  };
+
+  const handleManualSubmit = (e) => {
+    e.preventDefault();
+    if (!inputText.trim()) return;
+    playTap();
+    setTranscript(inputText);
+    processQuery(inputText);
+    setInputText("");
   };
 
   const handleProceed = () => {
@@ -223,7 +271,7 @@ export default function VoiceAssistantModal({ open, onClose }) {
             <span>AI Multilingual Voice Assistant</span>
           </div>
           <h3 className="voice-title">How can DelhiMed assist you?</h3>
-          <p className="voice-sub">Speak symptoms, request specialist doctors, or check your token status</p>
+          <p className="voice-sub">Speak symptoms in your regional language or tap any quick suggestion</p>
         </div>
 
         {/* Animated Waveform Visualizer */}
@@ -251,22 +299,49 @@ export default function VoiceAssistantModal({ open, onClose }) {
 
         {/* Live Speech Recognition Transcript Box */}
         <div className="voice-transcript-box">
-          <p className="transcript-label">Recognized Speech:</p>
+          <p className="transcript-label">Recognized Request:</p>
           <p className="transcript-content">
-            {transcript ? `"${transcript}"` : "Say something like: 'मुझे दिल के डॉक्टर से मिलना है' or 'I have chest pain'..."}
+            {transcript ? `"${transcript}"` : "Say: 'मुझे दिल के डॉक्टर से मिलना है' or 'Check my token'..."}
           </p>
         </div>
+
+        {/* Quick Symptom Suggestions */}
+        <div className="voice-chips-row">
+          {SUGGESTED_SYMPTOMS.map((item, idx) => (
+            <button
+              key={idx}
+              className="voice-symptom-chip"
+              onClick={() => handleChipClick(item)}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Manual Query Input Fallback */}
+        <form className="voice-input-form" onSubmit={handleManualSubmit}>
+          <input
+            type="text"
+            className="voice-text-input"
+            placeholder="Or type symptoms / queries here..."
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+          />
+          <button type="submit" className="voice-input-send-btn">
+            <Send size={15} />
+          </button>
+        </form>
 
         {/* Detected Action Card */}
         {detectedIntent && (
           <div className="voice-intent-card" onClick={handleProceed}>
             <div className="intent-info">
-              <span className="intent-tag">Matched Specialty</span>
+              <span className="intent-tag">Matched Clinic Routing</span>
               <h4 className="intent-title">{detectedIntent.title}</h4>
               <p className="intent-sub">{detectedIntent.sub}</p>
             </div>
             <button className="intent-action-btn">
-              <span>View</span>
+              <span>Go</span>
               <ArrowRight size={16} />
             </button>
           </div>

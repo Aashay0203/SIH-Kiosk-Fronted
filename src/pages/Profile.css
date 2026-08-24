@@ -46,7 +46,7 @@
     font-family: 'Urbanist', sans-serif !important;
     font-weight: 800 !important;
     font-size: 18px !important;
-    color: var(--black) !important;
+    color: var(--text-primary) !important;
 }
 
 .profile-appbar-actions {
@@ -56,7 +56,7 @@
 }
 
 .profile-back-btn {
-    color: var(--black) !important;
+    color: var(--text-primary) !important;
 }
 
 .profile-cancel-btn {
@@ -180,7 +180,7 @@
     font-family: 'Urbanist', sans-serif !important;
     font-weight: 800 !important;
     font-size: 17px !important;
-    color: var(--black) !important;
+    color: var(--text-primary) !important;
     margin-bottom: 14px !important;
     letter-spacing: -0.2px;
     border-left: 3px solid var(--blue);
@@ -215,7 +215,7 @@
     font-family: 'Urbanist', sans-serif !important;
     font-weight: 800 !important;
     font-size: 20px !important;
-    color: var(--black) !important;
+    color: var(--text-primary) !important;
 }
 
 .profile-avatar-phone {
@@ -315,7 +315,7 @@
     font-family: 'Nunito', sans-serif !important;
     font-size: 14px !important;
     font-weight: 600 !important;
-    color: var(--black);
+    color: var(--text-primary);
     word-break: break-word;
 }
 
@@ -469,7 +469,7 @@
 .profile-health-empty__title {
     font-family: 'Urbanist', sans-serif !important;
     font-size: 15px !important;
-    color: var(--black) !important;
+    color: var(--text-primary) !important;
     font-weight: 800 !important;
 }
 

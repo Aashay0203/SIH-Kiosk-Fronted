@@ -15,7 +15,13 @@ function UpcomingAppBox() {
     const fetchAppointments = async () => {
       try {
         const res = await instance.get("/appointments/my-appointements");
-        setMyAppointments(res.data.appointments);
+        if (res.data?.appointments && Array.isArray(res.data.appointments)) {
+          setMyAppointments(res.data.appointments);
+        } else if (Array.isArray(res.data)) {
+          setMyAppointments(res.data);
+        } else {
+          setMyAppointments([]);
+        }
       } catch (err) {
         setError("Failed to load appointments.");
       } finally {
@@ -28,8 +34,10 @@ function UpcomingAppBox() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const upcoming = myAppointments.filter((a) => {
+  const upcoming = (Array.isArray(myAppointments) ? myAppointments : []).filter((a) => {
+    if (!a?.date) return false;
     const d = new Date(a.date);
+    if (isNaN(d.getTime())) return false;
     d.setHours(0, 0, 0, 0);
     return d >= today && (a.status === "booked" || a.status === "served");
   });
