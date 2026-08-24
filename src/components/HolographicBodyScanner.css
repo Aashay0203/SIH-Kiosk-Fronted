@@ -1,0 +1,224 @@
+/* HolographicBodyScanner.css */
+.holo-scanner-wrapper {
+    background: var(--card-bg, #151e2e);
+    border: 1px solid var(--border, #243044);
+    border-radius: 24px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
+    font-family: 'Nunito', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.holo-scanner-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.holo-scanner-title-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-primary, #f1f5f9);
+}
+
+.holo-rot-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border, #243044);
+    background: var(--card-bg-subtle, #1e293b);
+    color: var(--text-muted, #94a3b8);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.holo-rot-toggle:hover {
+    color: var(--blue, #38bdf8);
+    border-color: var(--blue, #38bdf8);
+}
+
+.holo-scanner-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: center;
+}
+
+@media (max-width: 900px) {
+    .holo-scanner-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 3D Viewport */
+.holo-3d-viewport {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    background: radial-gradient(circle at center, rgba(56, 189, 248, 0.08) 0%, rgba(11, 15, 25, 0.6) 80%);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: grab;
+}
+
+.holo-3d-viewport:active {
+    cursor: grabbing;
+}
+
+.holo-hud-crosshairs span {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-color: var(--blue, #38bdf8);
+    border-style: solid;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.crosshair-tl { top: 12px; left: 12px; border-width: 2px 0 0 2px; }
+.crosshair-tr { top: 12px; right: 12px; border-width: 2px 2px 0 0; }
+.crosshair-bl { bottom: 12px; left: 12px; border-width: 0 0 2px 2px; }
+.crosshair-br { bottom: 12px; right: 12px; border-width: 0 2px 2px 0; }
+
+.holo-viewport-label {
+    position: absolute;
+    bottom: 10px;
+    left: 14px;
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--blue, #38bdf8);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    pointer-events: none;
+}
+
+/* Side Controls */
+.holo-telemetry-side {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.holo-side-heading {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--text-muted, #94a3b8);
+    letter-spacing: 0.05em;
+}
+
+.holo-organ-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.holo-organ-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    border-radius: 10px;
+    background: var(--card-bg-subtle, #1e293b);
+    color: var(--text-primary, #f1f5f9);
+    border: 1.5px solid var(--border, #243044);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.holo-organ-btn.selected {
+    background: rgba(56, 189, 248, 0.15);
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.2);
+}
+
+.organ-btn-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+/* Detail Card */
+.holo-organ-detail-card {
+    background: var(--card-bg-subtle, #1e293b);
+    border: 1px solid var(--border, #243044);
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.detail-card-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.detail-card-name {
+    margin: 0 0 2px;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-primary, #f1f5f9);
+}
+
+.detail-card-status {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.detail-card-metric-box {
+    background: var(--card-bg, #151e2e);
+    border: 1px solid var(--border, #243044);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+}
+
+.metric-box-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--text-muted, #94a3b8);
+    margin-bottom: 2px;
+}
+
+.metric-box-val {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--blue, #38bdf8);
+}
+
+.detail-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.risk-badge {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.ai-verified-tag {
+    font-size: 11px;
+    color: #10b981;
+    font-weight: 700;
+}

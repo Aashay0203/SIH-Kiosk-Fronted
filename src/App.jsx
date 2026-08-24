@@ -9,6 +9,7 @@ import AppLayout from "./components/Applayout.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import CommandPalette from "./components/CommandPalette.jsx";
 import VoiceAssistantModal from "./components/VoiceAssistantModal.jsx";
+import AmbientHoloCanvas from "./components/AmbientHoloCanvas.jsx";
 
 const Login = lazy(() => import("./pages/Login.jsx"));
 const Signup = lazy(() => import("./pages/Signup"));
@@ -91,6 +92,7 @@ export default function App() {
               }}
             />
 
+            <AmbientHoloCanvas />
             <CommandPalette open={cmdOpen} onOpenChange={setCmdOpen} />
             <VoiceAssistantModal open={voiceOpen} onClose={() => setVoiceOpen(false)} />
 

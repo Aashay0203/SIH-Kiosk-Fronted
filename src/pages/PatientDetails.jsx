@@ -6,6 +6,8 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import instance from "../api/axios";
 import { useLanguage } from "../context/LanguageContext";
+import HolographicBodyScanner from "../components/HolographicBodyScanner.jsx";
+import BiomarkerRadarChart from "../components/BiomarkerRadarChart.jsx";
 import "./PatientDetails.css";
 
 // MUI Icons
@@ -1049,6 +1051,8 @@ Biomarker Anomalies: ${evaluatedBiomarkers
 
         {/* ── Holographic Anatomical Organ Scan & AI Risk Radar (CRAZY FEATURE!) ── */}
         <section className="pd-organ-scanner-box">
+          <HolographicBodyScanner />
+
           <div className="pd-scanner-header">
             <h3 className="pd-scanner-title">
               <ScienceRoundedIcon sx={{ color: "var(--hud-cyan)", fontSize: 22 }} />

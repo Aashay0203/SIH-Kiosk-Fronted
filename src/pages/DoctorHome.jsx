@@ -1,16 +1,22 @@
 // === DoctorHome.jsx ===
 import { useEffect, useState, useContext, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { AuthContext } from "../context/AuthContext";
 import instance from "../api/axios";
+import { playChime, playTap, playSuccess } from "../utils/audioFX";
+import { useLanguage } from "../context/LanguageContext";
+import HolographicQueueToken3D from "../components/HolographicQueueToken3D";
 import "./DoctorHome.css";
 import LogoutIcon from "@mui/icons-material/Logout";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { Sparkles, Activity, User, ShieldCheck } from "lucide-react";
 
 export default function DoctorHome() {
   const { user, logout } = useContext(AuthContext);
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const [doctorDetails, setDoctorDetails] = useState(null);
@@ -59,29 +65,32 @@ export default function DoctorHome() {
         const res = await instance.get(`/doctors/${user.id}`);
         setDoctorDetails(res.data.details);
       } catch {
-        // Non-critical — greeting falls back to user context
+        // Fallback
       }
     };
     fetchDoctorDetails();
   }, [user?.id]);
 
   const handleNextPatient = async () => {
+    playChime();
     try {
       setNextLoading(true);
       setNextSuccess("");
       setError("");
       await instance.put("/queues/next");
       await fetchTodayData();
+      playSuccess();
       setNextSuccess("Queue moved to next patient ✓");
       setTimeout(() => setNextSuccess(""), 3000);
     } catch (err) {
-      setError(err.response?.data?.errors[0] || "Failed to move queue.");
+      setError(err.response?.data?.errors?.[0] || "Failed to move queue.");
     } finally {
       setNextLoading(false);
     }
   };
 
   const handleLogout = () => {
+    playTap();
     logout();
     navigate("/login");
   };
@@ -96,23 +105,33 @@ export default function DoctorHome() {
   const displaySpec = doctorDetails?.speciality || "General Physician";
 
   return (
-    <div className="dh-root">
+    <motion.div
+      className="dh-root"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
       {/* ── Top Bar ── */}
-      <header className="dh-topbar">
-        <div className="dh-topbar-info">
-          <h1 className="dh-doctor-name">Dr. {displayName}</h1>
-          <p className="dh-doctor-spec">{displaySpec}</p>
+      <header className="dh-header">
+        <div className="dh-header-left">
+          <div className="dh-doctor-avatar">
+            {displayName.charAt(0).toUpperCase()}
+          </div>
+          <div>
+            <h1 className="dh-doctor-name">Dr. {displayName}</h1>
+            <p className="dh-doctor-spec">{displaySpec} • DelhiMed Station</p>
+          </div>
         </div>
 
-        <nav
-          className="dh-topbar-actions"
-          aria-label="Doctor dashboard actions"
-        >
+        <nav className="dh-header-actions" aria-label="Quick actions">
           <button
-            className={`dh-icon-btn${refreshing ? " dh-icon-btn--spinning" : ""}`}
-            onClick={() => fetchTodayData(true)}
-            aria-label="Refresh appointments"
+            className={`dh-icon-btn ${refreshing ? "dh-icon-btn--spinning" : ""}`}
+            onClick={() => {
+              playTap();
+              fetchTodayData(true);
+            }}
             disabled={refreshing}
+            aria-label="Refresh appointments"
           >
             <RefreshIcon className="dh-icon-svg" />
           </button>
@@ -128,63 +147,23 @@ export default function DoctorHome() {
 
       {/* ── Main Layout ── */}
       <div className="dh-layout">
-        {/* Queue Card */}
+        {/* 3D Holographic Queue Card Sidebar */}
         <aside className="dh-sidebar">
-          <div className="dh-queue-card">
-            <p className="dh-queue-date">{todayLabel}</p>
-
-            <div className="dh-queue-stats">
-              <div className="dh-stat">
-                <span className="dh-stat-value">
-                  {queueStatus.currentNumber}
-                </span>
-                <span className="dh-stat-label">Serving Now</span>
-              </div>
-              <div className="dh-stat-divider" aria-hidden="true" />
-              <div className="dh-stat">
-                <span className="dh-stat-value">
-                  {queueStatus.lastTokenNumber}
-                </span>
-                <span className="dh-stat-label">Total Booked</span>
-              </div>
-              <div className="dh-stat-divider" aria-hidden="true" />
-              <div className="dh-stat">
-                <span className="dh-stat-value">{queueStatus.remaining}</span>
-                <span className="dh-stat-label">Remaining</span>
-              </div>
-            </div>
-
-            <button
-              className="dh-next-btn"
-              onClick={handleNextPatient}
-              disabled={nextLoading || queueStatus.remaining === 0}
-              aria-busy={nextLoading}
-            >
-              {nextLoading ? (
-                <span className="dh-next-btn-inner">
-                  <span className="dh-next-spinner" aria-hidden="true" />
-                  Moving…
-                </span>
-              ) : (
-                <span className="dh-next-btn-inner">
-                  Next Patient
-                  <ArrowForwardIcon className="dh-next-icon" />
-                </span>
-              )}
-            </button>
-
-            {nextSuccess && (
-              <p className="dh-next-success" role="status" aria-live="polite">
-                {nextSuccess}
-              </p>
-            )}
-          </div>
+          <HolographicQueueToken3D
+            tokenNumber={queueStatus.currentNumber.toString()}
+            currentToken={queueStatus.currentNumber.toString()}
+            approxWait={`${queueStatus.remaining * 8} mins`}
+            patientName={`Queue Status (${queueStatus.remaining} Waiting)`}
+            room="Consultation Room 1"
+            isDoctorView={true}
+            onCallNext={handleNextPatient}
+          />
         </aside>
 
         {/* Appointment List */}
         <main className="dh-main">
           <div className="dh-section-header">
-            <h2 className="dh-section-title">Today's Appointments</h2>
+            <h2 className="dh-section-title">Today's Patient Queue</h2>
             <span
               className="dh-count-badge"
               aria-label={`${appointments.length} appointments`}
@@ -206,104 +185,73 @@ export default function DoctorHome() {
           )}
 
           {loading ? (
-            <SkeletonList />
+            <div className="dh-loading-box">
+              <p>Loading clinical telemetry...</p>
+            </div>
           ) : appointments.length === 0 ? (
             <div className="dh-empty" role="status">
               <span className="dh-empty-icon">🎉</span>
-              <p className="dh-empty-title">No appointments today</p>
+              <p className="dh-empty-title">No appointments in queue</p>
               <p className="dh-empty-sub">
-                Your schedule is clear — enjoy the day!
+                Your schedule is clear for today.
               </p>
             </div>
           ) : (
-            <div
-              className="dh-appt-list"
-              role="list"
-              aria-label="Appointment list"
-            >
-              {appointments.map((appt) => (
-                <article
-                  key={appt._id}
-                  className="dh-appt-card"
-                  role="listitem"
-                  onClick={() =>
-                    navigate(`/doctor/patient/${appt._id}`, {
-                      state: { appointment: appt },
-                    })
-                  }
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ")
-                      navigate(`/doctor/patient/${appt._id}`, {
-                        state: { appointment: appt },
-                      });
-                  }}
-                  aria-label={`Patient ${appt.patientId?.name || "Unknown"}, token ${appt.appointmentNumber}`}
-                >
-                  <div className="dh-appt-token" aria-hidden="true">
-                    <span className="dh-token-num">
-                      #{appt.appointmentNumber}
-                    </span>
-                  </div>
-
-                  <div className="dh-appt-info">
-                    <p className="dh-patient-name">
-                      {appt.patientId?.name || "Patient"}
-                    </p>
-                    <p className="dh-appt-meta">
-                      <AccessTimeOutlinedIcon
-                        className="dh-time-icon"
-                        aria-hidden="true"
-                      />
-                      {appt.slotTime}
-                      {appt.patientId?.phone
-                        ? ` · ${appt.patientId.phone}`
-                        : ""}
-                    </p>
-                  </div>
-
-                  <div className="dh-appt-right">
-                    <span
-                      className={`dh-pay-badge${
-                        appt.paymentStatus === "paid"
-                          ? " dh-pay-badge--paid"
-                          : " dh-pay-badge--pending"
-                      }`}
+            <div className="dh-appt-list" role="list">
+              <AnimatePresence>
+                {appointments.map((appt, i) => {
+                  const isCurrent = appt.tokenNumber === queueStatus.currentNumber;
+                  return (
+                    <motion.article
+                      key={appt._id}
+                      className={`dh-appt-card ${isCurrent ? "dh-appt-card--current" : ""}`}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.25, delay: i * 0.04 }}
+                      onClick={() => {
+                        playTap();
+                        navigate(`/doctor/patient/${appt._id}`);
+                      }}
                     >
-                      {appt.paymentStatus === "paid" ? "Paid" : "Pending"}
-                    </span>
-                    <p className="dh-appt-status">{appt.status}</p>
-                  </div>
-                </article>
-              ))}
+                      <div className="dh-appt-token-col">
+                        <span className="dh-appt-token-num">
+                          #{appt.tokenNumber}
+                        </span>
+                        {isCurrent && (
+                          <span className="dh-current-badge">NOW</span>
+                        )}
+                      </div>
+
+                      <div className="dh-appt-body">
+                        <div className="dh-appt-row1">
+                          <h3 className="dh-appt-name">{appt.userName || "Patient"}</h3>
+                          <span className="dh-appt-time">
+                            <AccessTimeOutlinedIcon className="dh-time-icon" />
+                            {appt.timeSlot || "Scheduled"}
+                          </span>
+                        </div>
+
+                        <div className="dh-appt-row2">
+                          <span className="dh-appt-contact">
+                            📞 {appt.userPhone || "—"}
+                          </span>
+                          <span className="dh-appt-meta-pill">
+                            ABHA Verified
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="dh-appt-arrow">
+                        <ArrowForwardIcon />
+                      </div>
+                    </motion.article>
+                  );
+                })}
+              </AnimatePresence>
             </div>
           )}
         </main>
       </div>
-    </div>
-  );
-}
-
-function SkeletonList() {
-  return (
-    <div
-      className="dh-skeleton-list"
-      aria-busy="true"
-      aria-label="Loading appointments"
-    >
-      {[...Array(5)].map((_, i) => (
-        <div key={i} className="dh-skeleton-card">
-          <div className="dh-skeleton dh-skeleton--token" />
-          <div className="dh-skeleton-card-info">
-            <div className="dh-skeleton dh-skeleton--name" />
-            <div className="dh-skeleton dh-skeleton--meta" />
-          </div>
-          <div className="dh-skeleton-card-right">
-            <div className="dh-skeleton dh-skeleton--badge" />
-            <div className="dh-skeleton dh-skeleton--status" />
-          </div>
-        </div>
-      ))}
-    </div>
+    </motion.div>
   );
 }
