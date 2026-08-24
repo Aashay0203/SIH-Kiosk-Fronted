@@ -9,6 +9,7 @@ import MedicationBox from "../components/MedicationBox";
 import UpcomingAppBox from "../components/UpcomingApp";
 import { useLanguage } from "../context/LanguageContext";
 import { playTap } from "../utils/audioFX";
+import MedicalCoreOrb3D from "../components/MedicalCoreOrb3D";
 import {
   Sparkles,
   HeartPulse,
@@ -94,6 +95,8 @@ function Home() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
         >
+          <MedicalCoreOrb3D />
+
           <div className="home-hero-badge">
             <ShieldCheck size={14} className="text-sky-400" />
             <span>AI-Assisted Kiosk Health Network</span>

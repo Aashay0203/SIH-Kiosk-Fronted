@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import instance from "../../api/axios"; // Restored your original import path
+import Biometrics3DCore from "../../components/Biometrics3DCore.jsx";
 import "./HealthProfile.css";
 import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
 
@@ -224,6 +225,9 @@ export default function HealthProfile() {
           </div>
         </div>
       )}
+
+      {/* 3D Interactive Biometrics Core */}
+      <Biometrics3DCore />
 
       {/* ── Tabs ── */}
       <div className="hp-tabs">

@@ -1,153 +1,180 @@
 // src/utils/audioFX.js
-// High-performance, zero-latency synthetic Web Audio API sound synthesizer
-// Designed specifically for kiosk touchscreens and cyber-clinical feedback
+// DelhiMed 2100 Quantum Zero-Latency Web Audio API Synthesizer
 
-let audioCtx = null;
+class AudioFXEngine {
+  constructor() {
+    this.ctx = null;
+  }
 
-function getAudioContext() {
-  if (typeof window === "undefined") return null;
-  if (!audioCtx) {
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    if (AudioContextClass) {
-      audioCtx = new AudioContextClass();
+  init() {
+    if (!this.ctx) {
+      const AudioContextClass =
+        window.AudioContext || window.webkitAudioContext;
+      if (AudioContextClass) {
+        this.ctx = new AudioContextClass();
+      }
+    }
+    if (this.ctx && this.ctx.state === "suspended") {
+      this.ctx.resume();
     }
   }
-  if (audioCtx && audioCtx.state === "suspended") {
-    audioCtx.resume();
-  }
-  return audioCtx;
-}
 
-/** Subtle tactile sci-fi UI blip for touchscreen buttons */
-export function playTap() {
-  try {
-    const ctx = getAudioContext();
-    if (!ctx) return;
+  // Tactile soft sci-fi button blip
+  playTap() {
+    try {
+      this.init();
+      if (!this.ctx) return;
 
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(800, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.04);
-
-    gain.gain.setValueAtTime(0.08, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
-
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc.start();
-    osc.stop(ctx.currentTime + 0.04);
-  } catch (e) {
-    // Ignore audio errors gracefully
-  }
-}
-
-/** Ascending melodic chime on booking, payment or positive confirmation */
-export function playSuccess() {
-  try {
-    const ctx = getAudioContext();
-    if (!ctx) return;
-
-    const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
-    notes.forEach((freq, i) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-
-      osc.type = "triangle";
-      osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.08);
-
-      gain.gain.setValueAtTime(0.12, ctx.currentTime + i * 0.08);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.08 + 0.25);
-
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-
-      osc.start(ctx.currentTime + i * 0.08);
-      osc.stop(ctx.currentTime + i * 0.08 + 0.25);
-    });
-  } catch (e) {}
-}
-
-/** Hospital two-tone announcement chime on token generation and live queue alerts */
-export function playChime() {
-  try {
-    const ctx = getAudioContext();
-    if (!ctx) return;
-
-    const notes = [587.33, 880.0]; // D5, A5
-    notes.forEach((freq, i) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
 
       osc.type = "sine";
-      osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.16);
+      osc.frequency.setValueAtTime(880, this.ctx.currentTime); // A5
+      osc.frequency.exponentialRampToValueAtTime(
+        440,
+        this.ctx.currentTime + 0.04
+      );
 
-      gain.gain.setValueAtTime(0.15, ctx.currentTime + i * 0.16);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.16 + 0.45);
+      gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.04);
 
       osc.connect(gain);
-      gain.connect(ctx.destination);
+      gain.connect(this.ctx.destination);
 
-      osc.start(ctx.currentTime + i * 0.16);
-      osc.stop(ctx.currentTime + i * 0.16 + 0.45);
-    });
-  } catch (e) {}
+      osc.start();
+      osc.stop(this.ctx.currentTime + 0.04);
+    } catch (e) {
+      // Audio autoplay policy fallback
+    }
+  }
+
+  // 2100 Realistic Two-Phase S1 & S2 "Lub-Dub" Stethoscope Heartbeat
+  playLubDub() {
+    try {
+      this.init();
+      if (!this.ctx) return;
+
+      const now = this.ctx.currentTime;
+
+      // S1 "Lub"
+      const osc1 = this.ctx.createOscillator();
+      const gain1 = this.ctx.createGain();
+      osc1.type = "sine";
+      osc1.frequency.setValueAtTime(65, now);
+      osc1.frequency.exponentialRampToValueAtTime(45, now + 0.09);
+      gain1.gain.setValueAtTime(0.22, now);
+      gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+      osc1.connect(gain1);
+      gain1.connect(this.ctx.destination);
+      osc1.start(now);
+      osc1.stop(now + 0.09);
+
+      // S2 "Dub" (140ms later, slightly higher pitch)
+      const osc2 = this.ctx.createOscillator();
+      const gain2 = this.ctx.createGain();
+      osc2.type = "sine";
+      osc2.frequency.setValueAtTime(80, now + 0.14);
+      osc2.frequency.exponentialRampToValueAtTime(50, now + 0.22);
+      gain2.gain.setValueAtTime(0.18, now + 0.14);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+      osc2.connect(gain2);
+      gain2.connect(this.ctx.destination);
+      osc2.start(now + 0.14);
+      osc2.stop(now + 0.22);
+    } catch (e) {}
+  }
+
+  // Single heartbeat pulse fallback
+  playHeartbeat() {
+    this.playLubDub();
+  }
+
+  // Ascending melodic success chime
+  playSuccess() {
+    try {
+      this.init();
+      if (!this.ctx) return;
+
+      const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
+      notes.forEach((freq, index) => {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        const startTime = this.ctx.currentTime + index * 0.07;
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(freq, startTime);
+
+        gain.gain.setValueAtTime(0.12, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.22);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(startTime);
+        osc.stop(startTime + 0.22);
+      });
+    } catch (e) {}
+  }
+
+  // Hospital two-tone announcement chime
+  playChime() {
+    try {
+      this.init();
+      if (!this.ctx) return;
+
+      const notes = [587.33, 880]; // D5 -> A5
+      notes.forEach((freq, idx) => {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        const startTime = this.ctx.currentTime + idx * 0.25;
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, startTime);
+
+        gain.gain.setValueAtTime(0.15, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.6);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(startTime);
+        osc.stop(startTime + 0.6);
+      });
+    } catch (e) {}
+  }
+
+  // Theme switch / Card flip whoosh
+  playSwitch() {
+    try {
+      this.init();
+      if (!this.ctx) return;
+
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(320, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(640, this.ctx.currentTime + 0.08);
+
+      gain.gain.setValueAtTime(0.07, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start();
+      osc.stop(this.ctx.currentTime + 0.08);
+    } catch (e) {}
+  }
 }
 
-/** Cardiac monitor rhythmic pulse for telemetry review */
-export function playHeartbeat() {
-  try {
-    const ctx = getAudioContext();
-    if (!ctx) return;
+const audioFX = new AudioFXEngine();
 
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
+export const playTap = () => audioFX.playTap();
+export const playSuccess = () => audioFX.playSuccess();
+export const playChime = () => audioFX.playChime();
+export const playHeartbeat = () => audioFX.playHeartbeat();
+export const playLubDub = () => audioFX.playLubDub();
+export const playSwitch = () => audioFX.playSwitch();
 
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(120, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(50, ctx.currentTime + 0.1);
-
-    gain.gain.setValueAtTime(0.18, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
-
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc.start();
-    osc.stop(ctx.currentTime + 0.1);
-  } catch (e) {}
-}
-
-/** Mode toggle switch sound */
-export function playSwitch() {
-  try {
-    const ctx = getAudioContext();
-    if (!ctx) return;
-
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(440, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.05);
-
-    gain.gain.setValueAtTime(0.06, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
-
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc.start();
-    osc.stop(ctx.currentTime + 0.05);
-  } catch (e) {}
-}
-
-export default {
-  playTap,
-  playSuccess,
-  playChime,
-  playHeartbeat,
-  playSwitch,
-};
+export default audioFX;
