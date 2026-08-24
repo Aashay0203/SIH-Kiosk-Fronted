@@ -27,197 +27,196 @@ const BODY_PARTS = [
   {
     id: "head",
     name: "Head & Brain",
-    hindiName: "सिर और मस्तिष्क (Head / Brain)",
     icon: "🧠",
     cx: 150,
     cy: 42,
     r: 22,
     defaultSymptom: "Headache / Dizziness",
     symptoms: [
-      "Headache / सिर में दर्द (Migraine, Tension)",
-      "Dizziness / चक्कर आना",
-      "Brain Fog & Fatigue / सुस्ती और भारीपन",
-      "Memory / Concentration Issues",
+      "Severe Migraine / Tension Headache",
+      "Dizziness & Vertigo",
+      "Cognitive Fog / Extreme Fatigue",
+      "Memory Loss / Concentration Issues",
+      "Numbness in Facial Nerves"
     ],
-    specialty: "Neurologist (तंत्रिका रोग विशेषज्ञ)",
+    specialty: "Neurology",
     urgency: "Moderate",
-    firstAid: "Rest in dark quiet room, drink electrolytes, avoid screen exposure.",
+    firstAid: "Rest in a dark, quiet room. Maintain hydration. Avoid bright screens and loud noises.",
   },
   {
     id: "eyes",
     name: "Eyes & Vision",
-    hindiName: "आँखें (Eyes)",
     icon: "👁️",
     cx: 150,
     cy: 58,
     r: 12,
     defaultSymptom: "Eye Strain / Redness",
     symptoms: [
-      "Aankh me dard / Eye Pain & Strain",
-      "Blurry Vision / धुंधला दिखना",
-      "Redness & Itching / आँखों में लाली और जलन",
-      "Watery / Dry Eyes / पानी आना या सूखापन",
+      "Acute Eye Pain & Strain",
+      "Blurry or Double Vision",
+      "Severe Redness & Itching",
+      "Watery / Excessively Dry Eyes",
+      "Light Sensitivity (Photophobia)"
     ],
-    specialty: "Ophthalmologist (नेत्र विशेषज्ञ)",
+    specialty: "Ophthalmology",
     urgency: "Mild",
-    firstAid: "Apply cold compress, use lubricating saline drops, 20-20-20 screen rule.",
+    firstAid: "Apply a cold compress. Use lubricating saline drops. Follow the 20-20-20 visual rest rule.",
   },
   {
     id: "nose",
     name: "Nose & Sinus",
-    hindiName: "नाक और साइनस (Nose / Sinus)",
     icon: "👃",
     cx: 150,
     cy: 74,
     r: 10,
     defaultSymptom: "Sinus Congestion / Nose Pain",
     symptoms: [
-      "Naak me dard / Sinus Facial Pain",
-      "Runny / Blocked Nose / बंद नाक या जुकाम",
-      "Loss of Smell / गंध न आना",
-      "Nosebleeds (Epistaxis) / नकसीर फूटना",
+      "Sinus Pressure & Facial Pain",
+      "Severe Runny / Blocked Nose",
+      "Complete Loss of Smell (Anosmia)",
+      "Recurrent Nosebleeds (Epistaxis)",
+      "Post-nasal Drip"
     ],
-    specialty: "ENT Specialist (नाक-कान-गला विशेषज्ञ)",
+    specialty: "Otolaryngology (ENT)",
     urgency: "Mild",
-    firstAid: "Steam inhalation twice daily, warm saline nasal rinse, stay hydrated.",
+    firstAid: "Steam inhalation twice daily. Use a warm saline nasal rinse. Stay hydrated.",
   },
   {
     id: "throat",
     name: "Throat & Neck",
-    hindiName: "गला और गर्दन (Throat & Neck)",
     icon: "🗣️",
     cx: 150,
     cy: 98,
     r: 12,
     defaultSymptom: "Sore Throat / Cough",
     symptoms: [
-      "Gale me dard / Sore Throat & Pain",
-      "Difficulty Swallowing / निगलने में तकलीफ",
-      "Dry Cough / सूखी खांसी",
-      "Neck Stiffness / गर्दन में अकड़न",
+      "Acute Sore Throat & Inflammation",
+      "Difficulty Swallowing (Dysphagia)",
+      "Persistent Dry or Productive Cough",
+      "Neck Stiffness & Spasms",
+      "Swollen Lymph Nodes"
     ],
-    specialty: "ENT / General Physician",
+    specialty: "Otolaryngology / General Medicine",
     urgency: "Mild",
-    firstAid: "Warm salt water gargles 3x/day, honey with ginger, avoid cold drinks.",
+    firstAid: "Warm salt water gargles 3x/day. Consume honey with ginger. Avoid cold or acidic drinks.",
   },
   {
     id: "chest",
     name: "Chest & Heart",
-    hindiName: "छाती और दिल (Chest & Heart)",
     icon: "🫀",
     cx: 150,
     cy: 140,
     r: 26,
     defaultSymptom: "Chest Tightness / Heart Palpitation",
     symptoms: [
-      "Seene me dard / Chest Pressure or Pain",
-      "Heart Palpitations / तेज धड़कन",
-      "Shortness of Breath / सांस फूलना",
+      "Crushing Chest Pressure or Pain",
+      "Irregular Heart Palpitations",
+      "Shortness of Breath (Dyspnea)",
       "Left Arm Radiating Discomfort",
+      "Dizziness with Chest Tightness"
     ],
-    specialty: "Cardiologist (हृदय रोग विशेषज्ञ)",
+    specialty: "Cardiology",
     urgency: "High Priority",
-    firstAid: "Sit upright, loosen tight clothes. If sudden or crushing, seek IMMEDIATE emergency care.",
+    firstAid: "Sit upright and loosen tight clothing. If pain is sudden or crushing, seek IMMEDIATE emergency care.",
   },
   {
     id: "lungs",
     name: "Lungs & Respiratory",
-    hindiName: "फेफड़े और श्वसन (Lungs / Breathing)",
     icon: "🫁",
     cx: 150,
     cy: 165,
     r: 24,
     defaultSymptom: "Breathing Difficulty / Wheezing",
     symptoms: [
-      "Saans lene me dikkat / Dyspnea",
-      "Wheezing & Chest Congestion / घरघराहट",
-      "Chronic Phlegm / कफ वाली खांसी",
-      "Asthma-like tight chest",
+      "Acute Breathing Difficulty",
+      "Wheezing & Chest Congestion",
+      "Chronic Phlegm Production",
+      "Asthma-like Bronchial Tightness",
+      "Sharp Pain while Inhaling"
     ],
-    specialty: "Pulmonologist (छाती एवं फेफड़ा रोग विशेषज्ञ)",
+    specialty: "Pulmonology",
     urgency: "Moderate to High",
-    firstAid: "Use prescribed inhaler, sit in well-ventilated area, steam with eucalyptus.",
+    firstAid: "Use prescribed bronchodilator inhaler. Sit in a well-ventilated area. Steam with eucalyptus oil.",
   },
   {
     id: "stomach",
     name: "Stomach & Abdomen",
-    hindiName: "पेट और पाचन (Stomach & Digestion)",
     icon: "🫄",
     cx: 150,
     cy: 205,
     r: 26,
     defaultSymptom: "Abdominal Pain / Acidity",
     symptoms: [
-      "Pet me dard / Stomach Ache or Cramps",
-      "Severe Acidity & Heartburn / गैस और एसिडिटी",
-      "Nausea / Vomiting / उल्टी या जी मिचलाना",
-      "Bloating & Indigestion / बदहजमी और अफारा",
+      "Severe Abdominal Cramps",
+      "Acute Acidity & Heartburn (GERD)",
+      "Nausea and Vomiting",
+      "Bloating & Severe Indigestion",
+      "Lower Right Quadrant Pain"
     ],
-    specialty: "Gastroenterologist (पेट व आंत विशेषज्ञ)",
+    specialty: "Gastroenterology",
     urgency: "Moderate",
-    firstAid: "Drink warm ginger water, take antacid if prescribed, avoid oily/spicy foods.",
+    firstAid: "Drink warm ginger water. Take prescribed antacids. Avoid oily, spicy, or heavy foods.",
   },
   {
     id: "bones",
     name: "Bones & Joints",
-    hindiName: "हड्डियां और जोड़ (Bones & Joints)",
     icon: "🦴",
     cx: 150,
     cy: 285,
     r: 28,
     defaultSymptom: "Joint Pain / Bone Stiffness",
     symptoms: [
-      "Haddiyo me dard / Deep Bone Ache",
-      "Joint Swelling & Stiffness / जोड़ों में सूजन और अकड़न",
-      "Knee / Shoulder Joint Pain / घुटने या कंधे का दर्द",
-      "Crackling Noise & Immobility / चलने में दर्द",
+      "Deep Bone Ache / Osteo-pain",
+      "Severe Joint Swelling & Stiffness",
+      "Knee / Shoulder Articular Pain",
+      "Crackling Noise (Crepitus) & Immobility",
+      "Ligament Sprain / Strain"
     ],
-    specialty: "Orthopedic Surgeon (हड्डी एवं जोड़ रोग विशेषज्ञ)",
+    specialty: "Orthopedics",
     urgency: "Moderate",
-    firstAid: "R.I.C.E protocol (Rest, Ice, Compression, Elevation), apply analgesic gel, avoid heavy lifting.",
+    firstAid: "Follow R.I.C.E protocol (Rest, Ice, Compression, Elevation). Apply topical analgesic gel. Avoid heavy lifting.",
   },
   {
     id: "spine",
     name: "Spine & Lower Back",
-    hindiName: "रीढ़ की हड्डी और कमर (Spine / Back)",
     icon: "🏃",
     cx: 150,
     cy: 245,
     r: 20,
     defaultSymptom: "Lower Back Pain / Disc Pain",
     symptoms: [
-      "Kamar me dard / Severe Lower Back Pain",
-      "Sciatica Shooting Leg Pain / पैर में जाने वाला दर्द",
-      "Stiff Back in Morning / सुबह अकड़न",
-      "Posture Fatigue / बैठने पर खिंचाव",
+      "Severe Lumbar / Lower Back Pain",
+      "Sciatica (Shooting Leg Pain)",
+      "Morning Spinal Stiffness",
+      "Posture-induced Muscular Fatigue",
+      "Cervical / Neck Radiating Pain"
     ],
-    specialty: "Orthopedic / Spine Specialist / Physiotherapist",
+    specialty: "Orthopedics / Physiotherapy",
     urgency: "Moderate",
-    firstAid: "Lumbar support while sitting, gentle cat-cow stretches, warm heat pad.",
+    firstAid: "Use lumbar support while sitting. Perform gentle cat-cow stretches. Apply warm heat pad to the affected area.",
   },
   {
     id: "hands",
     name: "Arms & Hands",
-    hindiName: "हाथ और कलाई (Arms & Hands)",
     icon: "🤲",
     cx: 90,
     cy: 190,
     r: 18,
     defaultSymptom: "Hand Numbness / Wrist Pain",
     symptoms: [
-      "Haath me dard / Hand or Wrist Pain (Carpal Tunnel)",
-      "Tingling & Numbness in Fingers / झनझनाहट",
-      "Weak Grip / पकड़ कमजोर होना",
-      "Elbow Tendonitis / कोहनी में खिंचाव",
+      "Hand or Wrist Pain (Carpal Tunnel)",
+      "Tingling & Numbness in Fingers",
+      "Weakened Grip Strength",
+      "Elbow Tendonitis (Tennis Elbow)",
+      "Shoulder Rotator Cuff Pain"
     ],
-    specialty: "Orthopedic / Rheumatologist",
+    specialty: "Orthopedics / Rheumatology",
     urgency: "Mild",
-    firstAid: "Wrist splint during sleep, contrast hot/cold baths, ergonomic mouse/keyboard.",
+    firstAid: "Wear a wrist splint during sleep. Use contrast hot/cold baths. Employ an ergonomic mouse and keyboard setup.",
   },
   {
     id: "legs",
     name: "Legs & Feet",
-    hindiName: "पैर और तलवे (Legs & Feet)",
     icon: "🦵",
     cx: 150,
     cy: 375,
@@ -254,7 +253,7 @@ const BODY_PARTS = [
   },
 ];
 
-const PAIN_TYPES = ["Throbbing (धड़कता हुआ)", "Sharp / Stabbing (तीखा)", "Dull Ache (हल्का मीठा दर्द)", "Burning (जलनदार)", "Stiff / Tight (जकड़न)"];
+const PAIN_TYPES = ["Throbbing", "Sharp / Stabbing", "Dull Ache", "Burning", "Stiff / Tight"];
 const DURATIONS = ["Just started (< 24 hrs)", "1 - 3 Days", "1 - 2 Weeks", "Chronic (> 1 Month)"];
 
 export default function InteractiveAnatomyDummy3D() {
@@ -303,13 +302,12 @@ export default function InteractiveAnatomyDummy3D() {
           timeStyle: "short",
         }),
         bodyPart: selectedPart.name,
-        hindiName: selectedPart.hindiName,
         icon: selectedPart.icon,
         symptoms: selectedSymptoms,
         painLevel: painLevel,
         painType: painType,
         duration: duration,
-        urgency: isUrgent ? "HIGH PRIORITY (तत्काल ध्यान)" : selectedPart.urgency,
+        urgency: isUrgent ? "HIGH PRIORITY" : selectedPart.urgency,
         severityScore: `${(painLevel * 10).toFixed(0)}% Intensity Index`,
         specialty: selectedPart.specialty,
         primaryAssessment: `AI Assessment indicates symptomatic localized inflammation/irritation involving the ${selectedPart.name}. Correlated with a Pain Score of ${painLevel}/10 and ${duration.toLowerCase()} duration.`,
@@ -351,8 +349,7 @@ export default function InteractiveAnatomyDummy3D() {
             Body Part Symptom Selector & Instant Report Generator
           </h2>
           <p className="anatomy-dummy-sub">
-            Click on any body part on the 3D Anatomical Dummy to specify your pain or discomfort
-            (जैसे: 🦴 Bones me dard, 👁️ Eyes me dard, 👃 Nose me dard) and generate an instant AI clinical triage report!
+            Click on any body part on the 3D Anatomical Dummy to specify your pain or discomfort (e.g., 🦴 Joint Pain, 👁️ Eye Strain, 👃 Sinus Pain) and generate an instant AI clinical triage report!
           </p>
         </div>
 
@@ -543,7 +540,6 @@ export default function InteractiveAnatomyDummy3D() {
             <div className="hero-part-info">
               <span className="hero-part-label">Selected Anatomical Target</span>
               <h3 className="hero-part-title">{selectedPart.name}</h3>
-              <p className="hero-part-hindi">{selectedPart.hindiName}</p>
             </div>
             <button
               className="anatomy-reset-btn"
@@ -557,7 +553,7 @@ export default function InteractiveAnatomyDummy3D() {
           {/* Section 1: Choose Symptoms */}
           <div className="anatomy-card-section">
             <h4 className="section-title">
-              <span>1. Specific Pain / Symptoms (लक्षण चुनें)</span>
+              <span>1. Specific Pain / Symptoms</span>
             </h4>
             <div className="symptoms-chip-matrix">
               {selectedPart.symptoms.map((sym, idx) => {
@@ -580,7 +576,7 @@ export default function InteractiveAnatomyDummy3D() {
           <div className="anatomy-card-section">
             <div className="slider-header-row">
               <h4 className="section-title">
-                <span>2. Pain Intensity (दर्द कितना तेज है? 1–10)</span>
+                <span>2. Pain Intensity (1–10 Scale)</span>
               </h4>
               <span
                 className="pain-badge"
@@ -606,16 +602,16 @@ export default function InteractiveAnatomyDummy3D() {
             />
 
             <div className="pain-scale-labels">
-              <span>1 (Mild / हल्का)</span>
-              <span>5 (Moderate / मध्यम)</span>
-              <span>10 (Severe / असहनीय)</span>
+              <span style={{ color: "#10b981" }}>1 (Mild)</span>
+              <span style={{ color: "#f59e0b" }}>5 (Moderate)</span>
+              <span style={{ color: "#ef4444" }}>10 (Severe)</span>
             </div>
           </div>
 
           {/* Section 3: Pain Character & Duration */}
           <div className="anatomy-card-section">
             <h4 className="section-title">
-              <span>3. Pain Character & Duration (दर्द का प्रकार और समय)</span>
+              <span>3. Pain Character & Duration</span>
             </h4>
 
             <div className="params-dual-row">
@@ -629,11 +625,11 @@ export default function InteractiveAnatomyDummy3D() {
                   }}
                   className="param-select-box"
                 >
-                  {PAIN_TYPES.map((pt, i) => (
-                    <option key={i} value={pt}>
-                      {pt}
-                    </option>
-                  ))}
+                  <option value="Throbbing">Throbbing</option>
+                  <option value="Sharp / Stabbing">Sharp / Stabbing</option>
+                  <option value="Dull Ache">Dull Ache</option>
+                  <option value="Burning">Burning</option>
+                  <option value="Stiff / Tight">Stiff / Tight</option>
                 </select>
               </div>
 

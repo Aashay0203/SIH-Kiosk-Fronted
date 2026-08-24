@@ -122,6 +122,12 @@
     box-shadow: inset 0 0 40px rgba(2, 132, 199, 0.06);
 }
 
+@media (max-width: 640px) {
+    .quantum-viewport-box {
+        height: 280px;
+    }
+}
+
 .quantum-viewport-box:active {
     cursor: grabbing;
 }

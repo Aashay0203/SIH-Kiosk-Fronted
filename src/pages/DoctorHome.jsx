@@ -111,40 +111,6 @@ export default function DoctorHome() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      {/* ── Top Bar ── */}
-      <header className="dh-header">
-        <div className="dh-header-left">
-          <div className="dh-doctor-avatar">
-            {displayName.charAt(0).toUpperCase()}
-          </div>
-          <div>
-            <h1 className="dh-doctor-name">Dr. {displayName}</h1>
-            <p className="dh-doctor-spec">{displaySpec} • DelhiMed Station</p>
-          </div>
-        </div>
-
-        <nav className="dh-header-actions" aria-label="Quick actions">
-          <button
-            className={`dh-icon-btn ${refreshing ? "dh-icon-btn--spinning" : ""}`}
-            onClick={() => {
-              playTap();
-              fetchTodayData(true);
-            }}
-            disabled={refreshing}
-            aria-label="Refresh appointments"
-          >
-            <RefreshIcon className="dh-icon-svg" />
-          </button>
-          <button
-            className="dh-icon-btn dh-icon-btn--danger"
-            onClick={handleLogout}
-            aria-label="Logout"
-          >
-            <LogoutIcon className="dh-icon-svg" />
-          </button>
-        </nav>
-      </header>
-
       {/* ── Main Layout ── */}
       <div className="dh-layout">
         {/* 3D Holographic Queue Card Sidebar */}
@@ -163,13 +129,27 @@ export default function DoctorHome() {
         {/* Appointment List */}
         <main className="dh-main">
           <div className="dh-section-header">
-            <h2 className="dh-section-title">Today's Patient Queue</h2>
-            <span
-              className="dh-count-badge"
-              aria-label={`${appointments.length} appointments`}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <h2 className="dh-section-title">Today's Patient Queue</h2>
+              <span
+                className="dh-count-badge"
+                aria-label={`${appointments.length} appointments`}
+              >
+                {appointments.length}
+              </span>
+            </div>
+            <button
+              className={`dh-icon-btn ${refreshing ? "dh-icon-btn--spinning" : ""}`}
+              onClick={() => {
+                playTap();
+                fetchTodayData(true);
+              }}
+              disabled={refreshing}
+              aria-label="Refresh appointments"
+              style={{ width: '36px', height: '36px' }}
             >
-              {appointments.length}
-            </span>
+              <RefreshIcon className="dh-icon-svg" style={{ fontSize: '18px' }} />
+            </button>
           </div>
 
           {error && (

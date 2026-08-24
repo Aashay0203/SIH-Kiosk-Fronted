@@ -71,8 +71,14 @@
   color: var(--hud-text-primary);
   box-sizing: border-box;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
   transition: background 0.25s ease, color 0.25s ease;
+}
+
+@media (max-width: 768px) {
+  .pd-page-container {
+    padding: 12px 12px 80px 12px;
+  }
 }
 
 /* Ambient Background Lights (Non-Displacing) */
@@ -263,13 +269,14 @@
 
 @media (max-width: 1100px) {
   .pd-telemetry-hud {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .pd-telemetry-hud {
     grid-template-columns: 1fr;
+    padding: 10px;
   }
 }
 
@@ -397,6 +404,7 @@
   display: flex;
   align-items: center;
   gap: 18px;
+  flex-wrap: wrap;
 }
 
 .pd-avatar-container {
