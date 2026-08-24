@@ -1,10 +1,11 @@
 import React from "react";
 import "./DoctorCard.css";
-import {useNavigate} from  "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext";
 
-// We pass 'doctor' and 'onBook' as props from the parent list
 export default function DoctorCard({ doctor, onBook }) {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   
   return (
     <div className="premium-doc-card">
@@ -36,7 +37,6 @@ export default function DoctorCard({ doctor, onBook }) {
         {/* The Blue Blob and Image */}
         <div className="image-wrapper">
           <div className="blue-blob"></div>
-          {/* You can add a default avatar here if the doctor doesn't have an image field in DB yet */}
           <img
             src="https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/45.png"
             alt={`${doctor?.name}`}
@@ -55,7 +55,7 @@ export default function DoctorCard({ doctor, onBook }) {
                 height="18"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#6b7280"
+                stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -63,8 +63,7 @@ export default function DoctorCard({ doctor, onBook }) {
                 <circle cx="12" cy="12" r="10"></circle>
                 <polyline points="12 6 12 12 16 14"></polyline>
               </svg>
-              {/* Using API data for Time */}
-              <span>{doctor?.startTime || "9:00A.M"} A.M</span>
+              <span>{doctor?.startTime || "9:00"} AM</span>
             </div>
             <div className="info-line">
               <svg
@@ -72,7 +71,7 @@ export default function DoctorCard({ doctor, onBook }) {
                 height="18"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#6b7280"
+                stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -82,12 +81,11 @@ export default function DoctorCard({ doctor, onBook }) {
                 <line x1="8" y1="2" x2="8" y2="6"></line>
                 <line x1="3" y1="10" x2="21" y2="10"></line>
               </svg>
-              {/* Using API data for Fees */}
-              <span>Fees: ₹{doctor?.fees || "500"}</span>
+              <span>{t("fee", "Fee")}: ₹{doctor?.fees || "500"}</span>
             </div>
           </div>
 
-          <button className="arrow-btn" onClick={onBook}>
+          <button className="arrow-btn" onClick={onBook} aria-label="Book">
             <svg
               width="20"
               height="20"
@@ -105,15 +103,14 @@ export default function DoctorCard({ doctor, onBook }) {
         </div>
 
         <div className="action-buttons">
-          {/* Changed "Cancel" to "View Profile" since we are browsing doctors, not canceling an appointment yet */}
           <button 
-  className="btn-cancel" 
-  onClick={() => navigate(`/doctor-profile/${doctor._id}`, { state: { doctor } })}
->
-  Profile
-</button>
+            className="btn-cancel" 
+            onClick={() => navigate(`/doctor-profile/${doctor._id}`, { state: { doctor } })}
+          >
+            {t("myProfiles", "Profile")}
+          </button>
           <button className="btn-book" onClick={onBook}>
-            Book Now
+            {t("bookNow", "Book Now")}
           </button>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../api/axios";
+import { useLanguage } from "../context/LanguageContext";
 import "./GiveFeedback.css";
 
 const CATEGORIES = [
@@ -16,6 +17,7 @@ const RATINGS = ["😞", "😐", "🙂", "😄", "🤩"];
 
 export default function GiveFeedback() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const [rating, setRating] = useState(null);
   const [category, setCategory] = useState("");
@@ -36,7 +38,6 @@ export default function GiveFeedback() {
     setLoading(true);
 
     try {
-      // Replace with your actual feedback API endpoint when ready
       await axios.post("/feedback", {
         rating: rating + 1, // 1–5
         category,
@@ -44,7 +45,6 @@ export default function GiveFeedback() {
       });
       setSubmitted(true);
     } catch (err) {
-      // Gracefully show success even if endpoint doesn't exist yet (MVP)
       console.warn("Feedback endpoint not yet active:", err.message);
       setSubmitted(true);
     } finally {
@@ -86,7 +86,7 @@ export default function GiveFeedback() {
       {/* Header */}
       <div className="fb-header">
         <div>
-          <h1 className="fb-title">Give Feedback</h1>
+          <h1 className="fb-title">{t("giveFeedback", "Give Feedback")}</h1>
           <p className="fb-subtitle">Your voice shapes DelhiMed 🚀</p>
         </div>
       </div>

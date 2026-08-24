@@ -1,12 +1,15 @@
 // === DoctorList.jsx ===
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
+import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
+import { IconButton } from "@mui/material";
 import instance from "../api/axios";
 import DoctorCard from "../components/DoctorCard";
+import { useLanguage } from "../context/LanguageContext";
 import "./DoctorList.css";
 
 // ── Skeleton Card ──────────────────────────────────────────
@@ -39,6 +42,7 @@ export default function DoctorList() {
   const [searchTerm, setSearchTerm] = useState("");
   const searchRef = useRef(null);
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   useEffect(() => {
     fetchDoctors();
@@ -67,12 +71,35 @@ export default function DoctorList() {
 
   return (
     <div className="dl-page">
-      <div className="fb-header">
-        <div>
-          <h1 className="fb-title">All Doctors</h1>
-          <p className="fb-subtitle">Your voice shapes DelhiMed 🚀</p>
+      {/* ── Top Header ── */}
+      <div className="dl-header-wrap">
+        <div className="my-appointment-top-nav">
+          <IconButton
+            className="my-appointment-back-btn"
+            onClick={() => navigate(-1)}
+            aria-label="Back"
+          >
+            <ArrowBackIosNewRoundedIcon sx={{ fontSize: 18 }} />
+          </IconButton>
+
+          <IconButton
+            className="my-appointment-home-btn"
+            onClick={() => navigate("/home")}
+            aria-label="Home"
+          >
+            <HomeOutlinedIcon sx={{ fontSize: 20 }} />
+          </IconButton>
+        </div>
+
+        <div style={{ padding: "0 12px 10px" }}>
+          <p className="greeting-text">
+            <GroupsRoundedIcon sx={{ fontSize: 15, verticalAlign: "middle", mr: 0.5, color: "var(--blue)" }} />
+            DelhiMed Healthcare Network
+          </p>
+          <h1 className="page-title">{t("allDoctors", "All Doctors")}</h1>
         </div>
       </div>
+
       {/* ── Search Bar ── */}
       <div className="dl-search-wrap">
         <div className="dl-search-box" role="search">
@@ -85,7 +112,7 @@ export default function DoctorList() {
             ref={searchRef}
             type="search"
             className="dl-search-input"
-            placeholder="Search by name or speciality…"
+            placeholder={t("searchDoctorPlaceholder", "Search doctor by name or speciality...")}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             aria-label="Search doctors"
@@ -116,7 +143,7 @@ export default function DoctorList() {
             <h2 className="dl-state-title">Something went wrong</h2>
             <p className="dl-state-body">{error}</p>
             <button className="dl-retry-btn" onClick={fetchDoctors}>
-              Try Again
+              {t("refresh", "Try Again")}
             </button>
           </div>
         )}
@@ -139,9 +166,7 @@ export default function DoctorList() {
           <>
             {hasSearch && (
               <p className="dl-results-count" aria-live="assertive">
-                {filteredDoctors.length} result
-                {filteredDoctors.length !== 1 ? "s" : ""} for &ldquo;
-                {searchTerm}&rdquo;
+                {filteredDoctors.length} {t("allDoctors", "Doctors")}
               </p>
             )}
             <div className="dl-grid" role="list" aria-label="Doctor list">
@@ -163,13 +188,13 @@ export default function DoctorList() {
             <span className="dl-state-emoji" role="img" aria-label="Not found">
               🔍
             </span>
-            <h2 className="dl-state-title">No doctors found</h2>
+            <h2 className="dl-state-title">{t("noDoctorsFound", "No doctors found")}</h2>
             <p className="dl-state-body">
               No results for &ldquo;<strong>{searchTerm}</strong>&rdquo;. Try a
               different name or speciality.
             </p>
             <button className="dl-retry-btn" onClick={() => setSearchTerm("")}>
-              Clear Search
+              {t("clearForm", "Clear Search")}
             </button>
           </div>
         )}

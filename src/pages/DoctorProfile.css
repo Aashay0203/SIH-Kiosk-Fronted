@@ -482,9 +482,11 @@
         bottom: 0;
         left: 0;
         right: 0;
-        background: #ffffff;
+        background: var(--card-bg, #ffffff);
+        color: var(--text-primary);
+        border-top: 1px solid var(--border);
         padding: 16px;
-        box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.2);
         z-index: 100;
     }
 }

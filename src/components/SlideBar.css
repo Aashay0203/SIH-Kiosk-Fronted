@@ -3,8 +3,10 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    background: #ffffff;
+    background: var(--sidebar-bg, #ffffff);
+    color: var(--text-primary, #0f172a);
     font-family: 'Nunito', sans-serif;
+    transition: background 0.22s ease, color 0.22s ease;
 }
 
 /* User section */
@@ -23,6 +25,7 @@
     font-weight: 800 !important;
     font-size: 18px !important;
     border: 2px solid var(--border, #dde3ea) !important;
+    color: #ffffff !important;
 }
 
 .slidebar-user-info {
@@ -33,7 +36,7 @@
     font-family: 'Urbanist', sans-serif;
     font-size: 15px;
     font-weight: 800;
-    color: var(--black, #010101);
+    color: var(--text-primary, #010101);
     margin: 0 0 3px;
 }
 
@@ -48,7 +51,8 @@
     height: 32px;
     border-radius: 8px;
     border: 1.5px solid var(--border, #dde3ea);
-    background: var(--bg, #e8ecee);
+    background: var(--card-bg-subtle, #e8ecee);
+    color: var(--text-primary);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -59,6 +63,7 @@
 
 .slidebar-edit-btn:hover {
     background: var(--blue-light, #dce9ff);
+    color: var(--blue);
 }
 
 /* List */
@@ -68,24 +73,58 @@
 
 .slidebar-list-item {
     border-radius: 12px !important;
-    margin-bottom: 2px !important;
+    margin-bottom: 4px !important;
     cursor: pointer !important;
-    padding: 10px 12px !important;
-    transition: background 0.15s ease !important;
+    padding: 10px 14px !important;
+    color: var(--text-secondary) !important;
+    transition: all 0.15s ease !important;
 }
 
-.slidebar-list-item.active {
-    background-color: #f0f0f0;
-    border-radius: 10px;
-}
-
-.slidebar-list-item:hover {
-    background: var(--bg, #e8ecee) !important;
+.slidebar-list-item .MuiTypography-root {
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: var(--text-secondary) !important;
 }
 
 .slidebar-icon {
-    min-width: 40px !important;
-    color: var(--black, #010101) !important;
+    min-width: 38px !important;
+    color: var(--text-muted) !important;
+}
+
+/* Active State in Dark Mode */
+[data-theme="dark"] .slidebar-list-item.active {
+    background-color: rgba(56, 189, 248, 0.14) !important;
+    border-left: 3.5px solid var(--blue, #38bdf8) !important;
+}
+
+[data-theme="dark"] .slidebar-list-item.active .MuiTypography-root {
+    color: var(--blue, #38bdf8) !important;
+    font-weight: 800 !important;
+}
+
+[data-theme="dark"] .slidebar-list-item.active .slidebar-icon {
+    color: var(--blue, #38bdf8) !important;
+}
+
+/* Active State in Light Mode */
+[data-theme="light"] .slidebar-list-item.active {
+    background-color: #dbeafe !important;
+    border-left: 3.5px solid #2563eb !important;
+}
+
+[data-theme="light"] .slidebar-list-item.active .MuiTypography-root {
+    color: #1d4ed8 !important;
+    font-weight: 800 !important;
+}
+
+[data-theme="light"] .slidebar-list-item.active .slidebar-icon {
+    color: #1d4ed8 !important;
+}
+
+.slidebar-list-item:hover {
+    background: var(--card-bg-subtle, rgba(0, 240, 255, 0.08)) !important;
+    transform: translateX(3px);
 }
 
 /* Logout */
@@ -95,26 +134,24 @@
     justify-content: center;
     gap: 8px;
     margin: 0 16px 16px;
-    padding: 14px;
+    padding: 12px;
     border-radius: 50px;
-    border: none;
-    background: #fff0f0;
-    color: #e57373;
+    border: 1px solid rgba(244, 63, 94, 0.3);
+    background: rgba(244, 63, 94, 0.1);
+    color: #f43f5e;
     font-family: 'Nunito', sans-serif;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 800;
     cursor: pointer;
-    transition: background 0.15s ease;
+    transition: all 0.2s ease;
 }
 
 .slidebar-logout-btn:hover {
-    background: #ffe4e4;
-}
-
-.slidebar-logout-btn:active {
-    transform: scale(0.97);
+    background: #f43f5e;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(244, 63, 94, 0.35);
 }
 
 .slidebar-safe-bottom {
-    height: 16px;
+    height: 12px;
 }

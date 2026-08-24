@@ -128,19 +128,51 @@
 
 /* ─── Cycling gradient backgrounds per card ─── */
 .profile-card--green {
-    background: linear-gradient(135deg, #D5EAB3 0%, #ffffff 55%);
+    background: linear-gradient(135deg, #D5EAB3 0%, var(--card-bg, #ffffff) 55%);
 }
 
 .profile-card--blue {
-    background: linear-gradient(135deg, #DCE9FF 0%, #ffffff 55%);
+    background: linear-gradient(135deg, #DCE9FF 0%, var(--card-bg, #ffffff) 55%);
 }
 
 .profile-card--pink {
-    background: linear-gradient(135deg, #FFE6F0 0%, #ffffff 55%);
+    background: linear-gradient(135deg, #FFE6F0 0%, var(--card-bg, #ffffff) 55%);
 }
 
 .profile-card--orange {
-    background: linear-gradient(135deg, #FFF4E6 0%, #ffffff 55%);
+    background: linear-gradient(135deg, #FFF4E6 0%, var(--card-bg, #ffffff) 55%);
+}
+
+[data-theme="dark"] .profile-card--green {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, #0f172a 60%) !important;
+    border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+[data-theme="dark"] .profile-card--blue {
+    background: linear-gradient(135deg, rgba(0, 240, 255, 0.16) 0%, #0f172a 60%) !important;
+    border-color: rgba(0, 240, 255, 0.3) !important;
+}
+
+[data-theme="dark"] .profile-card--pink {
+    background: linear-gradient(135deg, rgba(244, 63, 94, 0.18) 0%, #0f172a 60%) !important;
+    border-color: rgba(244, 63, 94, 0.3) !important;
+}
+
+[data-theme="dark"] .profile-card--orange {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, #0f172a 60%) !important;
+    border-color: rgba(245, 158, 11, 0.3) !important;
+}
+
+[data-theme="dark"] .profile-add-card {
+    background: var(--card-bg) !important;
+    border: 2px dashed var(--border) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .profile-section-card {
+    background: var(--card-bg) !important;
+    border-color: var(--border) !important;
+    color: var(--text-primary) !important;
 }
 
 /* ─── Section title ─── */
@@ -449,7 +481,7 @@
     max-width: 240px;
 }
 
-/* ─── Health CTA banner — glassmorphism on accent bg ─── */
+/* ─── Health CTA banner ─── */
 .profile-health-cta {
     margin-top: 20px;
     display: flex;
@@ -457,8 +489,8 @@
     justify-content: space-between;
     padding: 14px 16px;
     border-radius: 16px;
-    background: linear-gradient(135deg, #DCE9FF 0%, #edf4ff 100%);
-    border: 1.5px solid rgba(62, 125, 245, 0.2);
+    background: linear-gradient(135deg, var(--blue-light, #DCE9FF) 0%, var(--card-bg, #edf4ff) 100%);
+    border: 1.5px solid var(--border, rgba(62, 125, 245, 0.2));
     cursor: pointer;
     transition:
         background 0.22s cubic-bezier(0.4, 0, 0.2, 1),
@@ -467,9 +499,13 @@
 }
 
 .profile-health-cta:hover {
-    background: linear-gradient(135deg, #c6d9ff 0%, #dce9ff 100%);
     border-color: var(--blue);
-    box-shadow: 0 4px 16px rgba(62, 125, 245, 0.12);
+    box-shadow: 0 4px 16px rgba(62, 125, 245, 0.18);
+}
+
+[data-theme="dark"] .profile-health-cta {
+    background: linear-gradient(135deg, rgba(0, 240, 255, 0.12) 0%, rgba(15, 23, 42, 0.9) 100%) !important;
+    border-color: rgba(0, 240, 255, 0.3) !important;
 }
 
 .profile-health-cta__left {
@@ -510,11 +546,25 @@
     font-weight: 600 !important;
 }
 
-.fb-header {
+/* ─── Navigation Header ─── */
+.profile-nav-left {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 20px 0;
-    margin-left: 12px;
-    color: black;
+    gap: 8px;
+}
+
+.profile-appbar-sub {
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 11px !important;
+    color: var(--text-muted) !important;
+    font-weight: 600 !important;
+}
+
+.profile-content {
+    padding: 0 16px;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }

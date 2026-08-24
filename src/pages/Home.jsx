@@ -6,12 +6,14 @@ import Box from "@mui/material/Box";
 import "./Home.css";
 import MedicationBox from "../components/MedicationBox";
 import UpcomingAppBox from "../components/UpcomingApp";
+import { useLanguage } from "../context/LanguageContext";
 
 function Home() {
   const [doctors, setDoctors] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { t } = useLanguage();
 
   const scrollRef = useRef(null);
   const navigate = useNavigate();
@@ -51,15 +53,15 @@ function Home() {
       <div className="home-content">
         <div className="home-hero">
           <h1 className="home-hero-heading">
-            Find the Perfect Doctor for{" "}
-            <span className="home-hero-blue">Your Needs</span>
+            {t("findDoctorHero", "Find the Perfect Doctor for")}{" "}
+            <span className="home-hero-blue">{t("forYourNeeds", "Your Needs")}</span>
           </h1>
         </div>
 
         {error && <p className="home-error">{error}</p>}
 
         {loading ? (
-          <p className="home-loading">Loading...</p>
+          <p className="home-loading">{t("loading", "Loading...")}</p>
         ) : (
           <>
             <Box ref={scrollRef} className="home-doctors-row">

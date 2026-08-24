@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MyAppointment.css";
 import instance from "../api/axios";
+import { useLanguage } from "../context/LanguageContext";
 
 import {
   Box,
@@ -15,8 +16,9 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import SearchIcon from "@mui/icons-material/Search";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
 import AppointmentCard from "../components/AppointmentCard";
 
 // ─── EmptyState ───────────────────────────────────────────────────────────────
@@ -26,7 +28,7 @@ function EmptyState({ label }) {
     <div className="empty-state">
       <div className="empty-state-icon">📭</div>
       <Typography className="empty-state-title">
-        No {label} appointments
+        No {label} appointments found
       </Typography>
     </div>
   );
@@ -38,13 +40,20 @@ export default function MyAppointment() {
   const [myAppointments, setMyAppointments] = useState([]);
   const [value, setValue] = useState("1");
   const [search, setSearch] = useState("");
+  const { t } = useLanguage();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAppointments = async () => {
-      const res = await instance.get("/appointments/my-appointements");
-      setMyAppointments(res.data.appointments);
+      try {
+        const res = await instance.get("/appointments/my-appointements");
+        if (res.data?.appointments) {
+          setMyAppointments(res.data.appointments);
+        }
+      } catch (err) {
+        console.error("Error loading appointments", err);
+      }
     };
     fetchAppointments();
   }, []);
@@ -59,7 +68,8 @@ export default function MyAppointment() {
 
   const filterBySearch = (list) =>
     list.filter((a) =>
-      a.doctorId?.name?.toLowerCase().includes(search.toLowerCase()),
+      a.doctorId?.name?.toLowerCase().includes(search.toLowerCase()) ||
+      a.doctorId?.specialization?.toLowerCase().includes(search.toLowerCase())
     );
 
   const upcoming = filterBySearch(
@@ -82,17 +92,36 @@ export default function MyAppointment() {
     <div className="my-appointment-page">
       {/* ── Sticky Header ── */}
       <div className="my-appointment-header">
-        <div className="fb-header">
-          <div>
-            <h1 className="fb-title">Give Feedback</h1>
-            <p className="fb-subtitle">Your voice shapes DelhiMed 🚀</p>
-          </div>
+        <div className="my-appointment-top-nav">
+          <IconButton
+            className="my-appointment-back-btn"
+            onClick={() => navigate(-1)}
+            aria-label="Back"
+          >
+            <ArrowBackIosNewRoundedIcon sx={{ fontSize: 18 }} />
+          </IconButton>
+
+          <IconButton
+            className="my-appointment-home-btn"
+            onClick={() => navigate("/home")}
+            aria-label="Home"
+          >
+            <HomeOutlinedIcon sx={{ fontSize: 20 }} />
+          </IconButton>
+        </div>
+
+        <div style={{ marginBottom: "12px" }}>
+          <p className="greeting-text">
+            <CalendarMonthRoundedIcon sx={{ fontSize: 14, verticalAlign: "middle", mr: 0.5, color: "var(--blue)" }} />
+            DelhiMed Healthcare
+          </p>
+          <h1 className="page-title">{t("myAppointments", "My Appointments")}</h1>
         </div>
 
         {/* ── Search ── */}
         <div className="search-wrapper">
           <TextField
-            placeholder="Search for doctor..."
+            placeholder="Search by doctor or speciality..."
             size="small"
             fullWidth
             value={search}
@@ -100,7 +129,7 @@ export default function MyAppointment() {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon sx={{ fontSize: 18, color: "#7a8799" }} />
+                  <SearchIcon sx={{ fontSize: 18, color: "var(--text-muted)" }} />
                 </InputAdornment>
               ),
             }}
@@ -110,9 +139,16 @@ export default function MyAppointment() {
         {/* ── Tabs ── */}
         <TabContext value={value}>
           <TabList onChange={handleTabChange} className="appointment-tabs">
-            <Tab label="Upcoming" value="1" className="appointment-tab" />
-            <Tab label="Past" value="2" className="appointment-tab" />
-            {/* <Tab label="Cancelled" value="3" className="appointment-tab" /> */}
+            <Tab
+              label={`${t("upcoming", "Upcoming")} (${upcoming.length})`}
+              value="1"
+              className="appointment-tab"
+            />
+            <Tab
+              label={`${t("past", "Past")} (${past.length})`}
+              value="2"
+              className="appointment-tab"
+            />
           </TabList>
 
           {/* ── Panels ── */}
@@ -134,10 +170,6 @@ export default function MyAppointment() {
                 past.map((a) => <AppointmentCard key={a._id} appointment={a} />)
               )}
             </TabPanel>
-
-            {/* <TabPanel value="3" sx={{ p: 0 }}>
-              <EmptyState label="cancelled" />
-            </TabPanel> */}
           </Box>
         </TabContext>
       </div>

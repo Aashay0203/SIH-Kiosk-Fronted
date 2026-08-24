@@ -17,7 +17,8 @@ import {
   Chip,
   Tooltip,
 } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
@@ -32,7 +33,9 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import LockIcon from "@mui/icons-material/Lock";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import { AuthContext } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext";
 import instance from "../api/axios";
 import PatientIdCard from "../components/PatientIdCard.jsx";
 import "./Profile.css";
@@ -57,6 +60,8 @@ const inputSx = {
     borderRadius: "10px",
     fontFamily: "Nunito",
     fontSize: 14,
+    color: "var(--text-primary)",
+    backgroundColor: "var(--card-bg-subtle)",
     "& fieldset": { borderColor: "var(--border)" },
     "&:hover fieldset": { borderColor: "var(--blue)" },
     "&.Mui-focused fieldset": { borderColor: "var(--blue)" },
@@ -71,7 +76,7 @@ const InfoRow = ({ icon, label, value, locked, children, showDivider }) => (
       <div className="profile-info-row__text">
         <div className="profile-info-row__label-wrap">
           <Typography className="profile-info-label">{label}</Typography>
-          {locked && <LockIcon sx={{ fontSize: 10, color: "#b0bac5" }} />}
+          {locked && <LockIcon sx={{ fontSize: 10, color: "var(--text-muted)" }} />}
         </div>
         {children || (
           <Typography
@@ -87,6 +92,7 @@ const InfoRow = ({ icon, label, value, locked, children, showDivider }) => (
 
 const Profile = () => {
   const { user: authUser } = useContext(AuthContext);
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
@@ -144,7 +150,7 @@ const Profile = () => {
       const res = await instance.patch("/user/profile", editForm);
       setProfile(res.data.user);
       setEditMode(false);
-      showSnack("Profile updated!");
+      showSnack("Profile updated successfully!");
     } catch {
       showSnack("Save failed. Try again.", "error");
     } finally {
@@ -231,13 +237,26 @@ const Profile = () => {
 
   return (
     <div className="profile-root">
-      {/* ════ AppBar ════ */}
+      {/* ════ Top Navigation Bar ════ */}
       <AppBar position="sticky" elevation={0} className="profile-appbar">
         <Toolbar className="profile-toolbar">
-          <div className="fb-header">
-            <div>
-              <h1 className="fb-title">Profile</h1>
-              <p className="fb-subtitle">Your voice shapes DelhiMed 🚀</p>
+          <div className="profile-nav-left">
+            <IconButton
+              size="small"
+              onClick={() => navigate(-1)}
+              className="profile-back-btn"
+              aria-label="Back"
+            >
+              <ArrowBackIosNewRoundedIcon sx={{ fontSize: 18 }} />
+            </IconButton>
+
+            <div style={{ marginLeft: 6 }}>
+              <Typography className="profile-appbar-title">
+                {t("myProfiles", "My Profile")}
+              </Typography>
+              <Typography className="profile-appbar-sub">
+                {t("manageProfile", "Manage personal & medical data")}
+              </Typography>
             </div>
           </div>
 
@@ -257,7 +276,7 @@ const Profile = () => {
                 {saving ? (
                   <CircularProgress
                     size={14}
-                    sx={{ color: "var(--text-muted)" }}
+                    sx={{ color: "#fff" }}
                   />
                 ) : (
                   <SaveIcon sx={{ fontSize: 16 }} />
@@ -266,9 +285,11 @@ const Profile = () => {
               </div>
             </div>
           ) : (
-            <div className="profile-edit-btn" onClick={() => setEditMode(true)}>
-              <EditIcon sx={{ fontSize: 15 }} />
-              Edit
+            <div className="profile-appbar-actions">
+              <div className="profile-edit-btn" onClick={() => setEditMode(true)}>
+                <EditIcon sx={{ fontSize: 15 }} />
+                Edit
+              </div>
             </div>
           )}
         </Toolbar>
@@ -281,7 +302,7 @@ const Profile = () => {
           <div className="profile-avatar-section">
             <div className="profile-avatar-wrap">
               <Avatar src={profile?.profilePicture} className="profile-avatar">
-                {profile?.name?.charAt(0)?.toUpperCase()}
+                {profile?.name?.charAt(0)?.toUpperCase() || "U"}
               </Avatar>
               <div
                 className={`profile-camera-btn${uploadingPic ? " profile-camera-btn--uploading" : ""}`}
@@ -302,21 +323,23 @@ const Profile = () => {
               />
             </div>
             <Typography className="profile-avatar-name">
-              {profile?.name}
+              {profile?.name || "Patient"}
             </Typography>
-            <Typography className="profile-avatar-phone">{phone}</Typography>
-            <Chip
-              label={`ID: ${profile?.patientId}`}
-              size="small"
-              className="profile-patient-id-chip"
-            />
+            <Typography className="profile-avatar-phone">{phone || "No phone linked"}</Typography>
+            {profile?.patientId && (
+              <Chip
+                label={`ID: ${profile.patientId}`}
+                size="small"
+                className="profile-patient-id-chip"
+              />
+            )}
           </div>
         </div>
 
         {/* ── Patient ID Card ── */}
         <div className="profile-section-card profile-card--blue">
           <Typography className="profile-section-title">
-            Patient ID Card
+            Patient Smart ID Card
           </Typography>
           <PatientIdCard
             name={profile?.name}
@@ -441,12 +464,12 @@ const Profile = () => {
                     ABHA ID
                   </Typography>
                   <Tooltip
-                    title="Ayushman Bharat Health Account — India's national digital health ID issued by NHA. Linking it helps connect your records with government health services."
+                    title="Ayushman Bharat Health Account — India's national digital health ID issued by NHA."
                     arrow
                     placement="top"
                   >
                     <InfoOutlinedIcon
-                      sx={{ fontSize: 13, color: "#b0bac5", cursor: "help" }}
+                      sx={{ fontSize: 13, color: "var(--text-muted)", cursor: "help" }}
                     />
                   </Tooltip>
                 </div>
@@ -464,6 +487,7 @@ const Profile = () => {
                       "& .MuiFormHelperText-root": {
                         fontFamily: "Nunito",
                         fontSize: 11,
+                        color: "var(--text-muted)",
                       },
                     }}
                   />
@@ -472,7 +496,7 @@ const Profile = () => {
                     <Typography
                       className="profile-info-value"
                       sx={{
-                        color: profile?.abhaId ? "var(--black)" : "#b0bac5",
+                        color: profile?.abhaId ? "var(--text-primary)" : "var(--text-muted)",
                       }}
                     >
                       {profile?.abhaId || "Not linked"}
@@ -596,7 +620,7 @@ const Profile = () => {
                 <span className="profile-health-empty__emoji">🏥</span>
               </div>
               <Typography className="profile-health-empty__title">
-                No health data yet
+                No health data recorded
               </Typography>
               <Typography className="profile-health-empty__sub">
                 Upload medical reports to generate your AI health summary

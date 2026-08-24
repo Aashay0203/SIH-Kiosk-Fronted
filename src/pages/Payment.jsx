@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import instance from "../api/axios";
 import { SuccessOverlay } from "../components/PaymentUtils";
 import { loadCashfreeScript } from "../utils/paymentScript";
+import { useLanguage } from "../context/LanguageContext";
 import "./Payment.css";
 import {
   CreditCardIcon,
@@ -43,9 +44,9 @@ const PAYMENT_METHODS = [
 export default function Payment() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   // ── Pull state passed from AppointmentBook ──
-  // appointmentBook now returns: { appointmentId, orderId, paymentSessionId, fees }
   const {
     appointmentId,
     orderId,
@@ -58,7 +59,6 @@ export default function Payment() {
 
   // ── Guard ─────────────────────────────────
   useEffect(() => {
-    console.log(paymentSessionId, "Appointemnt Id:", appointmentId);
     if (!paymentSessionId || !appointmentId) {
       navigate("/", { replace: true });
     }

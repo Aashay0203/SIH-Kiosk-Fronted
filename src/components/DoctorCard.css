@@ -2,86 +2,66 @@
 .premium-doc-card {
     width: 100%;
     max-width: 400px;
-    background-color: #ffffff;
+    background-color: var(--card-bg, #ffffff);
+    color: var(--text-primary, #0f172a);
+    border: 1px solid var(--border, #dde3ea);
     border-radius: 32px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
     position: relative;
     overflow: hidden;
-    font-family: 'Inter', system-ui, sans-serif;
-    /* CHANGE THIS LINE */
+    font-family: 'Nunito', system-ui, sans-serif;
     margin: 0;
+    transition: all var(--transition, 0.22s ease);
 }
 
 /* Top Section Layout */
 .card-top-section {
     position: relative;
-    /* Add these lines for a flex layout */
     display: flex;
     align-items: flex-start;
-    /* Align contents to the top */
     justify-content: space-between;
-    /* Create space between text and image */
-    /* Remove the height constraint to allow it to be dynamic */
     height: auto;
     min-height: 200px;
-    /* Add padding to the top for spacing */
     padding: 30px 30px 0 30px;
 }
 
 .text-content {
-    /* Remove these positions and fixed width */
     position: relative;
     z-index: 2;
     width: 55%;
-    margin-top: -10px;
-
-    /* Add these lines for a flexible block */
     flex: 1;
-    /* Allow this to occupy available space */
     padding-right: 20px;
-    /* Ensure a gap between text and image */
     margin-top: 0;
-    /* Reset margin */
 }
 
 .speciality-badge {
     display: flex;
     align-items: center;
     gap: 8px;
-    color: #6b7280;
-    font-weight: 500;
+    color: var(--text-muted, #6b7280);
+    font-weight: 700;
     font-size: 0.95rem;
     margin-bottom: 12px;
 }
 
 .speciality-badge svg {
-    color: #111827;
-    /* Dark icon color */
+    color: var(--blue, #3b82f6);
 }
 
 .doc-title {
-    color: #111827;
+    color: var(--text-primary, #111827);
+    font-family: 'Urbanist', sans-serif;
     font-size: 1.8rem;
-    font-weight: 700;
+    font-weight: 800;
     line-height: 1.2;
     margin: 0;
 }
 
 /* Image and Blue Background Layering */
 .image-wrapper {
-    /* Remove these absolute positions and large widths */
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 60%;
-    height: 100%;
-
-    /* Add these to create a stable container for image and blob */
     position: relative;
     width: 180px;
-    /* Match the size of the image/avatar for stability */
     height: 200px;
-    /* Acts as a frame */
 }
 
 .blue-blob {
@@ -92,19 +72,16 @@
     height: 100%;
     background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
     border-bottom-left-radius: 120px;
-    /* Creates the curve */
     z-index: 1;
 }
 
 .doc-avatar {
     position: absolute;
-    bottom: -0px;
-    /* Pushes image down behind the glass layer */
+    bottom: 0;
     right: 15px;
     width: 180px;
     height: auto;
     z-index: 2;
-    /* Sits above blue blob, below glass panel */
     object-fit: cover;
     border-radius: 50%;
 }
@@ -113,15 +90,11 @@
 .card-glass-bottom {
     position: relative;
     z-index: 3;
-    /* Crucial: Sits ABOVE the doctor image */
     margin: -40px 12px 12px 12px;
-    /* Pulls it up over the image */
-    background: rgba(246, 248, 255, 0.85);
-    /* Semi-transparent light blue */
+    background: var(--card-bg-subtle, rgba(246, 248, 255, 0.85));
     backdrop-filter: blur(12px);
-    /* The frosted glass effect */
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    border: 1px solid var(--border, rgba(255, 255, 255, 0.6));
     border-radius: 28px;
     padding: 24px;
 }
@@ -144,8 +117,8 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    color: #111827;
-    font-weight: 600;
+    color: var(--text-primary, #111827);
+    font-weight: 700;
     font-size: 0.95rem;
 }
 
@@ -153,8 +126,9 @@
     width: 52px;
     height: 52px;
     border-radius: 50%;
-    background: #ffffff;
-    border: none;
+    background: var(--card-bg, #ffffff);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -165,6 +139,7 @@
 
 .arrow-btn:hover {
     transform: scale(1.05);
+    border-color: var(--blue);
 }
 
 /* Action Buttons */
@@ -178,8 +153,8 @@
     flex: 1;
     padding: 16px;
     border-radius: 50px;
-    /* Perfect pill shape */
-    font-weight: 600;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -187,21 +162,25 @@
 }
 
 .btn-cancel {
-    background-color: #ffffff;
-    color: #111827;
+    background-color: var(--card-bg, #ffffff);
+    color: var(--text-primary, #111827);
+    border: 1.5px solid var(--border);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .btn-cancel:hover {
-    background-color: #f3f4f6;
+    background-color: var(--bg-subtle, #f3f4f6);
+    border-color: var(--error-text);
+    color: var(--error-text);
 }
 
 .btn-book {
-    background-color: #000000;
+    background: linear-gradient(135deg, var(--blue, #3e7df5), var(--blue-dark, #1d4ed8));
     color: #ffffff;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
 }
 
 .btn-book:hover {
-    background-color: #1f2937;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45);
 }

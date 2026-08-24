@@ -512,13 +512,15 @@
 }
 
 .dh-pay-badge--paid {
-    background: var(--green);
-    color: #3a7d11;
+    background: var(--green-light, rgba(16, 185, 129, 0.2));
+    color: var(--green, #10b981);
+    border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .dh-pay-badge--pending {
-    background: #fff4e6;
-    color: #b45309;
+    background: rgba(245, 158, 11, 0.18);
+    color: #d97706;
+    border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .dh-appt-status {

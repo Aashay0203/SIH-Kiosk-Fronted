@@ -1,57 +1,63 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import instance from "../api/axios";
+import { useLanguage } from "../context/LanguageContext";
 import {
+  Container,
   Box,
   Typography,
-  IconButton,
-  TextField,
   Button,
+  TextField,
   MenuItem,
-  Container,
+  IconButton,
+  CircularProgress,
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import "./ReportUpload.css";
 
+const REPORT_TYPES = [
+  "Blood Test / CBC",
+  "Lipid Profile",
+  "Liver Function Test (LFT)",
+  "Kidney Function Test (KFT)",
+  "Thyroid Profile (T3, T4, TSH)",
+  "HbA1c / Diabetes",
+  "Urine Routine",
+  "X-Ray / Radiology",
+  "ECG / Cardiology",
+  "Prescription",
+  "Other",
+];
+
 function ReportUpload() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { user } = useContext(AuthContext);
-
-  // Get file from navigation state (if coming from UploadOptionsSheet)
-  const preSelectedFile = location.state?.file;
-
-  const [selectedFile, setSelectedFile] = useState(preSelectedFile || null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [reportType, setReportType] = useState("");
+  const [doctorClinicName, setDoctorClinicName] = useState("");
+  const [notes, setNotes] = useState("");
   const [uploading, setUploading] = useState(false);
-  const [formData, setFormData] = useState({
-    reportType: "",
-    doctorClinicName: "",
-    reportDate: "",
-    uploadedBy: "Me",
-    tags: "",
-  });
+  const navigate = useNavigate();
+  const { t } = useLanguage();
 
-  const handleFileSelect = (event) => {
-    const file = event.target.files[0];
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
     if (file) {
-      // Validate file type
-      const allowedTypes = [
+      // Check file type (PDF, PNG, JPG, JPEG)
+      const validTypes = [
         "application/pdf",
+        "image/png",
         "image/jpeg",
         "image/jpg",
-        "image/png",
-        "image/webp",
       ];
-      if (!allowedTypes.includes(file.type)) {
-        alert("Invalid file type. Please upload PDF or image files only.");
+      if (!validTypes.includes(file.type)) {
+        alert("Please upload a PDF or Image (PNG, JPG)");
         return;
       }
 
-      // Validate file size (10 MB)
+      // Check file size (max 10MB)
       if (file.size > 10 * 1024 * 1024) {
-        alert("File size must be less than 10 MB");
+        alert("File size must be less than 10MB");
         return;
       }
 
@@ -59,54 +65,37 @@ function ReportUpload() {
     }
   };
 
-  const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!selectedFile) {
-      alert("Please select a file");
+      alert("Please select a file to upload");
+      return;
+    }
+
+    if (!reportType) {
+      alert("Please select a report type");
       return;
     }
 
     try {
       setUploading(true);
 
-      // Create FormData
-      const uploadData = new FormData();
-      uploadData.append("report", selectedFile);
-      uploadData.append("reportType", formData.reportType);
-      uploadData.append("doctorClinicName", formData.doctorClinicName);
-      uploadData.append("reportDate", formData.reportDate);
-      uploadData.append("uploadedBy", formData.uploadedBy);
-      uploadData.append(
-        "tags",
-        JSON.stringify(
-          formData.tags
-            .split(",")
-            .map((tag) => tag.trim())
-            .filter((tag) => tag),
-        ),
-      );
+      const formData = new FormData();
+      formData.append("report", selectedFile);
+      formData.append("reportType", reportType);
+      formData.append("doctorClinicName", doctorClinicName);
+      formData.append("notes", notes);
 
-      const response = await instance.post("/reports/upload", uploadData, {
+      const response = await instance.post("/reports/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
-      alert("Report uploaded successfully!");
-      const uploadedReportId = response?.data?.report?._id;
-      if (uploadedReportId) {
-        navigate(`/reports/${uploadedReportId}`);
-      } else {
-        navigate("/reports");
-      }
+      console.log("Upload successful:", response.data);
+
+      navigate(`/reports/${response.data.data._id}`);
     } catch (error) {
       console.error("Upload failed:", error);
       alert(error.response?.data?.message || "Failed to upload report");
@@ -122,16 +111,17 @@ function ReportUpload() {
         <IconButton
           onClick={() => navigate(-1)}
           sx={{
-            bgcolor: "#f5f5f5",
-            "&:hover": { bgcolor: "#e0e0e0" },
+            bgcolor: "var(--card-bg-subtle)",
+            color: "var(--text-primary)",
+            "&:hover": { bgcolor: "var(--border)" },
           }}
         >
           <ChevronLeftIcon />
         </IconButton>
-        <Typography variant="h6" fontWeight={600}>
-          Upload Report
+        <Typography variant="h6" fontWeight={700} sx={{ fontFamily: "Urbanist, sans-serif", color: "var(--text-primary)" }}>
+          {t("uploadReport", "Upload Report")}
         </Typography>
-        <Box sx={{ width: 40 }} /> {/* Spacer for centering */}
+        <Box sx={{ width: 40 }} />
       </Box>
 
       {/* Upload Form */}
@@ -140,33 +130,31 @@ function ReportUpload() {
         <Box className="file-upload-section">
           <input
             type="file"
-            id="file-upload-input"
-            accept=".pdf,.jpg,.jpeg,.png,.webp"
-            onChange={handleFileSelect}
+            id="report-file-input"
+            accept=".pdf,image/*"
             style={{ display: "none" }}
+            onChange={handleFileChange}
           />
-          <label htmlFor="file-upload-input">
+          <label htmlFor="report-file-input">
             <Box className="file-upload-area">
               {selectedFile ? (
                 <Box className="file-selected">
-                  <Typography fontSize="48px">
-                    {selectedFile.type === "application/pdf" ? "📄" : "🖼️"}
-                  </Typography>
-                  <Typography fontWeight={600} mt={1}>
+                  <CheckCircleIcon sx={{ fontSize: 48, color: "var(--green)", mb: 1 }} />
+                  <Typography variant="body1" fontWeight={600} sx={{ color: "var(--text-primary)" }}>
                     {selectedFile.name}
                   </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                  <Typography variant="caption" sx={{ color: "var(--text-muted)" }}>
+                    {(selectedFile.size / 1024 / 1024).toFixed(2)} MB • Click to change
                   </Typography>
                 </Box>
               ) : (
                 <Box className="file-not-selected">
-                  <Typography fontSize="48px">📤</Typography>
-                  <Typography fontWeight={600} mt={1}>
-                    Click to select file
+                  <CloudUploadOutlinedIcon sx={{ fontSize: 48, color: "var(--blue)", mb: 1 }} />
+                  <Typography variant="body1" fontWeight={600} sx={{ color: "var(--text-primary)" }}>
+                    Click to upload report
                   </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    PDF or images (max 10 MB)
+                  <Typography variant="caption" sx={{ color: "var(--text-muted)" }}>
+                    PDF, PNG, JPG up to 10MB
                   </Typography>
                 </Box>
               )}
@@ -174,60 +162,67 @@ function ReportUpload() {
           </label>
         </Box>
 
-        {/* Form Fields */}
+        {/* Report Type */}
         <TextField
+          select
           fullWidth
           label="Report Type"
-          name="reportType"
-          value={formData.reportType}
-          onChange={handleInputChange}
-          placeholder="e.g., Blood Test, X-Ray, MRI"
-          sx={{ mb: 2 }}
-        />
-
-        <TextField
-          fullWidth
-          label="Doctor/Clinic Name"
-          name="doctorClinicName"
-          value={formData.doctorClinicName}
-          onChange={handleInputChange}
-          placeholder="e.g., Dr. Sharma, Apollo Hospital"
-          sx={{ mb: 2 }}
-        />
-
-        <TextField
-          fullWidth
-          label="Report Date"
-          name="reportDate"
-          type="date"
-          value={formData.reportDate}
-          onChange={handleInputChange}
-          InputLabelProps={{ shrink: true }}
-          sx={{ mb: 2 }}
-        />
-
-        <TextField
-          fullWidth
-          select
-          label="Uploaded By"
-          name="uploadedBy"
-          value={formData.uploadedBy}
-          onChange={handleInputChange}
-          sx={{ mb: 2 }}
+          value={reportType}
+          onChange={(e) => setReportType(e.target.value)}
+          required
+          sx={{
+            mb: 2,
+            "& .MuiOutlinedInput-root": {
+              borderRadius: "12px",
+              bgcolor: "var(--card-bg-subtle)",
+              color: "var(--text-primary)",
+              "& fieldset": { borderColor: "var(--border)" },
+            },
+          }}
         >
-          <MenuItem value="Me">Me</MenuItem>
-          <MenuItem value="Doctor">Doctor</MenuItem>
-          <MenuItem value="Lab">Lab</MenuItem>
+          {REPORT_TYPES.map((type) => (
+            <MenuItem key={type} value={type}>
+              {type}
+            </MenuItem>
+          ))}
         </TextField>
 
+        {/* Doctor/Clinic Name */}
         <TextField
           fullWidth
-          label="Tags (comma-separated)"
-          name="tags"
-          value={formData.tags}
-          onChange={handleInputChange}
-          placeholder="e.g., urgent, diabetes, follow-up"
-          sx={{ mb: 3 }}
+          label="Doctor or Clinic Name (Optional)"
+          value={doctorClinicName}
+          onChange={(e) => setDoctorClinicName(e.target.value)}
+          placeholder="e.g. Dr. Sharma, Max Hospital"
+          sx={{
+            mb: 2,
+            "& .MuiOutlinedInput-root": {
+              borderRadius: "12px",
+              bgcolor: "var(--card-bg-subtle)",
+              color: "var(--text-primary)",
+              "& fieldset": { borderColor: "var(--border)" },
+            },
+          }}
+        />
+
+        {/* Notes */}
+        <TextField
+          fullWidth
+          multiline
+          rows={3}
+          label="Notes (Optional)"
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          placeholder="Any specific symptoms or reasons for this test"
+          sx={{
+            mb: 3,
+            "& .MuiOutlinedInput-root": {
+              borderRadius: "12px",
+              bgcolor: "var(--card-bg-subtle)",
+              color: "var(--text-primary)",
+              "& fieldset": { borderColor: "var(--border)" },
+            },
+          }}
         />
 
         {/* Submit Button */}
@@ -238,18 +233,25 @@ function ReportUpload() {
           size="large"
           disabled={uploading || !selectedFile}
           sx={{
-            bgcolor: "#3e7df5",
+            bgcolor: "var(--blue)",
             color: "#fff",
             borderRadius: "12px",
             py: 1.5,
             textTransform: "none",
-            fontWeight: 600,
+            fontWeight: 800,
             fontSize: "16px",
-            "&:hover": { bgcolor: "#2d62d4" },
-            "&:disabled": { bgcolor: "#ccc" },
+            "&:hover": { bgcolor: "var(--blue-dark)" },
+            "&:disabled": { opacity: 0.5 },
           }}
         >
-          {uploading ? "Uploading..." : "Upload Report"}
+          {uploading ? (
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <CircularProgress size={20} sx={{ color: "#fff" }} />
+              <span>Uploading & Analyzing...</span>
+            </Box>
+          ) : (
+            t("uploadReport", "Upload Report")
+          )}
         </Button>
       </Box>
     </Container>

@@ -5,17 +5,17 @@
     --blue-dark: #2d62d4;
     --blue-light: #dce9ff;
     --blue-tint: #eff6ff;
-    --green-bg: #d5eab3;
-    --green-text: #4a7c1f;
-    --pending-bg: #fff3cd;
-    --pending-text: #856404;
-    --error-bg: #fff0f0;
-    --error-text: #d94f4f;
-    --text-dark: #010101;
-    --text-gray: #7a8799;
-    --border: #dde3ea;
-    --bg-main: #e8ecee;
-    --bg-card: #ffffff;
+    --green-bg: rgba(16, 185, 129, 0.18);
+    --green-text: #10b981;
+    --pending-bg: rgba(245, 158, 11, 0.18);
+    --pending-text: #d97706;
+    --error-bg: var(--error-bg, #fff0f0);
+    --error-text: var(--error-text, #d94f4f);
+    --text-dark: var(--text-primary, #010101);
+    --text-gray: var(--text-muted, #7a8799);
+    --border: var(--border, #dde3ea);
+    --bg-main: var(--bg, #e8ecee);
+    --bg-card: var(--card-bg, #ffffff);
 }
 
 /* ── Page Wrapper ─────────────────────────────────────────────────────────── */
@@ -51,7 +51,8 @@
 }
 
 .my-appointment-back-btn {
-    background: #ffffff !important;
+    background: var(--card-bg, #ffffff) !important;
+    color: var(--text-primary) !important;
     border: 1px solid var(--border) !important;
     border-radius: 12px !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
@@ -64,7 +65,8 @@
 }
 
 .my-appointment-home-btn {
-    background: #ffffff !important;
+    background: var(--card-bg, #ffffff) !important;
+    color: var(--text-primary) !important;
     border: 1px solid var(--border) !important;
     border-radius: 12px !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;

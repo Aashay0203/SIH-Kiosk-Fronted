@@ -2,42 +2,48 @@
     flex: 1;
     width: 100%;
     max-width: 1200px;
-    background: #D5EAB3;
+    background: var(--card-bg, #ffffff);
+    color: var(--text-primary, #0f172a);
+    border: 1px solid var(--border, #dde3ea);
     border-radius: var(--radius-card, 24px);
-    padding: 16px;
+    padding: 20px;
     margin: 0 auto;
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-card);
+    transition: all var(--transition);
 }
 
 .med-box-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
 .med-box-title {
     font-family: 'Urbanist', sans-serif;
     font-size: 17px;
     font-weight: 800;
-    color: var(--black, #010101);
+    color: var(--text-primary, #010101);
     margin: 0;
 }
 
 .med-item {
-    border-radius: 12px !important;
-    margin-bottom: 6px !important;
-    background: var(--bg, #e8ecee) !important;
+    border-radius: 14px !important;
+    margin-bottom: 8px !important;
+    background: var(--card-bg-subtle, #f1f5f9) !important;
+    border: 1px solid var(--border, #dde3ea) !important;
+    color: var(--text-primary) !important;
 }
 
 .med-avatar {
     background: var(--blue-light, #dce9ff) !important;
+    color: var(--blue, #3e7df5) !important;
     font-size: 18px !important;
 }
 
 .med-badge {
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 800;
     padding: 6px 12px;
     border-radius: 20px;
     border: none;
@@ -47,13 +53,15 @@
 }
 
 .med-badge.taken {
-    background: var(--green, #d5eab3);
-    color: #4a8c2a;
+    background: var(--green-light, rgba(16, 185, 129, 0.2));
+    color: var(--green, #10b981);
+    border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .med-badge.pending {
-    background: #fff3e0;
-    color: #c07000;
+    background: rgba(245, 158, 11, 0.18);
+    color: #d97706;
+    border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .med-badge:active {
@@ -61,15 +69,11 @@
 }
 
 .med-badge.taken:hover {
-    background: #b8d98a;
-    color: #2d6a0f;
-    transform: scale(1.08);
+    transform: scale(1.05);
 }
 
 .med-badge.pending:hover {
-    background: #ffe0b2;
-    color: #e65100;
-    transform: scale(1.08);
+    transform: scale(1.05);
 }
 
 .load-more-btn {
@@ -77,17 +81,17 @@
     margin: 16px auto 8px auto;
     padding: 8px 24px;
     border-radius: 14px;
-    border: 1px solid var(--border, #dde3ea);
+    border: 1.5px solid var(--border, #dde3ea);
     background: transparent;
     color: var(--blue, #3e7df5);
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
 .load-more-btn:hover:not(:disabled) {
     border-color: var(--blue-dark, #2d62d4);
-    background: rgba(62, 125, 245, 0.04);
+    background: var(--blue-light, rgba(62, 125, 245, 0.08));
 }
 
 .load-more-btn:disabled {

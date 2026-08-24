@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext";
 import "./Support.css";
 
 const faqs = [
@@ -62,6 +63,7 @@ const contactOptions = [
 
 export default function Support() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [openIndex, setOpenIndex] = useState(null);
   const [search, setSearch] = useState("");
 
@@ -76,8 +78,8 @@ export default function Support() {
       {/* Header */}
       <div className="sup-header">
         <div>
-          <h1 className="sup-title">Help & Support</h1>
-          <p className="sup-subtitle">We're here for you 🙌</p>
+          <h1 className="sup-title">{t("helpAndSupport", "Help & Support")}</h1>
+          <p className="sup-subtitle">DelhiMed 24x7 Assistance</p>
         </div>
       </div>
 

@@ -5,28 +5,28 @@
 
 /* ── CSS Variables ── */
 :root {
-    --hp-bg: #e8ecee;
-    --hp-card: #ffffff;
-    --hp-blue: #3e7df5;
-    --hp-blue-dark: #2d62d4;
-    --hp-blue-light: #dce9ff;
-    --hp-green: #d5eab3;
-    --hp-green-dark: #4a8c3f;
-    --hp-black: #010101;
-    --hp-muted: #7a8799;
-    --hp-border: #dde3ea;
-    --hp-err-bg: #fff0f0;
-    --hp-err-text: #d94f4f;
-    --hp-orange-bg: #fff4e6;
-    --hp-orange-text: #c07a00;
-    --hp-red-bg: #fff0f0;
-    --hp-red-text: #d94f4f;
-    --hp-shadow: 0 12px 48px rgba(62, 125, 245, 0.10);
-    --hp-shadow-sm: 0 4px 16px rgba(62, 125, 245, 0.07);
+    --hp-bg: var(--bg, #e8ecee);
+    --hp-card: var(--card-bg, #ffffff);
+    --hp-blue: var(--blue, #3e7df5);
+    --hp-blue-dark: var(--blue-dark, #2d62d4);
+    --hp-blue-light: var(--blue-light, #dce9ff);
+    --hp-green: var(--green, #10b981);
+    --hp-green-dark: #10b981;
+    --hp-black: var(--text-primary, #010101);
+    --hp-muted: var(--text-muted, #7a8799);
+    --hp-border: var(--border, #dde3ea);
+    --hp-err-bg: var(--error-bg, #fff0f0);
+    --hp-err-text: var(--error-text, #d94f4f);
+    --hp-orange-bg: rgba(245, 158, 11, 0.15);
+    --hp-orange-text: #d97706;
+    --hp-red-bg: var(--error-bg, #fff0f0);
+    --hp-red-text: var(--error-text, #d94f4f);
+    --hp-shadow: var(--shadow-card);
+    --hp-shadow-sm: var(--shadow-card);
     --hp-radius-card: 24px;
     --hp-radius-chip: 100px;
     --hp-radius-btn: 14px;
-    --hp-transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    --hp-transition: var(--transition, 0.22s cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 /* ── Root / Layout ── */
