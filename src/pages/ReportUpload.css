@@ -1,6 +1,7 @@
 .report-upload-page {
     min-height: 100vh;
-    background: #f8f9fa;
+    background: var(--bg, #f8f9fa);
+    color: var(--text-primary);
     padding: 20px;
 }
 
@@ -12,10 +13,12 @@
 }
 
 .upload-form {
-    background: #fff;
+    background: var(--card-bg, #fff);
+    color: var(--text-primary);
     border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-card);
 }
 
 .file-upload-section {
@@ -23,18 +26,18 @@
 }
 
 .file-upload-area {
-    border: 2px dashed #ddd;
+    border: 2px dashed var(--border, #ddd);
     border-radius: 16px;
     padding: 40px 20px;
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    background: #f8f9fa;
+    background: var(--card-bg-subtle, #f8f9fa);
 }
 
 .file-upload-area:hover {
-    border-color: #3e7df5;
-    background: #f0f4ff;
+    border-color: var(--blue, #3e7df5);
+    background: var(--card-bg);
 }
 
 .file-selected,

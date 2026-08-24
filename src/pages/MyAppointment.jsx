@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MyAppointment.css";
 import instance from "../api/axios";
+import { useLanguage } from "../context/LanguageContext";
 
 import {
   Box,
@@ -15,8 +16,9 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import SearchIcon from "@mui/icons-material/Search";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
 import AppointmentCard from "../components/AppointmentCard";
 
 // ─── EmptyState ───────────────────────────────────────────────────────────────
@@ -26,7 +28,7 @@ function EmptyState({ label }) {
     <div className="empty-state">
       <div className="empty-state-icon">📭</div>
       <Typography className="empty-state-title">
-        No {label} appointments
+        No {label} appointments found
       </Typography>
     </div>
   );
@@ -38,13 +40,26 @@ export default function MyAppointment() {
   const [myAppointments, setMyAppointments] = useState([]);
   const [value, setValue] = useState("1");
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
+  const { t } = useLanguage();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAppointments = async () => {
-      const res = await instance.get("/appointments/my-appointements");
-      setMyAppointments(res.data.appointments);
+      try {
+        setLoading(true);
+        const res = await instance.get("/appointments/my-appointements");
+        if (res.data?.appointments && Array.isArray(res.data.appointments)) {
+          setMyAppointments(res.data.appointments);
+        } else if (Array.isArray(res.data)) {
+          setMyAppointments(res.data);
+        }
+      } catch (err) {
+        console.error("Error loading appointments", err);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchAppointments();
   }, []);
@@ -53,46 +68,75 @@ export default function MyAppointment() {
     setValue(newValue);
   };
 
-  // ── Filter by date ──
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const getSafeDateStr = (dateVal) => {
+    if (!dateVal) return "";
+    try {
+      const d = new Date(dateVal);
+      if (isNaN(d.getTime())) return "";
+      return d.toISOString().split("T")[0];
+    } catch {
+      return "";
+    }
+  };
+
+  const todayStr = new Date().toISOString().split("T")[0];
 
   const filterBySearch = (list) =>
-    list.filter((a) =>
-      a.doctorId?.name?.toLowerCase().includes(search.toLowerCase()),
-    );
+    list.filter((a) => {
+      const name = a?.doctorId?.name || a?.doctorName || "";
+      const spec = a?.doctorId?.specialization || a?.doctorId?.speciality || "";
+      const q = search.toLowerCase();
+      return name.toLowerCase().includes(q) || spec.toLowerCase().includes(q);
+    });
 
   const upcoming = filterBySearch(
     myAppointments.filter((a) => {
-      const appointmentDateStr = new Date(a.date).toISOString().split("T")[0];
-      const todayStr = new Date().toISOString().split("T")[0];
-      return appointmentDateStr >= todayStr;
-    }),
+      const dateStr = getSafeDateStr(a?.date || a?.createdAt);
+      return !dateStr || dateStr >= todayStr;
+    })
   );
 
   const past = filterBySearch(
     myAppointments.filter((a) => {
-      const appointmentDateStr = new Date(a.date).toISOString().split("T")[0];
-      const todayStr = new Date().toISOString().split("T")[0];
-      return appointmentDateStr < todayStr;
-    }),
+      const dateStr = getSafeDateStr(a?.date || a?.createdAt);
+      return dateStr && dateStr < todayStr;
+    })
   );
 
   return (
     <div className="my-appointment-page">
       {/* ── Sticky Header ── */}
       <div className="my-appointment-header">
-        <div className="fb-header">
-          <div>
-            <h1 className="fb-title">Give Feedback</h1>
-            <p className="fb-subtitle">Your voice shapes DelhiMed 🚀</p>
-          </div>
+        <div className="my-appointment-top-nav">
+          <IconButton
+            className="my-appointment-back-btn"
+            onClick={() => navigate(-1)}
+            aria-label="Back"
+          >
+            <ArrowBackIosNewRoundedIcon sx={{ fontSize: 18 }} />
+          </IconButton>
+
+          <IconButton
+            className="my-appointment-home-btn"
+            onClick={() => navigate("/home")}
+            aria-label="Home"
+          >
+            <HomeOutlinedIcon sx={{ fontSize: 20 }} />
+          </IconButton>
+        </div>
+
+        <div style={{ marginBottom: "12px" }}>
+          <p className="greeting-text">
+            <CalendarMonthRoundedIcon sx={{ fontSize: 14, verticalAlign: "middle", mr: 0.5, color: "var(--blue)" }} />
+            DelhiMed Healthcare
+          </p>
+          <h1 className="page-title">{t("myAppointments", "My Appointments")}</h1>
         </div>
 
         {/* ── Search ── */}
         <div className="search-wrapper">
           <TextField
-            placeholder="Search for doctor..."
+            placeholder="Search by doctor or speciality..."
             size="small"
             fullWidth
             value={search}
@@ -100,19 +144,28 @@ export default function MyAppointment() {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon sx={{ fontSize: 18, color: "#7a8799" }} />
+                  <SearchIcon sx={{ fontSize: 18, color: "var(--text-muted)" }} />
                 </InputAdornment>
               ),
             }}
           />
         </div>
+      </div>
 
-        {/* ── Tabs ── */}
+      {/* ── Tabs & Content ── */}
+      <div className="my-appointment-content">
         <TabContext value={value}>
           <TabList onChange={handleTabChange} className="appointment-tabs">
-            <Tab label="Upcoming" value="1" className="appointment-tab" />
-            <Tab label="Past" value="2" className="appointment-tab" />
-            {/* <Tab label="Cancelled" value="3" className="appointment-tab" /> */}
+            <Tab
+              label={`${t("upcoming", "Upcoming")} (${upcoming.length})`}
+              value="1"
+              className="appointment-tab"
+            />
+            <Tab
+              label={`${t("past", "Past")} (${past.length})`}
+              value="2"
+              className="appointment-tab"
+            />
           </TabList>
 
           {/* ── Panels ── */}
@@ -121,8 +174,8 @@ export default function MyAppointment() {
               {upcoming.length === 0 ? (
                 <EmptyState label="upcoming" />
               ) : (
-                upcoming.map((a) => (
-                  <AppointmentCard key={a._id} appointment={a} />
+                upcoming.map((a, idx) => (
+                  <AppointmentCard key={a._id || idx} appointment={a} />
                 ))
               )}
             </TabPanel>
@@ -131,13 +184,11 @@ export default function MyAppointment() {
               {past.length === 0 ? (
                 <EmptyState label="past" />
               ) : (
-                past.map((a) => <AppointmentCard key={a._id} appointment={a} />)
+                past.map((a, idx) => (
+                  <AppointmentCard key={a._id || idx} appointment={a} />
+                ))
               )}
             </TabPanel>
-
-            {/* <TabPanel value="3" sx={{ p: 0 }}>
-              <EmptyState label="cancelled" />
-            </TabPanel> */}
           </Box>
         </TabContext>
       </div>

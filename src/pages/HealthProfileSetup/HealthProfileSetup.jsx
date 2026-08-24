@@ -51,12 +51,11 @@ export default function HealthProfileSetup() {
   const [error, setError] = useState(null);
   const [prefilling, setPrefilling] = useState(true);
 
-  // Pre-fill with existing data if user already filled the form before
   useEffect(() => {
-    const fetchExisting = async (req, res) => {
+    const fetchExisting = async () => {
       try {
         const res = await instance.get("/healthProfile");
-        if (res.data.profile?.userProvided) {
+        if (res.data?.profile?.userProvided) {
           const u = res.data.profile.userProvided;
           setFormData({
             conditions: u.conditions || initialFormData.conditions,
@@ -69,11 +68,7 @@ export default function HealthProfileSetup() {
           });
         }
       } catch (err) {
-        setError("Failed to get user Health Profile.");
-        res
-          .status(500)
-          .json({ success: false, message: "Error in Fetch Health Profile" });
-        // No existing profile — use defaults
+        // No existing profile — start with initial clean form
       } finally {
         setPrefilling(false);
       }

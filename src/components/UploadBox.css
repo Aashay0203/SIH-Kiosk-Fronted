@@ -4,9 +4,12 @@
     padding: 48px 24px;
     max-width: 600px;
     margin: 0 auto;
-    background: #fff;
+    background: var(--card-bg, #ffffff);
+    color: var(--text-primary, #0f172a);
+    border: 1px solid var(--border, #dde3ea);
     border-radius: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-card);
+    transition: all var(--transition);
 }
 
 .illustration-box {
@@ -16,8 +19,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f0f4ff;
+    background: var(--card-bg-subtle, #f0f4ff);
     border-radius: 50%;
+    border: 1px solid var(--border);
 }
 
 .illustration-emoji {
@@ -25,10 +29,10 @@
 }
 
 .empty-state-heading {
-    font-weight: 600 !important;
+    font-weight: 700 !important;
     margin-bottom: 32px !important;
     font-size: 18px !important;
-    color: #000 !important;
+    color: var(--text-primary, #000) !important;
     line-height: 1.4 !important;
 }
 
@@ -53,32 +57,32 @@
 
 .benefit-icon {
     font-size: 24px !important;
-    color: #000 !important;
+    color: var(--blue, #3e7df5) !important;
     margin-top: 2px;
     flex-shrink: 0;
 }
 
 .benefit-text {
     font-size: 14px !important;
-    color: #666 !important;
+    color: var(--text-secondary, #666) !important;
     line-height: 1.6 !important;
+    font-weight: 600 !important;
 }
 
 .add-record-button {
-    background-color: #3e7df5 !important;
+    background: linear-gradient(135deg, var(--blue, #3e7df5), var(--blue-dark, #2d62d4)) !important;
     color: #fff !important;
     border-radius: 12px !important;
     padding: 14px 24px !important;
     text-transform: none !important;
-    font-weight: 600 !important;
+    font-weight: 800 !important;
     font-size: 16px !important;
     box-shadow: 0 4px 12px rgba(62, 125, 245, 0.3) !important;
     transition: all 0.3s ease !important;
 }
 
 .add-record-button:hover {
-    background-color: #2d62d4 !important;
-    box-shadow: 0 6px 16px rgba(62, 125, 245, 0.4) !important;
+    box-shadow: 0 6px 16px rgba(62, 125, 245, 0.45) !important;
     transform: translateY(-2px);
 }
 
@@ -95,18 +99,5 @@
     .illustration-box {
         width: 100px;
         height: 100px;
-    }
-
-    .illustration-emoji {
-        font-size: 56px !important;
-    }
-
-    .benefit-text {
-        font-size: 13px !important;
-    }
-
-    .add-record-button {
-        font-size: 15px !important;
-        padding: 12px 20px !important;
     }
 }

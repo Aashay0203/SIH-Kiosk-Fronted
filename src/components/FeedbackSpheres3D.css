@@ -1,0 +1,64 @@
+/* FeedbackSpheres3D.css */
+.feedback-spheres-3d-wrap {
+    width: 100%;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.spheres-label {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--text-muted, #94a3b8);
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+    font-family: 'Urbanist', sans-serif;
+}
+
+.spheres-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.sphere-3d-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 72px;
+    padding: 12px 6px;
+    border-radius: 18px;
+    background: var(--card-bg-subtle, #1e293b);
+    border: 1.5px solid var(--border, #243044);
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sphere-3d-btn:hover {
+    transform: translateY(-6px) scale(1.08);
+}
+
+.sphere-3d-btn.selected {
+    background: var(--card-bg, #151e2e);
+    transform: translateY(-6px) scale(1.12);
+}
+
+.sphere-emoji {
+    font-size: 28px;
+    line-height: 1;
+    transition: transform 0.2s ease;
+}
+
+.sphere-3d-btn:hover .sphere-emoji {
+    transform: scale(1.2) rotate(10deg);
+}
+
+.sphere-text {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--text-primary, #f1f5f9);
+    font-family: 'Nunito', sans-serif;
+}

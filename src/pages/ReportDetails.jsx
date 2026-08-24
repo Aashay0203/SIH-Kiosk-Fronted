@@ -27,6 +27,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import BoltIcon from "@mui/icons-material/Bolt";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import OpticalLabScanner from "../components/OpticalLabScanner.jsx";
 import "./ReportDetails.css";
 
 // ─── Reusable MetaItem ───────────────────────────────────────────────
@@ -411,6 +412,8 @@ function ReportDetails() {
           {/* ── Completed: show summary + test table ── */}
           {report.aiStatus === "completed" && report.aiSummary && !aiLoading ? (
             <Box className="rd-ai-complete-wrap">
+              <OpticalLabScanner reportTitle={report.fileName || "Lab Pathology Analysis"} />
+
               {tableRows.length > 0 ? (
                 <>
                   <Typography className="rd-ai-section-title">

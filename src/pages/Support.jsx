@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext";
+import AiMedicAvatar3D from "../components/AiMedicAvatar3D.jsx";
 import "./Support.css";
 
 const faqs = [
@@ -62,6 +64,7 @@ const contactOptions = [
 
 export default function Support() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [openIndex, setOpenIndex] = useState(null);
   const [search, setSearch] = useState("");
 
@@ -75,11 +78,17 @@ export default function Support() {
     <div className="sup-root">
       {/* Header */}
       <div className="sup-header">
+        <button className="sup-back-btn" onClick={() => navigate(-1)}>
+          ←
+        </button>
         <div>
-          <h1 className="sup-title">Help & Support</h1>
-          <p className="sup-subtitle">We're here for you 🙌</p>
+          <h1 className="sup-title">{t("helpAndSupport", "Help & Support")}</h1>
+          <p className="sup-subtitle">DelhiMed 24x7 Assistance</p>
         </div>
       </div>
+
+      {/* 3D AI Medic Avatar */}
+      <AiMedicAvatar3D />
 
       {/* Search */}
       <div className="sup-search-wrap">

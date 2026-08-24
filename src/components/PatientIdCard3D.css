@@ -1,0 +1,304 @@
+/* PatientIdCard3D.css */
+.id-card-3d-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.id-card-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.id-card-ctrl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border, #243044);
+    background: var(--card-bg, #151e2e);
+    color: var(--text-primary, #f1f5f9);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.id-card-ctrl-btn:hover {
+    background: var(--blue-light, rgba(56, 189, 248, 0.14));
+    border-color: var(--blue, #38bdf8);
+    color: var(--blue, #38bdf8);
+    transform: translateY(-1px);
+}
+
+.id-card-perspective-container {
+    perspective: 1200px;
+    width: 100%;
+    max-width: 440px;
+    height: 260px;
+    cursor: grab;
+}
+
+.id-card-perspective-container:active {
+    cursor: grabbing;
+}
+
+.id-card-3d-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    border-radius: 22px;
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.id-card-3d-inner.flipped {
+    transform: rotateY(180deg);
+}
+
+.id-card-face {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 22px;
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+/* Front Face */
+.id-card-front {
+    background: linear-gradient(135deg, #131b2e 0%, #1e293b 50%, #0f172a 100%);
+    border: 1.5px solid rgba(56, 189, 248, 0.3);
+    color: #f1f5f9;
+}
+
+.id-card-hologram-glare {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    mix-blend-mode: overlay;
+    z-index: 10;
+}
+
+.id-card-top-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 2;
+}
+
+.id-card-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.id-card-chip {
+    width: 32px;
+    height: 24px;
+    border-radius: 5px;
+    background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+    border: 1px solid rgba(0,0,0,0.3);
+    box-shadow: inset 0 0 4px rgba(0,0,0,0.4);
+}
+
+.id-card-brand-name {
+    display: block;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 16px;
+    font-weight: 900;
+    color: #38bdf8;
+    letter-spacing: 0.04em;
+    line-height: 1;
+}
+
+.id-card-brand-sub {
+    font-size: 10px;
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+.id-card-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: #34d399;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.id-card-center-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 2;
+    margin: 8px 0;
+}
+
+.id-card-avatar {
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #38bdf8, #2563eb);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: #ffffff;
+    border: 2px solid rgba(255,255,255,0.4);
+    box-shadow: 0 6px 16px rgba(56, 189, 248, 0.35);
+}
+
+.id-card-patient-meta {
+    flex: 1;
+}
+
+.id-card-patient-name {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0 0 2px;
+    color: #ffffff;
+}
+
+.id-card-patient-id {
+    font-size: 12px;
+    font-family: monospace;
+    font-weight: 700;
+    color: #38bdf8;
+    margin: 0 0 8px;
+    letter-spacing: 0.05em;
+}
+
+.id-card-tags {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.id-tag {
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 11px;
+    font-weight: 700;
+    color: #cbd5e1;
+}
+
+.id-tag-blood {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: rgba(244, 63, 94, 0.2);
+    color: #fb7185;
+    border: 1px solid rgba(244, 63, 94, 0.4);
+}
+
+.id-card-bottom-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 10px;
+    z-index: 2;
+}
+
+.stat-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #64748b;
+    letter-spacing: 0.04em;
+}
+
+.stat-value {
+    font-size: 12px;
+    font-weight: 700;
+    color: #e2e8f0;
+}
+
+/* Back Face */
+.id-card-back {
+    background: linear-gradient(135deg, #0b1120 0%, #151e2e 100%);
+    border: 1.5px solid rgba(56, 189, 248, 0.3);
+    transform: rotateY(180deg);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #f1f5f9;
+}
+
+.id-card-back-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 6px;
+}
+
+.id-card-qr-container {
+    padding: 8px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+}
+
+.id-card-barcode-wrap {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.id-card-barcode-lines {
+    width: 180px;
+    height: 18px;
+    background: repeating-linear-gradient(
+        90deg,
+        #cbd5e1 0px,
+        #cbd5e1 2px,
+        transparent 2px,
+        transparent 4px,
+        #cbd5e1 4px,
+        #cbd5e1 7px,
+        transparent 7px,
+        transparent 9px
+    );
+    border-radius: 2px;
+}
+
+.id-card-barcode-number {
+    font-family: monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: #94a3b8;
+    margin-top: 2px;
+    letter-spacing: 0.1em;
+}
+
+.id-card-back-note {
+    font-size: 10px;
+    color: #64748b;
+    margin-top: 6px;
+    font-weight: 600;
+}

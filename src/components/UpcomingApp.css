@@ -1,14 +1,16 @@
 .upcoming-box {
     width: 100%;
     max-width: 1200px;
-    background: #CDE8ED;
+    background: var(--card-bg, #ffffff);
+    color: var(--text-primary, #0f172a);
+    border: 1px solid var(--border, #dde3ea);
     border-radius: var(--radius-card, 24px);
-    padding: 16px;
-    box-shadow: var(--shadow, 0 12px 48px rgba(62, 125, 245, 0.10));
+    padding: 20px;
+    box-shadow: var(--shadow-card);
     font-family: 'Nunito', sans-serif;
     flex: 1;
     margin: 20px auto;
-
+    transition: all var(--transition);
 }
 
 .upcoming-box-header {
@@ -22,7 +24,7 @@
     font-family: 'Urbanist', sans-serif;
     font-size: 17px;
     font-weight: 800;
-    color: var(--black, #010101);
+    color: var(--text-primary, #010101);
     margin: 0;
 }
 
@@ -30,6 +32,7 @@
     text-align: center;
     color: var(--text-muted, #7a8799);
     font-size: 14px;
+    font-weight: 600;
     padding: 24px 0;
     margin: 0;
 }

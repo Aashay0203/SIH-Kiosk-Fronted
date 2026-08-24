@@ -1,0 +1,36 @@
+/* MedicalCoreOrb3D.css */
+.medical-core-orb-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    height: 180px;
+    margin: 0 auto 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.core-orb-canvas-box {
+    width: 100%;
+    height: 150px;
+    position: relative;
+    cursor: pointer;
+}
+
+.core-orb-badge {
+    position: absolute;
+    bottom: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: #34d399;
+    font-size: 11px;
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    letter-spacing: 0.03em;
+}

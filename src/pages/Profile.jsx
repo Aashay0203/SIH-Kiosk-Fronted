@@ -17,7 +17,8 @@ import {
   Chip,
   Tooltip,
 } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
@@ -32,9 +33,11 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import LockIcon from "@mui/icons-material/Lock";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import { AuthContext } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext";
 import instance from "../api/axios";
-import PatientIdCard from "../components/PatientIdCard.jsx";
+import PatientIdCard3D from "../components/PatientIdCard3D.jsx";
 import "./Profile.css";
 
 const GENDER_OPTIONS = ["Male", "Female", "Other", "Prefer not to say"];
@@ -57,6 +60,8 @@ const inputSx = {
     borderRadius: "10px",
     fontFamily: "Nunito",
     fontSize: 14,
+    color: "var(--text-primary)",
+    backgroundColor: "var(--card-bg-subtle)",
     "& fieldset": { borderColor: "var(--border)" },
     "&:hover fieldset": { borderColor: "var(--blue)" },
     "&.Mui-focused fieldset": { borderColor: "var(--blue)" },
@@ -71,7 +76,7 @@ const InfoRow = ({ icon, label, value, locked, children, showDivider }) => (
       <div className="profile-info-row__text">
         <div className="profile-info-row__label-wrap">
           <Typography className="profile-info-label">{label}</Typography>
-          {locked && <LockIcon sx={{ fontSize: 10, color: "#b0bac5" }} />}
+          {locked && <LockIcon sx={{ fontSize: 10, color: "var(--text-muted)" }} />}
         </div>
         {children || (
           <Typography
@@ -87,14 +92,20 @@ const InfoRow = ({ icon, label, value, locked, children, showDivider }) => (
 
 const Profile = () => {
   const { user: authUser } = useContext(AuthContext);
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState(authUser || null);
   const [healthData, setHealthData] = useState(null);
   const [editMode, setEditMode] = useState(false);
-  const [editForm, setEditForm] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [editForm, setEditForm] = useState({
+    dob: authUser?.dob ? String(authUser.dob).split("T")[0] : "",
+    gender: authUser?.gender || "",
+    address: authUser?.address || "",
+    abhaId: authUser?.abhaId || "",
+  });
+  const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [uploadingPic, setUploadingPic] = useState(false);
   const [snack, setSnack] = useState({
@@ -111,16 +122,40 @@ const Profile = () => {
   const fetchProfile = async () => {
     try {
       const res = await instance.get("/user/profile");
-      const u = res.data.user;
-      setProfile(u);
-      setEditForm({
-        dob: u.dob ? u.dob.split("T")[0] : "",
-        gender: u.gender || "",
-        address: u.address || "",
-        abhaId: u.abhaId || "",
-      });
+      const u = res.data?.user || res.data?.profile || res.data || authUser;
+      if (u) {
+        setProfile(u);
+        setEditForm({
+          dob: u.dob ? String(u.dob).split("T")[0] : "",
+          gender: u.gender || "",
+          address: u.address || "",
+          abhaId: u.abhaId || "",
+        });
+      } else if (authUser) {
+        setProfile(authUser);
+        setEditForm({
+          dob: authUser.dob ? String(authUser.dob).split("T")[0] : "",
+          gender: authUser.gender || "",
+          address: authUser.address || "",
+          abhaId: authUser.abhaId || "",
+        });
+      }
     } catch {
-      showSnack("Failed to load profile", "error");
+      if (authUser) {
+        setProfile(authUser);
+        setEditForm({
+          dob: authUser.dob ? String(authUser.dob).split("T")[0] : "",
+          gender: authUser.gender || "",
+          address: authUser.address || "",
+          abhaId: authUser.abhaId || "",
+        });
+      } else {
+        setProfile({
+          name: "Patient",
+          phone: "Not linked",
+          email: "",
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -128,8 +163,8 @@ const Profile = () => {
 
   const fetchHealth = async () => {
     try {
-      const res = await instance.get("/user/profile");
-      setHealthData(res.data.profile);
+      const res = await instance.get("/healthProfile");
+      setHealthData(res.data?.profile || res.data || null);
     } catch {
       // health profile may not exist yet
     }
@@ -144,7 +179,7 @@ const Profile = () => {
       const res = await instance.patch("/user/profile", editForm);
       setProfile(res.data.user);
       setEditMode(false);
-      showSnack("Profile updated!");
+      showSnack("Profile updated successfully!");
     } catch {
       showSnack("Save failed. Try again.", "error");
     } finally {
@@ -196,6 +231,30 @@ const Profile = () => {
 
   const phone = profile?.phone || profile?.mobile;
 
+  const allergiesList = Array.isArray(healthData?.allergies)
+    ? healthData.allergies
+    : typeof healthData?.allergies === "string"
+    ? healthData.allergies.split(",").map((s) => s.trim()).filter(Boolean)
+    : Array.isArray(healthData?.userProvided?.allergies)
+    ? healthData.userProvided.allergies
+    : [];
+
+  const medsList = Array.isArray(healthData?.currentMedications)
+    ? healthData.currentMedications
+    : typeof healthData?.currentMedications === "string"
+    ? healthData.currentMedications.split(",").map((s) => s.trim()).filter(Boolean)
+    : Array.isArray(healthData?.userProvided?.medications)
+    ? healthData.userProvided.medications
+    : [];
+
+  const conditionsList = Array.isArray(healthData?.chronicConditions)
+    ? healthData.chronicConditions
+    : typeof healthData?.chronicConditions === "string"
+    ? healthData.chronicConditions.split(",").map((s) => s.trim()).filter(Boolean)
+    : Array.isArray(healthData?.userProvided?.conditions)
+    ? healthData.userProvided.conditions
+    : [];
+
   if (loading) {
     return (
       <div className="profile-root">
@@ -231,13 +290,26 @@ const Profile = () => {
 
   return (
     <div className="profile-root">
-      {/* ════ AppBar ════ */}
+      {/* ════ Top Navigation Bar ════ */}
       <AppBar position="sticky" elevation={0} className="profile-appbar">
         <Toolbar className="profile-toolbar">
-          <div className="fb-header">
-            <div>
-              <h1 className="fb-title">Profile</h1>
-              <p className="fb-subtitle">Your voice shapes DelhiMed 🚀</p>
+          <div className="profile-nav-left">
+            <IconButton
+              size="small"
+              onClick={() => navigate(-1)}
+              className="profile-back-btn"
+              aria-label="Back"
+            >
+              <ArrowBackIosNewRoundedIcon sx={{ fontSize: 18 }} />
+            </IconButton>
+
+            <div style={{ marginLeft: 6 }}>
+              <Typography className="profile-appbar-title">
+                {t("myProfiles", "My Profile")}
+              </Typography>
+              <Typography className="profile-appbar-sub">
+                {t("manageProfile", "Manage personal & medical data")}
+              </Typography>
             </div>
           </div>
 
@@ -257,7 +329,7 @@ const Profile = () => {
                 {saving ? (
                   <CircularProgress
                     size={14}
-                    sx={{ color: "var(--text-muted)" }}
+                    sx={{ color: "#fff" }}
                   />
                 ) : (
                   <SaveIcon sx={{ fontSize: 16 }} />
@@ -266,9 +338,11 @@ const Profile = () => {
               </div>
             </div>
           ) : (
-            <div className="profile-edit-btn" onClick={() => setEditMode(true)}>
-              <EditIcon sx={{ fontSize: 15 }} />
-              Edit
+            <div className="profile-appbar-actions">
+              <div className="profile-edit-btn" onClick={() => setEditMode(true)}>
+                <EditIcon sx={{ fontSize: 15 }} />
+                Edit
+              </div>
             </div>
           )}
         </Toolbar>
@@ -281,7 +355,7 @@ const Profile = () => {
           <div className="profile-avatar-section">
             <div className="profile-avatar-wrap">
               <Avatar src={profile?.profilePicture} className="profile-avatar">
-                {profile?.name?.charAt(0)?.toUpperCase()}
+                {profile?.name?.charAt(0)?.toUpperCase() || "U"}
               </Avatar>
               <div
                 className={`profile-camera-btn${uploadingPic ? " profile-camera-btn--uploading" : ""}`}
@@ -302,29 +376,31 @@ const Profile = () => {
               />
             </div>
             <Typography className="profile-avatar-name">
-              {profile?.name}
+              {profile?.name || "Patient"}
             </Typography>
-            <Typography className="profile-avatar-phone">{phone}</Typography>
-            <Chip
-              label={`ID: ${profile?.patientId}`}
-              size="small"
-              className="profile-patient-id-chip"
-            />
+            <Typography className="profile-avatar-phone">{phone || "No phone linked"}</Typography>
+            {profile?.patientId && (
+              <Chip
+                label={`ID: ${profile.patientId}`}
+                size="small"
+                className="profile-patient-id-chip"
+              />
+            )}
           </div>
         </div>
 
         {/* ── Patient ID Card ── */}
         <div className="profile-section-card profile-card--blue">
           <Typography className="profile-section-title">
-            Patient ID Card
+            Patient Smart Health ID Card (3D Hologram)
           </Typography>
-          <PatientIdCard
-            name={profile?.name}
-            patientId={profile?.patientId}
-            phone={phone}
-            bloodGroup={healthData?.bloodGroup}
-            abhaId={profile?.abhaId}
-            profilePicture={profile?.profilePicture}
+          <PatientIdCard3D
+            user={{
+              name: profile?.name,
+              patientId: profile?.patientId,
+              phone: phone,
+            }}
+            healthData={healthData}
           />
         </div>
 
@@ -441,12 +517,12 @@ const Profile = () => {
                     ABHA ID
                   </Typography>
                   <Tooltip
-                    title="Ayushman Bharat Health Account — India's national digital health ID issued by NHA. Linking it helps connect your records with government health services."
+                    title="Ayushman Bharat Health Account — India's national digital health ID issued by NHA."
                     arrow
                     placement="top"
                   >
                     <InfoOutlinedIcon
-                      sx={{ fontSize: 13, color: "#b0bac5", cursor: "help" }}
+                      sx={{ fontSize: 13, color: "var(--text-muted)", cursor: "help" }}
                     />
                   </Tooltip>
                 </div>
@@ -464,6 +540,7 @@ const Profile = () => {
                       "& .MuiFormHelperText-root": {
                         fontFamily: "Nunito",
                         fontSize: 11,
+                        color: "var(--text-muted)",
                       },
                     }}
                   />
@@ -472,7 +549,7 @@ const Profile = () => {
                     <Typography
                       className="profile-info-value"
                       sx={{
-                        color: profile?.abhaId ? "var(--black)" : "#b0bac5",
+                        color: profile?.abhaId ? "var(--text-primary)" : "var(--text-muted)",
                       }}
                     >
                       {profile?.abhaId || "Not linked"}
@@ -522,23 +599,23 @@ const Profile = () => {
                 </div>
               )}
 
-              {healthData.allergies?.length > 0 && (
+              {allergiesList.length > 0 && (
                 <div>
                   <Typography className="profile-chip-group-label">
                     ⚠️ Known Allergies
                   </Typography>
                   <div className="profile-chip-row">
-                    {healthData.allergies.slice(0, 4).map((a, i) => (
+                    {allergiesList.slice(0, 4).map((a, i) => (
                       <Chip
                         key={i}
-                        label={a}
+                        label={typeof a === "object" ? a.name || a.label || JSON.stringify(a) : String(a)}
                         size="small"
                         className="chip-allergy"
                       />
                     ))}
-                    {healthData.allergies.length > 4 && (
+                    {allergiesList.length > 4 && (
                       <Chip
-                        label={`+${healthData.allergies.length - 4} more`}
+                        label={`+${allergiesList.length - 4} more`}
                         size="small"
                         className="chip-more"
                       />
@@ -547,23 +624,23 @@ const Profile = () => {
                 </div>
               )}
 
-              {healthData.currentMedications?.length > 0 && (
+              {medsList.length > 0 && (
                 <div>
                   <Typography className="profile-chip-group-label">
                     💊 Current Medications
                   </Typography>
                   <div className="profile-chip-row">
-                    {healthData.currentMedications.slice(0, 3).map((m, i) => (
+                    {medsList.slice(0, 3).map((m, i) => (
                       <Chip
                         key={i}
-                        label={m}
+                        label={typeof m === "object" ? m.name || m.medicine || JSON.stringify(m) : String(m)}
                         size="small"
                         className="chip-medication"
                       />
                     ))}
-                    {healthData.currentMedications.length > 3 && (
+                    {medsList.length > 3 && (
                       <Chip
-                        label={`+${healthData.currentMedications.length - 3} more`}
+                        label={`+${medsList.length - 3} more`}
                         size="small"
                         className="chip-more"
                       />
@@ -572,16 +649,16 @@ const Profile = () => {
                 </div>
               )}
 
-              {healthData.chronicConditions?.length > 0 && (
+              {conditionsList.length > 0 && (
                 <div>
                   <Typography className="profile-chip-group-label">
                     🫀 Chronic Conditions
                   </Typography>
                   <div className="profile-chip-row">
-                    {healthData.chronicConditions.slice(0, 3).map((c, i) => (
+                    {conditionsList.slice(0, 3).map((c, i) => (
                       <Chip
                         key={i}
-                        label={c}
+                        label={typeof c === "object" ? c.name || c.condition || JSON.stringify(c) : String(c)}
                         size="small"
                         className="chip-condition"
                       />
@@ -596,7 +673,7 @@ const Profile = () => {
                 <span className="profile-health-empty__emoji">🏥</span>
               </div>
               <Typography className="profile-health-empty__title">
-                No health data yet
+                No health data recorded
               </Typography>
               <Typography className="profile-health-empty__sub">
                 Upload medical reports to generate your AI health summary

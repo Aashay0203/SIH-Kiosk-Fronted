@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import instance from "../api/axios";
 import PinModal from "../components/PinModal";
+import HospitalNetworkMesh3D from "../components/HospitalNetworkMesh3D";
 import "./AdminHome.css";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
@@ -118,6 +119,9 @@ export default function AdminHome() {
           </button>
         </nav>
       </header>
+
+      {/* 3D Hospital City Network Mesh */}
+      <HospitalNetworkMesh3D />
 
       <div
         className="ah-stats-bar"
