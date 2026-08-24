@@ -37,7 +37,7 @@ import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import { AuthContext } from "../context/AuthContext";
 import { useLanguage } from "../context/LanguageContext";
 import instance from "../api/axios";
-import PatientIdCard from "../components/PatientIdCard.jsx";
+import PatientIdCard3D from "../components/PatientIdCard3D.jsx";
 import "./Profile.css";
 
 const GENDER_OPTIONS = ["Male", "Female", "Other", "Prefer not to say"];
@@ -339,15 +339,15 @@ const Profile = () => {
         {/* ── Patient ID Card ── */}
         <div className="profile-section-card profile-card--blue">
           <Typography className="profile-section-title">
-            Patient Smart ID Card
+            Patient Smart Health ID Card (3D Hologram)
           </Typography>
-          <PatientIdCard
-            name={profile?.name}
-            patientId={profile?.patientId}
-            phone={phone}
-            bloodGroup={healthData?.bloodGroup}
-            abhaId={profile?.abhaId}
-            profilePicture={profile?.profilePicture}
+          <PatientIdCard3D
+            user={{
+              name: profile?.name,
+              patientId: profile?.patientId,
+              phone: phone,
+            }}
+            healthData={healthData}
           />
         </div>
 

@@ -1,20 +1,25 @@
-import IconButton from "@mui/material/IconButton";
-import Box from "@mui/material/Box";
-import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import ListItemText from "@mui/material/ListItemText";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import Avatar from "@mui/material/Avatar";
-import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
-import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
-import TranslateRoundedIcon from "@mui/icons-material/TranslateRounded";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { useTheme } from "../context/useTheme";
 import { useLanguage, LANGUAGES } from "../context/LanguageContext";
+import { playTap, playSwitch } from "../utils/audioFX";
+import Box from "@mui/material/Box";
+import ListItem from "@mui/material/ListItem";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import ListItemText from "@mui/material/ListItemText";
+import Avatar from "@mui/material/Avatar";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import {
+  Search,
+  Mic,
+  Sun,
+  Moon,
+  Home,
+  Globe,
+  Sparkles,
+} from "lucide-react";
 import "./Navbar.css";
 
 function Navbar({ onAvatarClick }) {
@@ -28,6 +33,7 @@ function Navbar({ onAvatarClick }) {
   const isLangMenuOpen = Boolean(langAnchorEl);
 
   const handleLangMenuOpen = (event) => {
+    playTap();
     setLangAnchorEl(event.currentTarget);
   };
 
@@ -36,8 +42,19 @@ function Navbar({ onAvatarClick }) {
   };
 
   const handleSelectLanguage = (code) => {
+    playTap();
     setLanguage(code);
     handleLangMenuClose();
+  };
+
+  const handleOpenCmd = () => {
+    playTap();
+    window.dispatchEvent(new CustomEvent("open-command-palette"));
+  };
+
+  const handleOpenVoice = () => {
+    playTap();
+    window.dispatchEvent(new CustomEvent("open-voice-assistant"));
   };
 
   const getInitials = (name = "") =>
@@ -68,6 +85,29 @@ function Navbar({ onAvatarClick }) {
       </ListItem>
 
       <Box className="navbar-controls-group">
+        {/* Spotlight Command Search Button */}
+        <button
+          className="navbar-cmd-btn"
+          onClick={handleOpenCmd}
+          aria-label="Open Command Menu"
+          title="Search or Jump to Any Page (Cmd+K)"
+        >
+          <Search size={15} />
+          <span className="navbar-cmd-label">Search...</span>
+          <kbd className="navbar-cmd-kbd">⌘K</kbd>
+        </button>
+
+        {/* AI Voice Assistant Mic Button */}
+        <button
+          className="navbar-voice-btn"
+          onClick={handleOpenVoice}
+          aria-label="AI Voice Assistant"
+          title="Speak Symptoms in 10 Languages"
+        >
+          <Mic size={16} />
+          <span className="navbar-voice-pulse" />
+        </button>
+
         {/* Language Selector Dropdown Button */}
         <button
           className="navbar-lang-pill"
@@ -77,7 +117,7 @@ function Navbar({ onAvatarClick }) {
         >
           <span className="navbar-lang-flag">{currentLangObj.flag}</span>
           <span className="navbar-lang-name">{currentLangObj.nativeName}</span>
-          <TranslateRoundedIcon sx={{ fontSize: 16, opacity: 0.8 }} />
+          <Globe size={14} className="opacity-70" />
         </button>
 
         {/* Language Selection Menu */}
@@ -109,7 +149,7 @@ function Navbar({ onAvatarClick }) {
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
           <Box className="navbar-lang-menu-header">
-            <TranslateRoundedIcon sx={{ fontSize: 16, color: "var(--blue)" }} />
+            <Sparkles size={14} className="text-sky-400" />
             <span>Select Indian Language</span>
           </Box>
           {LANGUAGES.map((lang) => (
@@ -145,32 +185,34 @@ function Navbar({ onAvatarClick }) {
         </Menu>
 
         {/* Theme Toggle Button (Dark / Light) */}
-        <IconButton
+        <button
           className="navbar-theme-btn"
-          onClick={toggleTheme}
+          onClick={() => {
+            playSwitch();
+            toggleTheme();
+          }}
           aria-label={t("themeToggle", "Toggle Theme")}
           title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
         >
           {isDark ? (
-            <LightModeRoundedIcon
-              sx={{ fontSize: 20, color: "#facc15", animation: "navbar-spin-in 0.3s ease" }}
-            />
+            <Sun size={18} className="text-amber-400 animate-spin-once" />
           ) : (
-            <DarkModeRoundedIcon
-              sx={{ fontSize: 20, color: "#3b82f6", animation: "navbar-spin-in 0.3s ease" }}
-            />
+            <Moon size={18} className="text-sky-500 animate-spin-once" />
           )}
-        </IconButton>
+        </button>
 
         {/* Home Navigation Button */}
-        <IconButton
+        <button
           className="my-appointment-home-btn"
-          onClick={() => navigate("/home")}
+          onClick={() => {
+            playTap();
+            navigate("/home");
+          }}
           aria-label={t("home", "Home")}
           title={t("home", "Home")}
         >
-          <HomeOutlinedIcon fontSize="small" />
-        </IconButton>
+          <Home size={18} />
+        </button>
       </Box>
     </Box>
   );

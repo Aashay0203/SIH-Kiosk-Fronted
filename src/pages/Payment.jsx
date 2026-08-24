@@ -4,6 +4,9 @@ import instance from "../api/axios";
 import { SuccessOverlay } from "../components/PaymentUtils";
 import { loadCashfreeScript } from "../utils/paymentScript";
 import { useLanguage } from "../context/LanguageContext";
+import { playTap, playSuccess } from "../utils/audioFX";
+import { fireCelebrationConfetti } from "../utils/confettiFX";
+import { toast } from "sonner";
 import "./Payment.css";
 import {
   CreditCardIcon,
@@ -109,6 +112,9 @@ export default function Payment() {
       setAppointmentNumber(res.data.appointmentNumber);
       setSuccessMethod("cashfree");
       setShowSuccess(true);
+      playSuccess();
+      fireCelebrationConfetti();
+      toast.success("Payment Successful! Token Generated.");
     } catch (err) {
       console.error("Cashfree payment failed:", err);
       setError(
@@ -132,6 +138,9 @@ export default function Payment() {
       setAppointmentNumber(res.data.appointmentNumber);
       setSuccessMethod("cash");
       setShowSuccess(true);
+      playSuccess();
+      fireCelebrationConfetti();
+      toast.success("Appointment Confirmed at Clinic!");
     } catch (err) {
       console.error("Cash confirm failed:", err);
       setError(
@@ -145,6 +154,7 @@ export default function Payment() {
 
   // ── PAY BUTTON HANDLER ────────────────────
   const handlePay = () => {
+    playTap();
     if (selectedMethod === "cashfree") handleCashfree();
     else if (selectedMethod === "cash") handleCash();
   };

@@ -1,11 +1,14 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthProvider";
 import { ThemeProvider } from "./context/ThemeContext";
 import { LanguageProvider } from "./context/LanguageContext";
 import { Box, CircularProgress } from "@mui/material";
+import { Toaster } from "sonner";
 import AppLayout from "./components/Applayout.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import CommandPalette from "./components/CommandPalette.jsx";
+import VoiceAssistantModal from "./components/VoiceAssistantModal.jsx";
 
 const Login = lazy(() => import("./pages/Login.jsx"));
 const Signup = lazy(() => import("./pages/Signup"));
@@ -52,11 +55,45 @@ function PageLoader() {
 }
 
 export default function App() {
+  const [cmdOpen, setCmdOpen] = useState(false);
+  const [voiceOpen, setVoiceOpen] = useState(false);
+
+  useEffect(() => {
+    const handleOpenCmd = () => setCmdOpen(true);
+    const handleOpenVoice = () => setVoiceOpen(true);
+
+    window.addEventListener("open-command-palette", handleOpenCmd);
+    window.addEventListener("open-voice-assistant", handleOpenVoice);
+
+    return () => {
+      window.removeEventListener("open-command-palette", handleOpenCmd);
+      window.removeEventListener("open-voice-assistant", handleOpenVoice);
+    };
+  }, []);
+
   return (
     <BrowserRouter>
       <ThemeProvider>
         <LanguageProvider>
           <AuthProvider>
+            <Toaster
+              position="top-center"
+              theme="system"
+              richColors
+              toastOptions={{
+                style: {
+                  background: "var(--card-bg, #151e2e)",
+                  border: "1px solid var(--border, #243044)",
+                  color: "var(--text-primary, #f1f5f9)",
+                  borderRadius: "14px",
+                  boxShadow: "0 12px 36px rgba(0,0,0,0.35)",
+                },
+              }}
+            />
+
+            <CommandPalette open={cmdOpen} onOpenChange={setCmdOpen} />
+            <VoiceAssistantModal open={voiceOpen} onClose={() => setVoiceOpen(false)} />
+
             <Suspense fallback={<PageLoader />}>
               <Routes>
                 <Route path="/" element={<Navigate to="/login" />} />

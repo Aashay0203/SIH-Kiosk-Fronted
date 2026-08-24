@@ -5,6 +5,8 @@ import "./AppointmentBook.css";
 import timeUtils from "../utils/TimeUtils.jsx";
 import { CalendarIcon } from "../utils/Icon";
 import { useLanguage } from "../context/LanguageContext";
+import { playTap, playChime } from "../utils/audioFX";
+import { toast } from "sonner";
 
 const ACTIVE_DAYS = [1, 2, 3, 4, 5, 6];
 const DAYS_TO_SHOW = 7;
@@ -308,7 +310,10 @@ export default function AppointmentBook({ activeDays = ACTIVE_DAYS }) {
                 <button
                   key={item.isoDate}
                   className={`ab-date-btn${isSelected ? " ab-date-btn--selected" : ""}${isToday ? " ab-date-btn--today" : ""}`}
-                  onClick={() => setSelectedDate(item)}
+                  onClick={() => {
+                    playTap();
+                    setSelectedDate(item);
+                  }}
                   aria-pressed={isSelected}
                   aria-label={`${item.weekday} ${item.day} ${item.month}${isToday ? ", today" : ""}`}
                 >
