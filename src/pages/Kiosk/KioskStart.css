@@ -1,0 +1,192 @@
+/* KioskStart.css
+   Reuses global tokens already defined in the SaharaMed design system
+   (--bg, --card-bg, --blue, --blue-dark, --blue-light, --green, --black,
+   --text-muted, --border, --error-bg, --error-text). Not redeclared here. */
+
+.mk-start-root {
+    background: var(--bg);
+    min-height: 100vh;
+    padding: 24px;
+}
+
+.mk-start-container {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.mk-start-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+    margin: 20px 0 28px;
+}
+
+.mk-start-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    margin-bottom: 6px;
+}
+
+.mk-start-title {
+    font-family: "Urbanist", sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    color: var(--black);
+    margin: 0;
+}
+
+.mk-start-subtitle {
+    font-family: "Nunito", sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 0;
+    max-width: 320px;
+    line-height: 1.5;
+}
+
+.mk-start-divider {
+    width: 56px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--blue);
+    margin-top: 10px;
+}
+
+.mk-start-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 12px 48px rgba(62, 125, 245, 0.10);
+    margin-bottom: 20px;
+}
+
+.mk-start-card-label {
+    font-family: "Urbanist", sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    color: var(--black);
+    margin: 0 0 14px;
+}
+
+.mk-start-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.mk-start-chip {
+    font-family: "Nunito", sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 1.5px solid var(--blue);
+    background: #ffffff;
+    color: var(--blue);
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mk-start-chip.active {
+    background: var(--blue);
+    color: #ffffff;
+}
+
+.mk-start-mode-toggle {
+    display: flex;
+    gap: 8px;
+    background: var(--bg);
+    padding: 6px;
+    border-radius: 14px;
+}
+
+.mk-start-mode-btn {
+    flex: 1;
+    font-family: "Nunito", sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mk-start-mode-btn.active {
+    background: var(--blue);
+    color: #ffffff;
+}
+
+.mk-start-mode-hint {
+    font-family: "Nunito", sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: 10px 2px 0;
+}
+
+.mk-start-consent-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.mk-start-consent-text {
+    font-family: "Nunito", sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.mk-start-consent-text a {
+    color: var(--blue);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.mk-start-btn {
+    width: 100%;
+    background: var(--black);
+    color: #ffffff;
+    font-family: "Nunito", sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mk-start-btn:hover {
+    opacity: 0.9;
+}
+
+.mk-start-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+    .mk-start-root {
+        padding: 16px;
+    }
+}

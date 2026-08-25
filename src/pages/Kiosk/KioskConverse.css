@@ -1,0 +1,209 @@
+/* KioskConverse.css — reuses global design tokens, no redeclaration */
+
+.mk-converse-root {
+    background: var(--bg);
+    min-height: 100vh;
+    padding: 24px;
+}
+
+.mk-converse-container {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.mk-converse-progress {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin: 20px 0;
+}
+
+.mk-converse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--border);
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mk-converse-dot.filled {
+    width: 22px;
+    background: var(--blue);
+}
+
+/* Safety-critical alert — uses the system's existing error tokens
+   rather than the restricted brand palette, since a red-flag symptom
+   warning needs to read as urgent, not on-brand. Flag to the team if
+   you'd rather this stayed blue/black. */
+.mk-converse-redflag {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--error-bg);
+    color: var(--error-text);
+    border-radius: 16px;
+    padding: 14px 16px;
+    font-family: "Nunito", sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+.mk-converse-question-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 22px;
+    box-shadow: 0 12px 48px rgba(62, 125, 245, 0.10);
+    margin-bottom: 16px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.mk-converse-ai-avatar {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Urbanist", sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+}
+
+.mk-converse-question-text {
+    font-family: "Urbanist", sans-serif;
+    font-weight: 800;
+    font-size: 17px;
+    color: var(--black);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.mk-converse-transcript {
+    max-height: 160px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mk-converse-turn {
+    font-family: "Nunito", sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+}
+
+.mk-converse-turn.patient {
+    background: var(--blue-light);
+    color: var(--black);
+    align-self: flex-end;
+}
+
+.mk-converse-mcq-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.mk-converse-mcq-chip {
+    font-family: "Nunito", sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 1.5px solid var(--blue);
+    background: #ffffff;
+    color: var(--blue);
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mk-converse-mcq-chip:hover {
+    background: var(--blue-light);
+}
+
+.mk-converse-voice-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.mk-converse-mic-btn {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    border: none;
+    background: var(--black);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mk-converse-mic-btn.recording {
+    background: var(--blue);
+    animation: mk-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes mk-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(62, 125, 245, 0.45);
+    }
+
+    70% {
+        box-shadow: 0 0 0 18px rgba(62, 125, 245, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(62, 125, 245, 0);
+    }
+}
+
+.mk-converse-mic-label {
+    font-family: "Nunito", sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.mk-converse-continue-btn {
+    width: 100%;
+    background: var(--black);
+    color: #ffffff;
+    font-family: "Nunito", sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mk-converse-continue-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+    .mk-converse-root {
+        padding: 16px;
+    }
+}

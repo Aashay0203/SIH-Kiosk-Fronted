@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import "./Home.css";
 import MedicationBox from "../components/MedicationBox";
 import UpcomingAppBox from "../components/UpcomingApp";
+import KioskAppointmentBanner from "../components/KioskAppointmentBanner.jsx";
 
 function Home() {
   const [doctors, setDoctors] = useState([]);
@@ -49,6 +50,8 @@ function Home() {
   return (
     <div className="home-root">
       <div className="home-content">
+        <KioskAppointmentBanner />
+
         <div className="home-hero">
           <h1 className="home-hero-heading">
             Find the Perfect Doctor for{" "}

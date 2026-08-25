@@ -32,6 +32,10 @@ const GiveFeedback = lazy(() => import("./pages/GiveFeedback.jsx"));
 const DoctorProfile = lazy(() => import("./pages/DoctorProfile.jsx"));
 const NotFound = lazy(() => import("./pages/NotFound.jsx"));
 const LegalPages = lazy(() => import("./pages/LegalPages.jsx"));
+const KioskStart = lazy(() => import("./pages/Kiosk/KioskStart.jsx"));
+const KioskConverse = lazy(() => import("./pages/Kiosk/KioskConverse.jsx"));
+const KioskDocUpload = lazy(() => import("./pages/Kiosk/KioskDocUpload.jsx"));
+const KioskSummary = lazy(() => import("./pages/Kiosk/KioskSummary.jsx"));
 
 function PageLoader() {
   return (
@@ -90,6 +94,19 @@ export default function App() {
                 <Route path="/support" element={<Support />} />
                 <Route path="/feedback" element={<GiveFeedback />} />
                 <Route path="/terms" element={<LegalPages />} />
+                <Route path="/kiosk/start" element={<KioskStart />} />
+                <Route
+                  path="/kiosk/:sessionId/converse"
+                  element={<KioskConverse />}
+                />
+                <Route
+                  path="/kiosk/:sessionId/docs"
+                  element={<KioskDocUpload />}
+                />
+                <Route
+                  path="/kiosk/:sessionId/summary"
+                  element={<KioskSummary />}
+                />
               </Route>
             </Route>
             <Route path="*" element={<NotFound />} />

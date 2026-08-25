@@ -1,0 +1,122 @@
+.kab-banner {
+    position: relative;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: 0 12px 48px rgba(62, 125, 245, 0.1);
+    padding: 20px 20px 20px 24px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.kab-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 999px;
+    background: var(--bg);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.kab-close-btn:hover {
+    background: var(--border);
+    color: var(--black);
+}
+
+.kab-content {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+    min-width: 0;
+}
+
+.kab-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    background: var(--blue-light);
+    color: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.kab-text {
+    min-width: 0;
+}
+
+.kab-title {
+    font-family: "Urbanist", sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--black);
+    margin: 0 0 2px 0;
+}
+
+.kab-subtitle {
+    font-family: "Nunito", sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.kab-cta-btn {
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    font-family: "Nunito", sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 10px 22px;
+    cursor: pointer;
+    white-space: nowrap;
+    min-width: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.kab-cta-btn:hover {
+    background: var(--blue-dark);
+    transform: translateY(-1px);
+}
+
+.kab-cta-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.kab-error {
+    width: 100%;
+    order: 3;
+    margin-top: 8px;
+}
+
+@media (max-width: 480px) {
+    .kab-banner {
+        flex-wrap: wrap;
+        padding: 18px 18px 18px 20px;
+    }
+
+    .kab-cta-btn {
+        width: 100%;
+    }
+}
