@@ -43,7 +43,7 @@
 }
 
 .ab-back-btn:hover {
-    color: var(--black);
+    color: var(--blue);
 }
 
 .ab-back-btn:focus-visible {
@@ -70,7 +70,7 @@
     font-family: 'Urbanist', sans-serif;
     font-size: 22px;
     font-weight: 800;
-    color: var(--black);
+    color: var(--text-primary);
     margin: 0;
     line-height: 1.2;
 }
@@ -94,16 +94,16 @@
     height: 88px;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid var(--blue-light);
+    border: 3px solid rgba(56, 189, 248, 0.4);
     flex-shrink: 0;
-    box-shadow: 0 4px 16px rgba(62, 125, 245, 0.18);
+    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.2);
     will-change: transform;
     transition: transform var(--transition), box-shadow var(--transition);
 }
 
 .ab-avatar-frame:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(62, 125, 245, 0.25);
+    box-shadow: 0 8px 24px rgba(56, 189, 248, 0.35);
 }
 
 .ab-avatar {
@@ -124,36 +124,45 @@
 }
 
 .ab-vital-card {
-    background: var(--bg);
+    background: var(--card-bg-subtle, rgba(30, 41, 59, 0.5));
     border-radius: var(--radius-btn);
     padding: 12px 8px;
     text-align: center;
-    border: 1.5px solid transparent;
+    border: 1px solid var(--border);
     transition: border-color var(--transition), background var(--transition), transform var(--transition), box-shadow var(--transition);
     will-change: transform;
 }
 
 .ab-vital-card:hover {
-    border-color: var(--blue-light);
-    background: var(--blue-light);
+    border-color: var(--blue);
+    background: var(--card-bg);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(62, 125, 245, 0.12);
+    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.15);
 }
 
 .ab-vital-card--rating {
-    background: linear-gradient(135deg, var(--blue-light), rgba(62, 125, 245, 0.06));
-    border-color: var(--blue-light);
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.35);
+}
+
+.ab-vital-card--rating .ab-vital-val {
+    color: #fbbf24;
 }
 
 .ab-vital-card--time {
-    background: linear-gradient(135deg, #DCE9FF, rgba(62, 125, 245, 0.08));
+    background: rgba(56, 189, 248, 0.12);
+    border-color: rgba(56, 189, 248, 0.35);
+}
+
+.ab-vital-card--time .ab-vital-val {
+    color: var(--blue, #38bdf8);
 }
 
 .ab-vital-val {
     font-family: 'Urbanist', sans-serif;
     font-size: 17px;
     font-weight: 800;
-    color: var(--black);
+    color: var(--text-primary);
     margin: 0 0 3px;
     line-height: 1;
 }
@@ -203,7 +212,7 @@
     font-family: 'Urbanist', sans-serif;
     font-size: 16px;
     font-weight: 800;
-    color: var(--black);
+    color: var(--text-primary);
     margin: 0;
 }
 
@@ -292,7 +301,7 @@
     font-family: 'Urbanist', sans-serif;
     font-size: 20px;
     font-weight: 800;
-    color: var(--black);
+    color: var(--text-primary);
     line-height: 1;
 }
 
@@ -330,14 +339,15 @@
     color: var(--text-muted);
     margin: 0;
     padding: 11px 14px;
-    background: var(--bg);
+    background: var(--card-bg-subtle, rgba(30, 41, 59, 0.5));
     border-radius: var(--radius-input);
+    border: 1px solid var(--border);
     border-left: 3px solid var(--blue);
     line-height: 1.5;
 }
 
 .ab-clinic-note strong {
-    color: var(--black);
+    color: var(--text-primary);
 }
 
 /* ─────────────────────────────────────────────────────────── */
@@ -417,7 +427,7 @@
     font-family: 'Urbanist', sans-serif;
     font-size: 20px;
     font-weight: 800;
-    color: var(--black);
+    color: var(--text-primary);
     margin: 0;
 }
 

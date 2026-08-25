@@ -1,26 +1,91 @@
 /* KioskDocUpload.css — reuses global design tokens, no redeclaration */
 
 .mk-docs-root {
+    position: relative;
     background: var(--bg);
     min-height: 100vh;
-    padding: 24px;
+    padding: 32px 24px 64px;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* Large, soft overlapping decorative circles — quiet premium accent,
+   sits behind the content, never competes with it. Mirrors KioskConverse. */
+.mk-docs-root::before,
+.mk-docs-root::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.mk-docs-root::before {
+    width: 360px;
+    height: 360px;
+    top: -140px;
+    right: -120px;
+    background: #ffffff;
+    border: 1px solid var(--green);
+    opacity: 0.6;
+}
+
+.mk-docs-root::after {
+    width: 260px;
+    height: 260px;
+    bottom: -100px;
+    left: -100px;
+    background: var(--blue-light);
+    opacity: 0.5;
 }
 
 .mk-docs-container {
+    position: relative;
     max-width: 480px;
     margin: 0 auto;
 }
 
+.pn-top-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+}
+
+.pn-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: "Nunito", sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text-muted);
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pn-nav-btn:hover {
+    color: var(--blue);
+    border-color: var(--blue-light);
+    background: var(--blue-light);
+}
+
 .mk-docs-header {
-    margin: 20px 0 20px;
+    margin: 4px 0 28px;
 }
 
 .mk-docs-title {
     font-family: "Urbanist", sans-serif;
     font-weight: 800;
-    font-size: 22px;
+    font-size: 26px;
     color: var(--black);
-    margin: 0 0 6px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
 }
 
 .mk-docs-subtitle {
@@ -29,51 +94,55 @@
     font-size: 14px;
     color: var(--text-muted);
     margin: 0;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .mk-docs-dropzone {
     background: var(--card-bg);
     border: 2px dashed var(--blue);
     border-radius: 24px;
-    padding: 32px 20px;
+    padding: 40px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     text-align: center;
     cursor: pointer;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .mk-docs-dropzone:hover {
     background: var(--blue-light);
+    border-color: var(--blue-dark);
 }
 
 .mk-docs-dropzone-icon {
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     background: var(--blue-light);
     color: var(--blue);
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 0 0 4px #ffffff, 0 0 0 5px var(--border);
 }
 
 .mk-docs-dropzone-text {
     font-family: "Nunito", sans-serif;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 15px;
     color: var(--black);
     margin: 0;
 }
 
 .mk-docs-dropzone-hint {
     font-family: "Nunito", sans-serif;
-    font-weight: 600;
-    font-size: 12px;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     color: var(--text-muted);
     margin: 0;
 }
@@ -81,23 +150,25 @@
 .mk-docs-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-bottom: 20px;
+    gap: 14px;
+    margin-bottom: 24px;
 }
 
 .mk-docs-item {
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 16px;
+    padding: 18px 20px;
     box-shadow: 0 12px 48px rgba(62, 125, 245, 0.10);
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .mk-docs-item-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 8px;
+    gap: 12px;
+    margin-bottom: 0;
 }
 
 .mk-docs-item-name {
@@ -113,10 +184,12 @@
 }
 
 .mk-docs-status-chip {
+    display: inline-flex;
+    align-items: center;
     font-family: "Nunito", sans-serif;
     font-weight: 700;
     font-size: 11px;
-    padding: 4px 12px;
+    padding: 5px 14px;
     border-radius: 999px;
     white-space: nowrap;
 }
@@ -136,7 +209,7 @@
     font-weight: 600;
     font-size: 12px;
     color: var(--text-muted);
-    margin: 0;
+    margin: 8px 0 0;
     line-height: 1.5;
 }
 
@@ -150,8 +223,13 @@
     background: none;
     border: none;
     cursor: pointer;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
     width: 100%;
+    transition: color 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mk-docs-skip-link:hover {
+    color: var(--blue);
 }
 
 .mk-docs-continue-btn {
@@ -161,11 +239,16 @@
     font-family: "Nunito", sans-serif;
     font-weight: 800;
     font-size: 16px;
-    padding: 16px;
+    padding: 18px;
     border: none;
     border-radius: 14px;
     cursor: pointer;
     transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mk-docs-continue-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 32px rgba(1, 1, 1, 0.18);
 }
 
 .mk-docs-continue-btn:disabled {
@@ -175,6 +258,20 @@
 
 @media (max-width: 480px) {
     .mk-docs-root {
-        padding: 16px;
+        padding: 20px 16px 48px;
+    }
+
+    .mk-docs-root::before {
+        width: 220px;
+        height: 220px;
+        top: -90px;
+        right: -80px;
+    }
+
+    .mk-docs-root::after {
+        width: 160px;
+        height: 160px;
+        bottom: -70px;
+        left: -70px;
     }
 }

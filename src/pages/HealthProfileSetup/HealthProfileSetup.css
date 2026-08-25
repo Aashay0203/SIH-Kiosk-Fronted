@@ -5,12 +5,14 @@
 
 .hps-root {
     min-height: 100vh;
-    background: #e8ecee;
+    background: var(--bg);
+    color: var(--text-primary);
     display: flex;
     flex-direction: column;
     font-family: 'Nunito', sans-serif;
-    max-width: 480px;
+    max-width: 1200px;
     margin: 0 auto;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ── Header ──────────────────────────────────────────────────────────────────── */
@@ -18,27 +20,30 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 52px 20px 16px;
+    padding: 24px 20px 14px;
 }
 
 .hps-back-btn.MuiIconButton-root {
-    background: #ffffff;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
     border-radius: 12px;
     width: 40px;
     height: 40px;
     flex-shrink: 0;
-    box-shadow: 0 4px 12px rgba(62, 125, 245, 0.10);
+    box-shadow: var(--shadow-sm);
     transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hps-back-btn.MuiIconButton-root:hover {
-    background: #dce9ff;
-    box-shadow: 0 4px 16px rgba(62, 125, 245, 0.18);
+    background: var(--card-bg-subtle);
+    border-color: var(--blue);
+    color: var(--blue);
 }
 
 .hps-back-btn.MuiIconButton-root svg {
     font-size: 20px;
-    color: #010101;
+    color: var(--text-primary);
 }
 
 .hps-header-text {
@@ -49,7 +54,7 @@
     font-size: 11px !important;
     font-family: 'Nunito', sans-serif !important;
     font-weight: 800 !important;
-    color: #7a8799 !important;
+    color: var(--blue, #38bdf8) !important;
     text-transform: uppercase;
     letter-spacing: 1px;
     line-height: 1 !important;
@@ -60,7 +65,7 @@
     font-size: 20px !important;
     font-family: 'Urbanist', sans-serif !important;
     font-weight: 800 !important;
-    color: #010101 !important;
+    color: var(--text-primary) !important;
     line-height: 1.2 !important;
 }
 
@@ -68,64 +73,40 @@
     font-family: 'Nunito', sans-serif;
     font-weight: 700;
     font-size: 14px;
-    color: #7a8799;
+    color: var(--text-muted);
     text-transform: none;
-    padding: 6px 10px;
+    padding: 6px 12px;
     min-width: unset;
     border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
     transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hps-skip-btn.MuiButton-root:hover {
-    background: #dde3ea;
-    color: #010101;
+    background: var(--card-bg-subtle);
+    color: var(--text-primary);
+    border-color: var(--blue);
 }
 
 /* ── Progress bar ────────────────────────────────────────────────────────────── */
 .hps-progress.MuiLinearProgress-root {
-    height: 3px;
-    background: #dde3ea;
+    height: 5px;
+    background: var(--border);
     border-radius: 8px;
     margin: 4px 20px 0;
 }
 
 .hps-progress .MuiLinearProgress-bar {
-    background: linear-gradient(90deg, #3e7df5, #6fa0ff);
+    background: linear-gradient(90deg, #38bdf8, #2563eb);
     border-radius: 8px;
     transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-/* ── Step dots ───────────────────────────────────────────────────────────────── */
-.hps-dots {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    padding: 14px 20px 0;
-}
-
-.hps-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #dde3ea;
-    transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.hps-dot--active {
-    background: #3e7df5;
-    width: 20px;
-    border-radius: 4px;
-}
-
-.hps-dot--done {
-    background: #3e7df5;
-    opacity: 0.35;
 }
 
 /* ── Content ─────────────────────────────────────────────────────────────────── */
 .hps-content {
     flex: 1;
-    padding: 20px 20px 8px;
+    padding: 20px 20px 120px;
     overflow-y: auto;
 }
 
@@ -134,65 +115,68 @@
     font-family: 'Nunito', sans-serif !important;
     font-size: 13px !important;
     font-weight: 700 !important;
-    color: #d94f4f !important;
+    color: #f43f5e !important;
     text-align: center;
     padding: 10px 20px;
-    background: #fff0f0;
+    background: rgba(244, 63, 94, 0.12);
     margin: 0 20px 8px;
     border-radius: 12px;
-    border: 1px solid rgba(217, 79, 79, 0.15);
+    border: 1px solid rgba(244, 63, 94, 0.35);
 }
 
-/* ── Footer ──────────────────────────────────────────────────────────────────── */
+/* ── Sticky Pinned Footer ─────────────────────────────────────────────────────── */
 .hps-footer {
+    background: var(--card-bg);
+    border-top: 1px solid var(--border);
     display: flex;
-    gap: 10px;
-    padding: 16px 20px 36px;
+    gap: 12px;
+    padding: 14px 20px 24px;
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .hps-btn-back.MuiButton-root {
     flex: 1;
-    height: 54px;
+    height: 50px;
     border-radius: 14px;
     font-family: 'Nunito', sans-serif;
     font-weight: 700;
     font-size: 15px;
     text-transform: none;
-    background: #ffffff;
-    color: #3e7df5;
-    border: 1.5px solid #dde3ea;
+    background: var(--card-bg-subtle);
+    color: var(--text-primary);
+    border: 1.5px solid var(--border);
     box-shadow: none;
     transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hps-btn-back.MuiButton-root:hover {
-    background: #dce9ff;
-    border-color: #3e7df5;
+    background: var(--card-bg);
+    border-color: var(--blue);
+    color: var(--blue);
 }
 
 .hps-btn-next.MuiButton-root {
     flex: 2;
-    height: 54px;
+    height: 50px;
     border-radius: 14px;
     font-family: 'Nunito', sans-serif;
     font-weight: 800;
     font-size: 15px;
     text-transform: none;
-    background: #3e7df5;
+    background: linear-gradient(135deg, #38bdf8, #2563eb);
     color: #ffffff;
-    box-shadow: 0 8px 24px rgba(62, 125, 245, 0.32);
+    box-shadow: 0 6px 20px rgba(56, 189, 248, 0.3);
     transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hps-btn-next.MuiButton-root:hover {
-    background: #2d62d4;
-    box-shadow: 0 12px 32px rgba(62, 125, 245, 0.40);
+    box-shadow: 0 10px 28px rgba(56, 189, 248, 0.45);
     transform: translateY(-1px);
 }
 
 .hps-btn-next.MuiButton-root:disabled {
-    background: #b8ccf8;
-    color: #ffffff;
+    background: var(--border);
+    color: var(--text-muted);
     box-shadow: none;
     transform: none;
 }
@@ -205,26 +189,27 @@
     font-size: 14px !important;
     font-family: 'Nunito', sans-serif !important;
     font-weight: 600 !important;
-    color: #7a8799 !important;
+    color: var(--text-muted) !important;
     margin-bottom: 20px !important;
     line-height: 1.55 !important;
 }
 
 /* ── Card ────────────────────────────────────────────────────────────────────── */
 .hps-card {
-    background: #ffffff;
+    background: var(--card-bg);
+    color: var(--text-primary);
     border-radius: 20px;
     padding: 20px;
     margin-bottom: 14px;
-    box-shadow: 0 4px 20px rgba(62, 125, 245, 0.07);
-    border: 1px solid rgba(221, 227, 234, 0.8);
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--border);
 }
 
 .hps-card-title {
     font-size: 11px !important;
     font-family: 'Nunito', sans-serif !important;
     font-weight: 800 !important;
-    color: #7a8799 !important;
+    color: var(--blue, #38bdf8) !important;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 16px !important;
@@ -244,9 +229,9 @@
     font-weight: 700;
     font-size: 14px;
     text-transform: none;
-    border: 1.5px solid #dde3ea;
-    background: #f4f6f8;
-    color: #7a8799;
+    border: 1.5px solid var(--border);
+    background: var(--card-bg-subtle);
+    color: var(--text-primary);
     flex: 1;
     min-width: 80px;
     box-shadow: none;
@@ -254,21 +239,22 @@
 }
 
 .hps-option-btn.MuiButton-root:hover {
-    border-color: #3e7df5;
-    background: #f0f5ff;
-    color: #3e7df5;
+    border-color: var(--blue, #38bdf8);
+    background: rgba(56, 189, 248, 0.12);
+    color: var(--blue, #38bdf8);
 }
 
 .hps-option-btn--selected.MuiButton-root {
-    background: #3e7df5;
-    color: #ffffff;
-    border-color: #3e7df5;
-    box-shadow: 0 4px 14px rgba(62, 125, 245, 0.28);
+    background: var(--blue, #38bdf8);
+    color: #0b0f19;
+    border-color: var(--blue, #38bdf8);
+    font-weight: 800;
+    box-shadow: 0 4px 14px rgba(56, 189, 248, 0.28);
 }
 
 .hps-option-btn--selected.MuiButton-root:hover {
-    background: #2d62d4;
-    color: #ffffff;
+    background: #60a5fa;
+    color: #0b0f19;
 }
 
 /* ── Switch rows ─────────────────────────────────────────────────────────────── */
@@ -277,7 +263,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 13px 0;
-    border-bottom: 1px solid #f0f3f6;
+    border-bottom: 1px solid var(--border);
 }
 
 .hps-check-row:last-child {
@@ -293,7 +279,7 @@
     font-size: 15px !important;
     font-family: 'Nunito', sans-serif !important;
     font-weight: 700 !important;
-    color: #010101 !important;
+    color: var(--text-primary) !important;
 }
 
 .hps-check-row .MuiSwitch-root {
@@ -301,11 +287,11 @@
 }
 
 .hps-check-row .MuiSwitch-switchBase.Mui-checked {
-    color: #3e7df5 !important;
+    color: var(--blue, #38bdf8) !important;
 }
 
 .hps-check-row .MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track {
-    background-color: #3e7df5 !important;
+    background-color: var(--blue, #38bdf8) !important;
 }
 
 /* ── Add-item input row ──────────────────────────────────────────────────────── */
@@ -321,42 +307,42 @@
     font-family: 'Nunito', sans-serif;
     font-weight: 600;
     font-size: 14px;
-    background: #f4f6f8;
+    background: var(--card-bg-subtle);
+    color: var(--text-primary);
 }
 
 .hps-add-input .MuiOutlinedInput-notchedOutline {
-    border-color: #dde3ea;
+    border-color: var(--border);
 }
 
 .hps-add-input .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
-    border-color: #3e7df5;
+    border-color: var(--blue, #38bdf8);
 }
 
 .hps-add-input .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-    border-color: #3e7df5;
+    border-color: var(--blue, #38bdf8);
     border-width: 1.5px;
 }
 
 .hps-add-input .MuiInputBase-input::placeholder {
-    color: #b0bac5;
+    color: var(--text-muted);
     opacity: 1;
     font-family: 'Nunito', sans-serif;
 }
 
 .hps-add-btn.MuiIconButton-root {
-    background: #3e7df5;
+    background: linear-gradient(135deg, #38bdf8, #2563eb);
     color: #ffffff;
     border-radius: 12px;
     width: 42px;
     height: 42px;
     flex-shrink: 0;
-    box-shadow: 0 4px 12px rgba(62, 125, 245, 0.28);
+    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.28);
     transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hps-add-btn.MuiIconButton-root:hover {
-    background: #2d62d4;
-    box-shadow: 0 6px 18px rgba(62, 125, 245, 0.38);
+    box-shadow: 0 6px 18px rgba(56, 189, 248, 0.38);
     transform: scale(1.05);
 }
 
@@ -372,26 +358,27 @@
     font-weight: 700;
     font-size: 13px;
     border-radius: 10px;
-    background: #dce9ff;
-    color: #3e7df5;
+    background: rgba(56, 189, 248, 0.14);
+    color: var(--blue, #38bdf8);
+    border: 1px solid rgba(56, 189, 248, 0.3);
     height: 34px;
     transition: 0.15s ease;
 }
 
 .hps-chip.MuiChip-root:hover {
-    background: #c8dcff;
+    background: rgba(56, 189, 248, 0.24);
 }
 
 .hps-chip.MuiChip-root .MuiChip-deleteIcon {
-    color: #3e7df5;
+    color: var(--blue, #38bdf8);
     font-size: 16px;
-    opacity: 0.65;
+    opacity: 0.75;
     transition: 0.15s ease;
 }
 
 .hps-chip.MuiChip-root .MuiChip-deleteIcon:hover {
     opacity: 1;
-    color: #d94f4f;
+    color: #f43f5e;
 }
 
 /* ── Selectable symptom chips ────────────────────────────────────────────────── */
@@ -400,23 +387,24 @@
     font-weight: 700;
     font-size: 13px;
     border-radius: 10px;
-    background: #f4f6f8;
-    color: #7a8799;
+    background: var(--card-bg-subtle);
+    color: var(--text-primary);
     height: 36px;
-    border: 1.5px solid #dde3ea;
+    border: 1.5px solid var(--border);
     cursor: pointer;
     transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hps-symptom-chip.MuiChip-root:hover {
-    border-color: #3e7df5;
-    background: #f0f5ff;
-    color: #3e7df5;
+    border-color: var(--blue, #38bdf8);
+    background: rgba(56, 189, 248, 0.12);
+    color: var(--blue, #38bdf8);
 }
 
 .hps-symptom-chip--selected.MuiChip-root {
-    background: #dce9ff;
-    color: #3e7df5;
-    border-color: #3e7df5;
-    box-shadow: 0 2px 8px rgba(62, 125, 245, 0.15);
+    background: var(--blue, #38bdf8) !important;
+    color: #0b0f19 !important;
+    border-color: var(--blue, #38bdf8) !important;
+    font-weight: 800 !important;
+    box-shadow: 0 2px 8px rgba(56, 189, 248, 0.25);
 }

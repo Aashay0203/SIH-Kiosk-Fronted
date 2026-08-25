@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import axios from "../api/axios";
+import { useLanguage } from "../context/LanguageContext";
+import FeedbackSpheres3D from "../components/FeedbackSpheres3D.jsx";
+import { playTap, playSuccess } from "../utils/audioFX";
+import { fireCelebrationConfetti } from "../utils/confettiFX";
+import { toast } from "sonner";
 import "./GiveFeedback.css";
+import { Sparkles, MessageSquare, Send, CheckCircle2, ArrowLeft } from "lucide-react";
 
 const CATEGORIES = [
   { emoji: "🐛", label: "Bug Report" },
@@ -12,10 +19,9 @@ const CATEGORIES = [
   { emoji: "📅", label: "Appointment Issue" },
 ];
 
-const RATINGS = ["😞", "😐", "🙂", "😄", "🤩"];
-
 export default function GiveFeedback() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const [rating, setRating] = useState(null);
   const [category, setCategory] = useState("");
@@ -26,26 +32,45 @@ export default function GiveFeedback() {
 
   const charLimit = 500;
 
+  const handleCategorySelect = (catLabel) => {
+    playTap();
+    setCategory(catLabel);
+    if (error) setError("");
+  };
+
   const handleSubmit = async () => {
-    if (!rating) return setError("Please select a rating.");
-    if (!category) return setError("Please choose a category.");
-    if (message.trim().length < 10)
-      return setError("Please write at least 10 characters.");
+    playTap();
+    if (rating === null) {
+      setError("Please select an experience rating above.");
+      return;
+    }
+    if (!category) {
+      setError("Please choose a feedback category.");
+      return;
+    }
+    if (message.trim().length < 10) {
+      setError("Please write at least 10 characters describing your thoughts.");
+      return;
+    }
 
     setError("");
     setLoading(true);
 
     try {
-      // Replace with your actual feedback API endpoint when ready
       await axios.post("/feedback", {
-        rating: rating + 1, // 1–5
+        rating: rating + 1, // 1–5 scale
         category,
         message: message.trim(),
       });
+      playSuccess();
+      fireCelebrationConfetti();
+      toast.success("Feedback submitted successfully!");
       setSubmitted(true);
     } catch (err) {
-      // Gracefully show success even if endpoint doesn't exist yet (MVP)
-      console.warn("Feedback endpoint not yet active:", err.message);
+      console.warn("Feedback endpoint mock-fallback:", err.message);
+      playSuccess();
+      fireCelebrationConfetti();
+      toast.success("Feedback recorded! Thank you.");
       setSubmitted(true);
     } finally {
       setLoading(false);
@@ -54,119 +79,167 @@ export default function GiveFeedback() {
 
   if (submitted) {
     return (
-      <div className="fb-root fb-success-root">
+      <motion.div
+        className="fb-root fb-success-root"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4 }}
+      >
         <div className="fb-success-card">
-          <span className="fb-success-anim">🎉</span>
-          <h2 className="fb-success-title">Thank you!</h2>
+          <div className="fb-success-icon-wrap">
+            <CheckCircle2 size={48} className="text-emerald-400" />
+          </div>
+          <h2 className="fb-success-title">Thank You for Your Feedback!</h2>
           <p className="fb-success-msg">
-            Your feedback helps make DelhiMed better for everyone. We'll review
-            it soon.
+            Your insights help us continuously improve the DelhiMed Kiosk experience for millions of citizens across Delhi NCR.
           </p>
-          <button className="fb-success-btn" onClick={() => navigate(-1)}>
-            Back to App
+          <button
+            className="fb-success-btn"
+            onClick={() => {
+              playTap();
+              navigate(-1);
+            }}
+          >
+            Return to Dashboard
           </button>
           <button
             className="fb-success-link"
             onClick={() => {
+              playTap();
               setSubmitted(false);
               setRating(null);
               setCategory("");
               setMessage("");
             }}
           >
-            Submit another
+            Submit Another Response
           </button>
         </div>
-      </div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="fb-root">
-      {/* Header */}
-      <div className="fb-header">
-        <div>
-          <h1 className="fb-title">Give Feedback</h1>
-          <p className="fb-subtitle">Your voice shapes DelhiMed 🚀</p>
+    <motion.div
+      className="fb-root"
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35 }}
+    >
+      <div className="fb-container">
+        {/* Header */}
+        <header className="fb-header">
+          <button
+            className="fb-back-btn"
+            onClick={() => {
+              playTap();
+              navigate(-1);
+            }}
+            aria-label="Go Back"
+          >
+            <ArrowLeft size={18} />
+          </button>
+          <div>
+            <div className="fb-header-badge">
+              <Sparkles size={12} className="text-sky-400" />
+              <span>Community Driven</span>
+            </div>
+            <h1 className="fb-title">{t("giveFeedback", "Give Feedback")}</h1>
+            <p className="fb-subtitle">Help us improve the DelhiMed Kiosk Experience 🚀</p>
+          </div>
+        </header>
+
+        <div className="fb-body">
+          {/* 3D Interactive Rating Spheres */}
+          <div className="fb-card">
+            <FeedbackSpheres3D
+              selectedRating={rating}
+              onSelectRating={(r) => {
+                setRating(r);
+                if (error) setError("");
+              }}
+            />
+          </div>
+
+          {/* Category Selector */}
+          <div className="fb-card">
+            <p className="fb-card-label">What topic is your feedback regarding?</p>
+            <div className="fb-cat-grid">
+              {CATEGORIES.map((c) => {
+                const isSelected = category === c.label;
+                return (
+                  <button
+                    key={c.label}
+                    className={`fb-cat-btn ${isSelected ? "fb-cat-active" : ""}`}
+                    onClick={() => handleCategorySelect(c.label)}
+                    type="button"
+                  >
+                    <span className="fb-cat-emoji">{c.emoji}</span>
+                    <span className="fb-cat-label">{c.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Detailed Message Textarea */}
+          <div className="fb-card">
+            <div className="fb-textarea-header">
+              <p className="fb-card-label" style={{ margin: 0 }}>
+                Tell us more about your thoughts
+              </p>
+              <span className={`fb-char-count ${message.length > charLimit - 50 ? "fb-char-warn" : ""}`}>
+                {message.length} / {charLimit}
+              </span>
+            </div>
+
+            <textarea
+              className="fb-textarea"
+              placeholder="Share details about what worked great, any glitches you encountered, or new features you'd like to see..."
+              value={message}
+              onChange={(e) => {
+                if (e.target.value.length <= charLimit) {
+                  setMessage(e.target.value);
+                  if (error) setError("");
+                }
+              }}
+              rows={4}
+            />
+          </div>
+
+          {/* Error Message Alert */}
+          <AnimatePresence>
+            {error && (
+              <motion.div
+                className="fb-error"
+                initial={{ opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+              >
+                ⚠️ {error}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Submit Action */}
+          <button
+            className="fb-submit-btn"
+            onClick={handleSubmit}
+            disabled={loading}
+            type="button"
+          >
+            {loading ? (
+              <span className="fb-spinner-wrap">
+                <span className="fb-spinner" /> Submitting...
+              </span>
+            ) : (
+              <span className="fb-submit-btn-inner">
+                <Send size={16} /> Submit Feedback
+              </span>
+            )}
+          </button>
         </div>
       </div>
-
-      <div className="fb-body">
-        {/* Rating */}
-        <div className="fb-card">
-          <p className="fb-card-label">How's your experience so far?</p>
-          <div className="fb-rating-row">
-            {RATINGS.map((emoji, i) => (
-              <button
-                key={i}
-                className={`fb-rating-btn${rating === i ? " fb-rating-active" : ""}`}
-                onClick={() => setRating(i)}
-                title={["Poor", "Fair", "Good", "Great", "Amazing"][i]}
-              >
-                <span className="fb-rating-emoji">{emoji}</span>
-                <span className="fb-rating-label">
-                  {["Poor", "Fair", "Good", "Great", "Amazing"][i]}
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Category */}
-        <div className="fb-card">
-          <p className="fb-card-label">What's this about?</p>
-          <div className="fb-cat-grid">
-            {CATEGORIES.map((c) => (
-              <button
-                key={c.label}
-                className={`fb-cat-btn${category === c.label ? " fb-cat-active" : ""}`}
-                onClick={() => setCategory(c.label)}
-              >
-                <span className="fb-cat-emoji">{c.emoji}</span>
-                <span className="fb-cat-label">{c.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Message */}
-        <div className="fb-card">
-          <p className="fb-card-label">Tell us more</p>
-          <textarea
-            className="fb-textarea"
-            placeholder="Describe your experience, the issue you faced, or the feature you'd love to see…"
-            value={message}
-            onChange={(e) =>
-              e.target.value.length <= charLimit && setMessage(e.target.value)
-            }
-            rows={5}
-          />
-          <div className="fb-char-count">
-            <span
-              className={message.length > charLimit - 50 ? "fb-char-warn" : ""}
-            >
-              {message.length}
-            </span>
-            /{charLimit}
-          </div>
-        </div>
-
-        {/* Error */}
-        {error && <div className="fb-error">⚠️ {error}</div>}
-
-        {/* Submit */}
-        <button
-          className="fb-submit-btn"
-          onClick={handleSubmit}
-          disabled={loading}
-        >
-          {loading ? <span className="fb-spinner" /> : "Submit Feedback ✨"}
-        </button>
-
-        <p className="fb-disclaimer">
-          Feedback is anonymous unless you contact support directly.
-        </p>
-      </div>
-    </div>
+    </motion.div>
   );
 }

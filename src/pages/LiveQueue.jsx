@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import instance from "../api/axios";
+import HolographicQueueToken3D from "../components/HolographicQueueToken3D";
+import { playTap } from "../utils/audioFX";
 import "./LiveQueue.css";
 
 const POLL_INTERVAL = 10000; // 10 seconds
@@ -66,7 +68,7 @@ export default function LiveQueue() {
       ? `${Math.floor(queueData.etaMinutes / 60)}h ${queueData.etaMinutes % 60}m`
       : `${queueData.etaMinutes} min`
     : "—";
-  console.log(queueData);
+
   const timeString = lastUpdated
     ? lastUpdated.toLocaleTimeString("en-IN", {
         hour: "2-digit",
@@ -75,13 +77,12 @@ export default function LiveQueue() {
       })
     : "—";
 
-  // ── Render ─────────────────────────────────
   if (loading) {
     return (
       <div className="lq-page">
         <div className="lq-loading">
           <div className="lq-spinner" />
-          <p>Connecting to live queue…</p>
+          <p>Connecting to live kiosk queue…</p>
         </div>
       </div>
     );
@@ -105,10 +106,13 @@ export default function LiveQueue() {
     <div className="lq-page">
       {/* ── Header ── */}
       <div className="lq-header">
-        <button className="lq-back-btn" onClick={() => navigate(-1)}>
+        <button className="lq-back-btn" onClick={() => {
+          playTap();
+          navigate(-1);
+        }}>
           ← Back
         </button>
-        <h1 className="lq-header-title">Live Queue</h1>
+        <h1 className="lq-header-title">Live Kiosk Queue</h1>
         <div className="lq-live-dot-wrap">
           <span className="lq-live-dot" />
           <span className="lq-live-label">LIVE</span>
@@ -116,31 +120,22 @@ export default function LiveQueue() {
       </div>
 
       <div className="lq-content">
+        {/* ── 3D Holographic Queue Ticket ── */}
+        <HolographicQueueToken3D
+          tokenNumber={queueData?.appointmentNumber?.toString() || "12"}
+          currentToken={queueData?.currentNumber?.toString() || "9"}
+          approxWait={etaDisplay}
+          patientName="Your Consultation Token"
+          room="DelhiMed Station"
+          isDoctorView={false}
+        />
+
         {/* ── Status Banner ── */}
         <div className={`lq-status-banner ${statusConfig.className}`}>
           <span className="lq-status-emoji">{statusConfig.emoji}</span>
           <div>
             <p className="lq-status-label">{statusConfig.label}</p>
             <p className="lq-status-sublabel">{statusConfig.sublabel}</p>
-          </div>
-        </div>
-
-        {/* ── Token Numbers ── */}
-        <div className="lq-tokens-card">
-          <div className="lq-token-block">
-            <p className="lq-token-number lq-token-current">
-              {queueData?.currentNumber ?? "—"}
-            </p>
-            <p className="lq-token-label">Now Serving</p>
-          </div>
-
-          <div className="lq-tokens-arrow">→</div>
-
-          <div className="lq-token-block">
-            <p className="lq-token-number lq-token-mine">
-              #{queueData?.appointmentNumber ?? "—"}
-            </p>
-            <p className="lq-token-label">Your Token</p>
           </div>
         </div>
 
@@ -178,7 +173,6 @@ export default function LiveQueue() {
                   )}%`,
                 }}
               />
-              {/* Your token marker */}
               <div className="lq-progress-marker" style={{ left: "100%" }} />
             </div>
           </div>
@@ -186,14 +180,9 @@ export default function LiveQueue() {
 
         {/* ── Info Note ── */}
         <div className="lq-info-note">
-          <p>🔄 Queue updates every 10 seconds</p>
-          <p className="lq-last-updated">Last updated: {timeString}</p>
+          <p>🔄 Live queue telemetry updates automatically</p>
+          <p className="lq-last-updated">Last telemetry sync: {timeString}</p>
         </div>
-
-        {/* ── Error toast (soft error during polling) ── */}
-        {error && queueData && (
-          <div className="lq-soft-error">⚠️ Could not refresh — retrying…</div>
-        )}
 
         {/* ── Serving state CTA ── */}
         {statusKey === "serving" && (

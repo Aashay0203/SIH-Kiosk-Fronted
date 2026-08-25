@@ -1,10 +1,12 @@
-// === AppointmentBook.jsx ===
 import { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import instance from "../api/axios";
 import "./AppointmentBook.css";
 import timeUtils from "../utils/TimeUtils.jsx";
 import { CalendarIcon } from "../utils/Icon";
+import { useLanguage } from "../context/LanguageContext";
+import { playTap, playChime } from "../utils/audioFX";
+import { toast } from "sonner";
 
 const ACTIVE_DAYS = [1, 2, 3, 4, 5, 6];
 const DAYS_TO_SHOW = 7;
@@ -75,6 +77,7 @@ function Spinner({ size = 18 }) {
 export default function AppointmentBook({ activeDays = ACTIVE_DAYS }) {
   const { doctorId } = useParams();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -254,19 +257,19 @@ export default function AppointmentBook({ activeDays = ACTIVE_DAYS }) {
               <p className="ab-vital-val">
                 {doctor?.experience ? `${doctor.experience}y+` : "—"}
               </p>
-              <p className="ab-vital-lbl">Experience</p>
+              <p className="ab-vital-lbl">{t("experience", "Experience")}</p>
             </div>
             <div className="ab-vital-card" role="listitem">
               <p className="ab-vital-val">
                 {doctor?.totalPatients ? `${doctor.totalPatients}+` : "—"}
               </p>
-              <p className="ab-vital-lbl">Patients</p>
+              <p className="ab-vital-lbl">{t("patients", "Patients")}</p>
             </div>
             <div className="ab-vital-card" role="listitem">
               <p className="ab-vital-val">
                 {doctor?.totalReviews ? `${doctor.totalReviews}+` : "—"}
               </p>
-              <p className="ab-vital-lbl">Reviews</p>
+              <p className="ab-vital-lbl">{t("reviews", "Reviews")}</p>
             </div>
             <div
               className="ab-vital-card ab-vital-card--rating"
@@ -278,7 +281,7 @@ export default function AppointmentBook({ activeDays = ACTIVE_DAYS }) {
                   ⭐
                 </span>
               </div>
-              <p className="ab-vital-lbl">Rating</p>
+              <p className="ab-vital-lbl">{t("rating", "Rating")}</p>
             </div>
           </div>
         </div>
@@ -290,7 +293,7 @@ export default function AppointmentBook({ activeDays = ACTIVE_DAYS }) {
         <div className="ab-section">
           <div className="ab-section-header">
             <CalendarIcon aria-hidden="true" />
-            <h2 className="ab-section-label">Choose a date</h2>
+            <h2 className="ab-section-label">{t("selectDate", "Choose a date")}</h2>
           </div>
 
           {selectedDate && (
@@ -307,7 +310,10 @@ export default function AppointmentBook({ activeDays = ACTIVE_DAYS }) {
                 <button
                   key={item.isoDate}
                   className={`ab-date-btn${isSelected ? " ab-date-btn--selected" : ""}${isToday ? " ab-date-btn--today" : ""}`}
-                  onClick={() => setSelectedDate(item)}
+                  onClick={() => {
+                    playTap();
+                    setSelectedDate(item);
+                  }}
                   aria-pressed={isSelected}
                   aria-label={`${item.weekday} ${item.day} ${item.month}${isToday ? ", today" : ""}`}
                 >
@@ -329,7 +335,7 @@ export default function AppointmentBook({ activeDays = ACTIVE_DAYS }) {
             aria-live="polite"
             aria-label="Token information"
           >
-            <h2 className="ab-section-label">Appointment Token</h2>
+            <h2 className="ab-section-label">{t("appointmentSlot", "Appointment Token")}</h2>
 
             {tokenLoading ? (
               <TokenSkeleton />
@@ -347,7 +353,7 @@ export default function AppointmentBook({ activeDays = ACTIVE_DAYS }) {
                   className="ab-retry-btn"
                   onClick={() => setSelectedDate({ ...selectedDate })}
                 >
-                  Retry
+                  {t("refresh", "Retry")}
                 </button>
               </div>
             ) : tokenInfo ? (
@@ -359,17 +365,17 @@ export default function AppointmentBook({ activeDays = ACTIVE_DAYS }) {
                 >
                   <div className="ab-vital-card" role="listitem">
                     <p className="ab-vital-val">#{tokenInfo.nextToken}</p>
-                    <p className="ab-vital-lbl">Your Token</p>
+                    <p className="ab-vital-lbl">{t("token", "Your Token")}</p>
                   </div>
                   <div className="ab-vital-card" role="listitem">
                     <p className="ab-vital-val">{tokenInfo.bookedCount}</p>
-                    <p className="ab-vital-lbl">Booked</p>
+                    <p className="ab-vital-lbl">{t("booked", "Booked")}</p>
                   </div>
                   <div className="ab-vital-card" role="listitem">
                     <p className="ab-vital-val">
                       {formatWait(tokenInfo.approxWaitMinutes)}
                     </p>
-                    <p className="ab-vital-lbl">Approx Wait</p>
+                    <p className="ab-vital-lbl">{t("approxWait", "Approx Wait")}</p>
                   </div>
                   <div
                     className="ab-vital-card ab-vital-card--time"
@@ -378,7 +384,7 @@ export default function AppointmentBook({ activeDays = ACTIVE_DAYS }) {
                     <p className="ab-vital-val">
                       {tokenInfo.appointmentStartTime || "—"}
                     </p>
-                    <p className="ab-vital-lbl">Your Time</p>
+                    <p className="ab-vital-lbl">{t("yourTime", "Your Time")}</p>
                   </div>
                 </div>
                 <p className="ab-clinic-note">
@@ -409,12 +415,12 @@ export default function AppointmentBook({ activeDays = ACTIVE_DAYS }) {
           {isBooking ? (
             <>
               <Spinner size={16} />
-              <span>Booking…</span>
+              <span>{t("loading", "Booking…")}</span>
             </>
           ) : canBook ? (
-            `Book Token #${tokenInfo.nextToken} · ${selectedDate.day} ${selectedDate.month}`
+            `${t("bookNow", "Book Token")} #${tokenInfo.nextToken} · ${selectedDate.day} ${selectedDate.month}`
           ) : (
-            "Select a date to book"
+            t("selectDate", "Select a date to book")
           )}
         </button>
       </section>

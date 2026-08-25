@@ -1,26 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Urbanist:wght@400;500;600;700;800&display=swap');
 
 :root {
-    --rd-bg: #e8ecee;
-    --rd-card-bg: #ffffff;
-    --rd-blue: #3e7df5;
-    --rd-blue-dark: #2d62d4;
-    --rd-blue-light: #dce9ff;
-    --rd-green: #d5eab3;
-    --rd-black: #010101;
-    --rd-text-muted: #7a8799;
-    --rd-border: #dde3ea;
-    --rd-error-bg: #fff0f0;
-    --rd-error-text: #d94f4f;
+    --rd-bg: var(--bg, #e8ecee);
+    --rd-card-bg: var(--card-bg, #ffffff);
+    --rd-blue: var(--blue, #3e7df5);
+    --rd-blue-dark: var(--blue-dark, #2d62d4);
+    --rd-blue-light: var(--blue-light, #dce9ff);
+    --rd-green: var(--green-light, #d5eab3);
+    --rd-black: var(--text-primary, #010101);
+    --rd-text-muted: var(--text-muted, #7a8799);
+    --rd-border: var(--border, #dde3ea);
+    --rd-error-bg: var(--error-bg, #fff0f0);
+    --rd-error-text: var(--error-text, #d94f4f);
     --rd-radius-card: 24px;
     --rd-radius-input: 12px;
     --rd-radius-btn: 14px;
-    --rd-shadow: 0 12px 48px rgba(62, 125, 245, 0.10);
-    --rd-transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-    --rd-accent-1: #d5eab3;
-    --rd-accent-2: #dce9ff;
-    --rd-accent-3: #ffe6f0;
-    --rd-accent-4: #fff4e6;
+    --rd-shadow: var(--shadow-card);
+    --rd-transition: var(--transition, 0.22s cubic-bezier(0.4, 0, 0.2, 1));
+    --rd-accent-1: rgba(16, 185, 129, 0.18);
+    --rd-accent-2: var(--blue-light);
+    --rd-accent-3: rgba(244, 63, 94, 0.15);
+    --rd-accent-4: rgba(245, 158, 11, 0.15);
 }
 
 /* ── Page ── */
@@ -252,7 +252,7 @@
 .rd-ai-summary-text {
     font-size: 14px !important;
     line-height: 1.65 !important;
-    background: rgba(232, 236, 238, 0.7);
+    background: var(--card-bg-subtle, rgba(232, 236, 238, 0.7));
     border-radius: 14px;
     padding: 14px 16px !important;
     color: var(--rd-black) !important;
@@ -260,20 +260,14 @@
 }
 
 .rd-ai-summary-point {
-    /* Typography */
     font-family: 'Nunito', sans-serif;
     font-size: 15px !important;
-    font-weight: 500 !important;
-    color: #2c3e50 !important;
-    /* Slightly softer than pure black for readability */
-
-    /* Line & Spacing */
+    font-weight: 600 !important;
+    color: var(--text-primary, #2c3e50) !important;
     line-height: 1.7 !important;
     letter-spacing: -0.2px !important;
     word-spacing: 1px !important;
     margin-bottom: 14px !important;
-
-    /* Breathing room */
     padding: 10px 0 !important;
 }
 
@@ -281,24 +275,20 @@
     margin-bottom: 0 !important;
 }
 
-/* OPTIONAL: Enhanced version with subtle background for better scannability */
 .rd-ai-summary-point-enhanced {
     font-family: 'Nunito', sans-serif;
     font-size: 15px !important;
-    font-weight: 500 !important;
-    color: #2c3e50 !important;
-
+    font-weight: 600 !important;
+    color: var(--text-primary, #2c3e50) !important;
     line-height: 1.75 !important;
     letter-spacing: -0.2px !important;
     word-spacing: 1px !important;
     margin-bottom: 12px !important;
     padding: 12px 14px !important;
-
-    background-color: #f8fafb !important;
-    /* Subtle light background */
-    border-left: 3px solid #3e7df5 !important;
-    /* DelhiMed blue accent */
-    border-radius: 6px !important;
+    background-color: var(--card-bg-subtle, #f8fafb) !important;
+    border-left: 3px solid var(--blue, #3e7df5) !important;
+    border-radius: 8px !important;
+    border: 1px solid var(--border);
 }
 
 .rd-ai-summary-point-enhanced:last-child {

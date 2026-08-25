@@ -5,25 +5,25 @@
 
 /* ── CSS Variables ── */
 :root {
-    --hp-bg: #e8ecee;
-    --hp-card: #ffffff;
-    --hp-blue: #3e7df5;
-    --hp-blue-dark: #2d62d4;
-    --hp-blue-light: #dce9ff;
-    --hp-green: #d5eab3;
-    --hp-green-dark: #4a8c3f;
-    --hp-black: #010101;
-    --hp-muted: #7a8799;
-    --hp-border: #dde3ea;
-    --hp-err-bg: #fff0f0;
-    --hp-err-text: #d94f4f;
-    --hp-orange-bg: #fff4e6;
-    --hp-orange-text: #c07a00;
-    --hp-red-bg: #fff0f0;
-    --hp-red-text: #d94f4f;
-    --hp-shadow: 0 12px 48px rgba(62, 125, 245, 0.10);
-    --hp-shadow-sm: 0 4px 16px rgba(62, 125, 245, 0.07);
-    --hp-radius-card: 24px;
+    --hp-bg: var(--bg);
+    --hp-card: var(--card-bg);
+    --hp-blue: var(--blue, #38bdf8);
+    --hp-blue-dark: var(--blue-dark, #2563eb);
+    --hp-blue-light: var(--blue-light, rgba(56, 189, 248, 0.14));
+    --hp-green: var(--green, #10b981);
+    --hp-green-dark: #059669;
+    --hp-black: var(--text-primary);
+    --hp-muted: var(--text-muted);
+    --hp-border: var(--border);
+    --hp-err-bg: rgba(244, 63, 94, 0.12);
+    --hp-err-text: #f43f5e;
+    --hp-orange-bg: rgba(245, 158, 11, 0.15);
+    --hp-orange-text: #f59e0b;
+    --hp-red-bg: rgba(244, 63, 94, 0.12);
+    --hp-red-text: #f43f5e;
+    --hp-shadow: var(--shadow-card);
+    --hp-shadow-sm: var(--shadow-sm);
+    --hp-radius-card: 20px;
     --hp-radius-chip: 100px;
     --hp-radius-btn: 14px;
     --hp-transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
@@ -34,7 +34,7 @@
     min-height: 100vh;
     background: var(--hp-bg);
     padding: 0 16px 24px;
-    max-width: 680px;
+    max-width: 1200px;
     margin: 0 auto;
     font-family: 'Nunito', sans-serif;
     color: var(--hp-black);
@@ -119,25 +119,28 @@
 }
 
 .hp-nav-btn {
-    background: var(--hp-card);
-    border: 1.5px solid var(--hp-border);
-    border-radius: var(--hp-radius-btn);
-    padding: 8px 18px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(37, 99, 235, 0.25));
+    border: 1.5px solid rgba(56, 189, 248, 0.4);
+    border-radius: 12px;
+    padding: 10px 20px;
     font-family: 'Nunito', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--hp-black);
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--hp-blue);
     cursor: pointer;
     transition: all var(--hp-transition);
-    box-shadow: var(--hp-shadow-sm);
+    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .hp-nav-btn:hover {
-    background: var(--hp-blue-light);
-    border-color: var(--hp-blue);
-    color: var(--hp-blue-dark);
-    transform: translateY(-1px);
-    box-shadow: var(--hp-shadow);
+    background: linear-gradient(135deg, #38bdf8, #2563eb);
+    border-color: #38bdf8;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(56, 189, 248, 0.4);
 }
 
 .hp-nav-btn:active {
@@ -432,11 +435,11 @@
 }
 
 .hp-lab-item {
-    background: var(--hp-bg);
+    background: var(--card-bg-subtle);
     border-radius: 16px;
     padding: 14px 14px 12px;
     transition: all var(--hp-transition);
-    border: 1.5px solid transparent;
+    border: 1.5px solid var(--border);
 }
 
 .hp-lab-item:hover {

@@ -9,10 +9,10 @@ export default function PageLoader() {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-        bgcolor: "#e8ecee",
+        bgcolor: "var(--bg)",
       }}
     >
-      <CircularProgress sx={{ color: "#3e7df5" }} />
+      <CircularProgress sx={{ color: "var(--blue)" }} />
     </Box>
   );
 }

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Urbanist:wght@700;800&family=Nunito:wght@600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Urbanist:wght@700;800;900&family=Nunito:wght@600;700;800;900&display=swap");
 
 *,
 *::before,
@@ -6,72 +6,335 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
-:root {
-  --bg: #e8ecee;
+/* ══════════════════════════════════════════════════════════════════════════════
+   GLOBAL THEME CSS TOKENS (LIGHT & DARK MODES)
+   SOOTHING, EYE-FRIENDLY & HIGH ACCESSIBILITY
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Light Theme Variables */
+:root,
+[data-theme="light"] {
+  --bg: #f1f5f9;
+  --bg-subtle: #e2e8f0;
   --card-bg: #ffffff;
-  --blue: #3e7df5;
-  --blue-dark: #2d62d4;
-  --blue-light: #dce9ff;
-  --green: #d5eab3;
-  --black: #010101;
-  --text-muted: #7a8799;
-  --border: #dde3ea;
-  --error-bg: #fff0f0;
-  --error-text: #d94f4f;
-  --radius-card: 24px;
+  --card-bg-subtle: #f8fafc;
+  --blue: #3b82f6;
+  --blue-dark: #1d4ed8;
+  --blue-light: #dbeafe;
+  --green: #10b981;
+  --green-light: #d1fae5;
+  --black: #0f172a;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --border: #cbd5e1;
+  --border-subtle: #e2e8f0;
+  --error-bg: #fee2e2;
+  --error-text: #ef4444;
+  --radius-card: 20px;
   --radius-input: 12px;
   --radius-btn: 14px;
-  --shadow-card: 0 12px 48px rgba(62, 125, 245, 0.10), 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.03);
+  --shadow-elevated: 0 16px 36px rgba(0, 0, 0, 0.08);
   --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
   --font: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --navbar-bg: #ffffff;
+  --sidebar-bg: #ffffff;
+  --drawer-bg: #ffffff;
+  color-scheme: light;
 }
 
-/* Font fallback to prevent layout shift while Google Fonts load */
-body {
+/* Dark Theme Variables — Soothing Slate (GitHub/Linear/Apple style) */
+[data-theme="dark"] {
+  --bg: #0b0f19;
+  --bg-subtle: #111827;
+  --card-bg: #151e2e;
+  --card-bg-subtle: #1e293b;
+  --blue: #38bdf8;
+  --blue-dark: #2563eb;
+  --blue-light: rgba(56, 189, 248, 0.14);
+  --green: #34d399;
+  --green-light: rgba(52, 211, 153, 0.16);
+  --black: #f1f5f9;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: #243044;
+  --border-subtle: #1b2436;
+  --error-bg: rgba(244, 63, 94, 0.14);
+  --error-text: #f87171;
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.35);
+  --shadow-elevated: 0 16px 40px rgba(0, 0, 0, 0.5);
+  --navbar-bg: rgba(15, 23, 42, 0.92);
+  --sidebar-bg: #0f172a;
+  --drawer-bg: #0f172a;
+  color-scheme: dark;
+}
+
+html, body {
   font-family: var(--font);
+  background-color: var(--bg);
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.22s ease, color 0.22s ease;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
-body {
-  font-family: var(--font);
+/* ── Gentle Non-Intrusive Selection Highlight ── */
+::selection {
+  background: rgba(59, 130, 246, 0.3);
+  color: inherit;
+}
+
+/* ── Sleek Universal Custom Scrollbars ── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
   background: var(--bg);
-  color: var(--black);
-  -webkit-font-smoothing: antialiased;
 }
 
-
-
-/* Report.css */
-.rp-card {
-  background: var(--card-bg);
-  /* ✅ uses index.css variable */
-  border-radius: var(--radius-card);
-  /* ✅ */
-  box-shadow: var(--shadow-card);
-  /* ✅ */
-  border: 1px solid var(--border);
-  /* ✅ */
-  transition: var(--transition);
-  /* ✅ */
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
 }
 
-.rp-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 48px rgba(62, 125, 245, 0.16);
-}
-
-.rp-title {
-  font-family: 'Urbanist', sans-serif;
-  color: var(--black);
-  /* ✅ */
-}
-
-.rp-btn.MuiButton-root {
-  /* MUI override using compound selector */
+::-webkit-scrollbar-thumb:hover {
   background: var(--blue);
-  border-radius: var(--radius-btn);
-  transition: var(--transition);
+}
+
+/* ── Dark / Light Universal Drawer Overrides ── */
+.MuiDrawer-paper {
+  background-color: var(--sidebar-bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+  transition: background-color 0.22s ease !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   GLOBAL DARK MODE COMPLETE SYSTEM OVERRIDES
+   ══════════════════════════════════════════════════════════════════════════════ */
+[data-theme="dark"] body {
+  background-color: var(--bg) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Page Containers */
+[data-theme="dark"] .al-root,
+[data-theme="dark"] .al-body,
+[data-theme="dark"] .al-main,
+[data-theme="dark"] .home-root,
+[data-theme="dark"] .dh-root,
+[data-theme="dark"] .profile-root,
+[data-theme="dark"] .profile-page,
+[data-theme="dark"] .doc-list-root,
+[data-theme="dark"] .doctor-list-page,
+[data-theme="dark"] .doc-profile-root,
+[data-theme="dark"] .doctor-profile-page,
+[data-theme="dark"] .appt-book-root,
+[data-theme="dark"] .appointment-book-page,
+[data-theme="dark"] .my-appt-root,
+[data-theme="dark"] .my-appointment-page,
+[data-theme="dark"] .my-appointments-page,
+[data-theme="dark"] .payment-root,
+[data-theme="dark"] .payment-page,
+[data-theme="dark"] .report-root,
+[data-theme="dark"] .report-page,
+[data-theme="dark"] .rd-root,
+[data-theme="dark"] .report-details-page,
+[data-theme="dark"] .ru-root,
+[data-theme="dark"] .report-upload-page,
+[data-theme="dark"] .lq-root,
+[data-theme="dark"] .live-queue-page,
+[data-theme="dark"] .admin-root,
+[data-theme="dark"] .admin-home-page,
+[data-theme="dark"] .feedback-root,
+[data-theme="dark"] .fb-root,
+[data-theme="dark"] .support-root,
+[data-theme="dark"] .sup-root,
+[data-theme="dark"] .legal-root,
+[data-theme="dark"] .legal-page,
+[data-theme="dark"] .hp-root,
+[data-theme="dark"] .health-profile-page,
+[data-theme="dark"] .hps-root,
+[data-theme="dark"] .health-profile-setup-page,
+[data-theme="dark"] .login-root,
+[data-theme="dark"] .login-page,
+[data-theme="dark"] .signup-root,
+[data-theme="dark"] .signup-page {
+  background-color: var(--bg) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Cards & Surface Containers */
+[data-theme="dark"] .card,
+[data-theme="dark"] .MuiCard-root,
+[data-theme="dark"] .MuiPaper-root:not(.MuiAlert-root):not(.pd-prescription-paper),
+[data-theme="dark"] .home-card,
+[data-theme="dark"] .profile-card,
+[data-theme="dark"] .premium-doc-card,
+[data-theme="dark"] .ac-card,
+[data-theme="dark"] .med-box,
+[data-theme="dark"] .upcoming-box,
+[data-theme="dark"] .empty-state-container,
+[data-theme="dark"] .upload-options-sheet,
+[data-theme="dark"] .pm-modal,
+[data-theme="dark"] .patient-id-card,
+[data-theme="dark"] .report-card,
+[data-theme="dark"] .summary-card,
+[data-theme="dark"] .order-summary-card,
+[data-theme="dark"] .payment-card,
+[data-theme="dark"] .method-card,
+[data-theme="dark"] .bill-card,
+[data-theme="dark"] .slot-card,
+[data-theme="dark"] .doctor-card,
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .queue-card,
+[data-theme="dark"] .feedback-card,
+[data-theme="dark"] .fb-card,
+[data-theme="dark"] .support-card,
+[data-theme="dark"] .sup-faq-item,
+[data-theme="dark"] .sup-contact-card,
+[data-theme="dark"] .sup-empty,
+[data-theme="dark"] .dh-card,
+[data-theme="dark"] .dh-patient-card,
+[data-theme="dark"] .dh-stat-card,
+[data-theme="dark"] .dh-topbar,
+[data-theme="dark"] .hp-card,
+[data-theme="dark"] .hps-card,
+[data-theme="dark"] .legal-card,
+[data-theme="dark"] .login-card,
+[data-theme="dark"] .signup-card,
+[data-theme="dark"] .navbar {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+/* Subtle surfaces & sub-cards */
+[data-theme="dark"] .subtle-card,
+[data-theme="dark"] .card-subtle,
+[data-theme="dark"] .med-item,
+[data-theme="dark"] .ac-token-pin-row,
+[data-theme="dark"] .ac-meta-chip,
+[data-theme="dark"] .illustration-box,
+[data-theme="dark"] .sheet-option-icon,
+[data-theme="dark"] .sup-contact-icon,
+[data-theme="dark"] .fb-rating-btn,
+[data-theme="dark"] .fb-tag-btn,
+[data-theme="dark"] .dh-icon-btn,
+[data-theme="dark"] .slidebar-edit-btn,
+[data-theme="dark"] .summary-icon-container,
+[data-theme="dark"] .report-icon-container,
+[data-theme="dark"] .arrow-btn,
+[data-theme="dark"] .btn-cancel,
+[data-theme="dark"] .pm-pin-input,
+[data-theme="dark"] .pm-cancel-btn {
+  background-color: var(--card-bg-subtle) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+/* MUI Popups, Menus & Dialogs in Dark Mode */
+[data-theme="dark"] .MuiMenu-paper,
+[data-theme="dark"] .MuiPopover-paper,
+[data-theme="dark"] .MuiDialog-paper {
+  background-color: #151e2e !important;
+  color: #f1f5f9 !important;
+  border: 1px solid #243044 !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-theme="dark"] .MuiMenuItem-root {
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .MuiMenuItem-root:hover {
+  background-color: rgba(56, 189, 248, 0.12) !important;
+}
+
+[data-theme="dark"] .MuiMenuItem-root.Mui-selected {
+  background-color: rgba(56, 189, 248, 0.18) !important;
+  color: #38bdf8 !important;
+}
+
+/* Typography Overrides in Dark Mode */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6,
+[data-theme="dark"] .home-hero-heading,
+[data-theme="dark"] .dh-doctor-name,
+[data-theme="dark"] .dh-section-title,
+[data-theme="dark"] .ac-doctor-name,
+[data-theme="dark"] .ac-pin-number,
+[data-theme="dark"] .doc-title,
+[data-theme="dark"] .pay-title,
+[data-theme="dark"] .page-title,
+[data-theme="dark"] .fb-title,
+[data-theme="dark"] .fb-card-label,
+[data-theme="dark"] .sup-title,
+[data-theme="dark"] .sup-section-title,
+[data-theme="dark"] .sup-contact-label,
+[data-theme="dark"] .sup-faq-q,
+[data-theme="dark"] .pm-patient-name,
+[data-theme="dark"] .med-box-title,
+[data-theme="dark"] .upcoming-box-title,
+[data-theme="dark"] .empty-state-heading,
+[data-theme="dark"] .info-line,
+[data-theme="dark"] .order-row-val,
+[data-theme="dark"] strong,
+[data-theme="dark"] b {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .benefit-text,
+[data-theme="dark"] .fb-subtitle,
+[data-theme="dark"] .sup-subtitle,
+[data-theme="dark"] .sup-faq-a,
+[data-theme="dark"] .pm-patient-sub,
+[data-theme="dark"] .pm-instruction,
+[data-theme="dark"] .ac-doctor-speciality,
+[data-theme="dark"] .ac-token-label,
+[data-theme="dark"] .dh-doctor-spec,
+[data-theme="dark"] .order-row-key,
+[data-theme="dark"] .order-label,
+[data-theme="dark"] .greeting-text {
+  color: var(--text-secondary) !important;
+}
+
+/* Inputs, Textareas, Selects in Dark Mode */
+[data-theme="dark"] input:not([type="checkbox"]):not([type="radio"]),
+[data-theme="dark"] textarea,
+[data-theme="dark"] select,
+[data-theme="dark"] .MuiInputBase-input,
+[data-theme="dark"] .MuiOutlinedInput-input,
+[data-theme="dark"] .fb-textarea,
+[data-theme="dark"] .sup-search {
+  background-color: var(--card-bg-subtle) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: var(--text-muted) !important;
+}
+
+/* Borders & Dividers in Dark Mode */
+[data-theme="dark"] hr,
+[data-theme="dark"] .MuiDivider-root,
+[data-theme="dark"] .ac-divider-v,
+[data-theme="dark"] .sheet-handle {
+  border-color: var(--border) !important;
+  background-color: var(--border) !important;
 }

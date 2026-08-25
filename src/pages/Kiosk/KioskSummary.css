@@ -1,30 +1,95 @@
 /* KioskSummary.css — reuses global design tokens, no redeclaration */
 
 .mk-summary-root {
+    position: relative;
     background: var(--bg);
     min-height: 100vh;
-    padding: 24px;
+    padding: 32px 24px 64px;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* Large, soft overlapping decorative circles — quiet premium accent,
+   sits behind the content. Mirrors the other kiosk screens. */
+.mk-summary-root::before,
+.mk-summary-root::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.mk-summary-root::before {
+    width: 360px;
+    height: 360px;
+    top: -140px;
+    right: -120px;
+    background: #ffffff;
+    border: 1px solid var(--green);
+    opacity: 0.6;
+}
+
+.mk-summary-root::after {
+    width: 260px;
+    height: 260px;
+    bottom: -100px;
+    left: -100px;
+    background: var(--blue-light);
+    opacity: 0.5;
 }
 
 .mk-summary-container {
+    position: relative;
     max-width: 480px;
     margin: 0 auto;
+}
+
+.pn-top-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+}
+
+.pn-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: "Nunito", sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text-muted);
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pn-nav-btn:hover {
+    color: var(--blue);
+    border-color: var(--blue-light);
+    background: var(--blue-light);
 }
 
 .mk-summary-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    margin: 20px 0 20px;
+    margin: 4px 0 24px;
     gap: 12px;
 }
 
 .mk-summary-title {
     font-family: "Urbanist", sans-serif;
     font-weight: 800;
-    font-size: 22px;
+    font-size: 26px;
     color: var(--black);
-    margin: 0 0 6px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
 }
 
 .mk-summary-subtitle {
@@ -33,14 +98,14 @@
     font-size: 13px;
     color: var(--text-muted);
     margin: 0;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .mk-summary-status-chip {
     font-family: "Nunito", sans-serif;
     font-weight: 700;
     font-size: 11px;
-    padding: 6px 14px;
+    padding: 7px 16px;
     border-radius: 999px;
     white-space: nowrap;
 }
@@ -65,30 +130,48 @@
     background: var(--error-bg);
     color: var(--error-text);
     border-radius: 16px;
-    padding: 14px 16px;
+    padding: 14px 18px;
     font-family: "Nunito", sans-serif;
     font-weight: 700;
     font-size: 13px;
-    margin-bottom: 16px;
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+.pn-error {
+    background: var(--error-bg);
+    color: var(--error-text);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-family: "Nunito", sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 20px;
 }
 
 .mk-summary-section {
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 18px;
+    padding: 20px;
     box-shadow: 0 12px 48px rgba(62, 125, 245, 0.10);
-    margin-bottom: 14px;
+    margin-bottom: 16px;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mk-summary-section:focus-within {
+    border-color: var(--blue-light);
+    box-shadow: 0 12px 48px rgba(62, 125, 245, 0.18);
 }
 
 .mk-summary-section-label {
     font-family: "Urbanist", sans-serif;
     font-weight: 800;
-    font-size: 13px;
+    font-size: 12px;
     color: var(--blue-dark);
     text-transform: uppercase;
-    letter-spacing: 0.03em;
-    margin: 0 0 8px;
+    letter-spacing: 0.05em;
+    margin: 0 0 10px;
 }
 
 .mk-summary-textarea {
@@ -102,16 +185,16 @@
     font-size: 14px;
     color: var(--black);
     background: transparent;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .mk-summary-plain-card {
     background: var(--blue-light);
     border-radius: 20px;
-    padding: 18px;
-    margin-bottom: 20px;
+    padding: 20px;
+    margin-bottom: 24px;
     display: flex;
-    gap: 12px;
+    gap: 14px;
     align-items: flex-start;
 }
 
@@ -121,13 +204,13 @@
     font-size: 13px;
     color: var(--black);
     margin: 0;
-    line-height: 1.6;
+    line-height: 1.65;
 }
 
 .mk-summary-replay-btn {
-    min-width: 34px;
-    width: 34px;
-    height: 34px;
+    min-width: 36px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     border: none;
     background: var(--blue);
@@ -136,14 +219,20 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mk-summary-replay-btn:hover {
+    background: var(--blue-dark);
+    transform: translateY(-1px);
 }
 
 .mk-summary-docs-row {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     overflow-x: auto;
-    padding-bottom: 4px;
-    margin-bottom: 20px;
+    padding-bottom: 6px;
+    margin-bottom: 24px;
 }
 
 .mk-summary-doc-chip {
@@ -151,7 +240,7 @@
     font-family: "Nunito", sans-serif;
     font-weight: 700;
     font-size: 12px;
-    padding: 8px 14px;
+    padding: 9px 16px;
     border-radius: 999px;
     background: var(--green);
     color: var(--black);
@@ -160,11 +249,13 @@
 
 .mk-summary-session-note {
     font-family: "Nunito", sans-serif;
-    font-weight: 600;
-    font-size: 12px;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
     color: var(--text-muted);
     text-align: center;
-    margin: 0 0 14px;
+    margin: 0 0 18px;
 }
 
 .mk-summary-submit-btn {
@@ -174,7 +265,7 @@
     font-family: "Nunito", sans-serif;
     font-weight: 800;
     font-size: 16px;
-    padding: 16px;
+    padding: 18px;
     border: none;
     border-radius: 14px;
     display: flex;
@@ -183,6 +274,11 @@
     gap: 8px;
     cursor: pointer;
     transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mk-summary-submit-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 32px rgba(1, 1, 1, 0.18);
 }
 
 .mk-summary-submit-btn:disabled {
@@ -194,29 +290,30 @@
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: 24px;
-    padding: 32px 24px;
+    padding: 40px 28px;
     text-align: center;
     box-shadow: 0 12px 48px rgba(62, 125, 245, 0.10);
 }
 
 .mk-summary-success-icon {
-    width: 56px;
-    height: 56px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     background: var(--green);
     color: var(--black);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 14px;
+    margin: 0 auto 18px;
 }
 
 .mk-summary-success-title {
     font-family: "Urbanist", sans-serif;
     font-weight: 800;
-    font-size: 18px;
+    font-size: 19px;
     color: var(--black);
-    margin: 0 0 6px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
 }
 
 .mk-summary-success-text {
@@ -225,10 +322,25 @@
     font-size: 13px;
     color: var(--text-muted);
     margin: 0;
+    line-height: 1.6;
 }
 
 @media (max-width: 480px) {
     .mk-summary-root {
-        padding: 16px;
+        padding: 20px 16px 48px;
+    }
+
+    .mk-summary-root::before {
+        width: 220px;
+        height: 220px;
+        top: -90px;
+        right: -80px;
+    }
+
+    .mk-summary-root::after {
+        width: 160px;
+        height: 160px;
+        bottom: -70px;
+        left: -70px;
     }
 }

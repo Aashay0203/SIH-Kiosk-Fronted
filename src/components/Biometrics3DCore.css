@@ -1,0 +1,73 @@
+/* Biometrics3DCore.css */
+.biometrics-3d-root {
+    background: var(--card-bg, #151e2e);
+    border: 1px solid var(--border, #243044);
+    border-radius: 24px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.biometrics-core-canvas {
+    width: 100%;
+    max-width: 340px;
+    height: 170px;
+    position: relative;
+}
+
+.biometrics-telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    width: 100%;
+    margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+    .biometrics-telemetry-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.biometric-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 12px 8px;
+    background: var(--card-bg-subtle, #1e293b);
+    border: 1px solid var(--border, #243044);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.biometric-tile:hover {
+    border-color: var(--blue, #38bdf8);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(56, 189, 248, 0.2);
+}
+
+.bio-title {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--text-muted, #94a3b8);
+    margin: 4px 0 2px;
+}
+
+.bio-val {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--text-primary, #f1f5f9);
+}
+
+.bio-val small {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted, #94a3b8);
+}

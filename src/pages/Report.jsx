@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import instance from "../api/axios";
 import { AuthContext } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext";
 import {
   IconButton,
   Avatar,
@@ -24,6 +25,7 @@ import AddIcon from "@mui/icons-material/Add";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import UploadOptionsSheet from "../components/UploadOptionSheet.jsx";
 import UploadBox from "../components/UploadBox.jsx";
+import DnaHelix3D from "../components/DnaHelix3D.jsx";
 import "./Report.css";
 
 function Report() {
@@ -38,6 +40,7 @@ function Report() {
 
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+  const { t } = useLanguage();
 
   // Fetch reports on component mount
   useEffect(() => {
@@ -49,7 +52,6 @@ function Report() {
     try {
       setLoading(true);
       const response = await instance.get(`/reports?page=${pageNum}&limit=10`);
-      console.log(response.data.data);
       const newReports = response.data.data || [];
       const pagination = response.data.pagination;
 
@@ -103,7 +105,7 @@ function Report() {
     if (searchQuery) {
       filtered = filtered.filter(
         (r) =>
-          r.fileName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          r.fileName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
           r.reportType?.toLowerCase().includes(searchQuery.toLowerCase()) ||
           r.doctorClinicName?.toLowerCase().includes(searchQuery.toLowerCase()),
       );
@@ -112,25 +114,18 @@ function Report() {
     return filtered;
   };
 
-  // Handle file selection from upload sheet
   const handleFileSelect = (file) => {
-    console.log("Selected file:", file);
     navigate("/reports/upload", { state: { file } });
   };
 
   const filteredReports = getFilteredReports();
 
-  // Card background colors (cycle through them)
-  const cardColors = ["#D5EAB3", "#DCE9FF", "#FFE6F0", "#FFF4E6"];
-
   const handleOptionSelect = (type) => {
     if (type === "files") {
       navigate("/reports/upload");
     } else if (type === "gallery") {
-      // trigger file input with image/* accept
       navigate("/reports/upload", { state: { accept: "image/*" } });
     } else if (type === "camera") {
-      // trigger camera (mobile only)
       navigate("/reports/upload", {
         state: { accept: "image/*", capture: "camera" },
       });
@@ -140,7 +135,7 @@ function Report() {
   return (
     <div className="report-page">
       {/* Tabs Section */}
-      <Box sx={{ borderBottom: 1, borderColor: "divider", px: 2 }}>
+      <Box sx={{ borderBottom: 1, borderColor: "var(--border)", px: 2, bgcolor: "var(--bg)" }}>
         <Tabs
           value={selectedTab}
           onChange={handleTabChange}
@@ -149,20 +144,25 @@ function Report() {
           sx={{
             "& .MuiTab-root": {
               textTransform: "none",
-              fontWeight: 500,
-              fontSize: "15px",
+              fontWeight: 700,
+              fontSize: "14px",
+              fontFamily: "Nunito, sans-serif",
               minWidth: "auto",
               px: 2,
-            },
-            "& .Mui-selected": {
-              color: "#3e7df5",
+              color: "var(--text-secondary)",
+              transition: "color 0.2s ease",
+              "&.Mui-selected": {
+                color: "var(--blue)",
+              },
             },
             "& .MuiTabs-indicator": {
-              backgroundColor: "#3e7df5",
+              backgroundColor: "var(--blue)",
+              height: "3px",
+              borderRadius: "3px 3px 0 0",
             },
           }}
         >
-          <Tab label="All" />
+          <Tab label={t("all", "All")} />
           <Tab label="Added by Doctor" />
           <Tab label="Added by You" />
           <Tab label="Lab Reports" />
@@ -173,30 +173,36 @@ function Report() {
       <Box sx={{ p: 2 }}>
         {loading ? (
           <div className="loading-state">
-            <Typography>Loading reports...</Typography>
+            <Typography sx={{ color: "var(--text-muted)", fontFamily: "Nunito" }}>{t("loading", "Loading reports...")}</Typography>
           </div>
         ) : (
           /* Reports List - SHOW WHEN REPORTS EXIST */
           <>
             {/* Search Bar + FAB */}
-            <Box sx={{ display: "flex", gap: 1, mb: 2, alignItems: "center" }}>
+            <Box sx={{ display: "flex", gap: 1.5, mb: 2.5, alignItems: "center" }}>
               <TextField
                 fullWidth
-                placeholder="Search records..."
+                placeholder={t("searchDoctorPlaceholder", "Search records...")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 InputProps={{
                   startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon sx={{ color: "#7a8799" }} />
+                    <InputAdornment position="start" sx={{ bgcolor: "transparent", color: "var(--text-muted)" }}>
+                      <SearchIcon sx={{ color: "var(--text-muted)", fontSize: 20 }} />
                     </InputAdornment>
                   ),
                 }}
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    borderRadius: "12px",
-                    bgcolor: "#fff",
-                    "& fieldset": { borderColor: "#e0e0e0" },
+                    borderRadius: "14px",
+                    bgcolor: "var(--card-bg)",
+                    color: "var(--text-primary)",
+                    fontFamily: "Nunito",
+                    fontSize: "14px",
+                    fontWeight: 600,
+                    "& fieldset": { borderColor: "var(--border)" },
+                    "&:hover fieldset": { borderColor: "var(--blue)" },
+                    "&.Mui-focused fieldset": { borderColor: "var(--blue)", borderWidth: "1.5px" },
                   },
                 }}
               />
@@ -204,9 +210,13 @@ function Report() {
                 color="primary"
                 size="medium"
                 onClick={() => setShowUploadOptions(true)}
+                aria-label="Upload Record"
                 sx={{
-                  bgcolor: "#3e7df5",
-                  "&:hover": { bgcolor: "#2d62d4" },
+                  bgcolor: "var(--blue)",
+                  color: "#ffffff",
+                  flexShrink: 0,
+                  boxShadow: "0 4px 14px rgba(59, 130, 246, 0.35)",
+                  "&:hover": { bgcolor: "var(--blue-dark)" },
                 }}
               >
                 <AddIcon />
@@ -219,10 +229,6 @@ function Report() {
                 <Card
                   key={report._id}
                   className="report-card"
-                  sx={{
-                    bgcolor: cardColors[index % cardColors.length],
-                    mb: 2,
-                  }}
                   onClick={() => {
                     navigate(`/reports/${report._id}`);
                   }}
@@ -233,19 +239,20 @@ function Report() {
                       alignItems: "center",
                       gap: 2,
                       py: 2,
+                      "&:last-child": { pb: 2 },
                     }}
                   >
                     <Box className="report-icon-container">
                       <DescriptionOutlinedIcon
-                        sx={{ fontSize: 28, color: "#3e7df5" }}
+                        sx={{ fontSize: 26, color: "var(--blue)" }}
                       />
                     </Box>
                     <Box sx={{ flex: 1 }}>
-                      <Typography variant="body1" fontWeight={600}>
+                      <Typography variant="body1" sx={{ fontWeight: 700, color: "var(--text-primary)", fontFamily: "Urbanist, sans-serif", fontSize: "16px" }}>
                         {report.reportType || report.fileName}
                       </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        {report.doctorClinicName || "No clinic"} •{" "}
+                      <Typography variant="caption" sx={{ color: "var(--text-muted)", fontFamily: "Nunito", fontSize: "12px" }}>
+                        {report.doctorClinicName || "DelhiMed Clinic"} •{" "}
                         {new Date(report.uploadedAt).toLocaleDateString(
                           "en-IN",
                           {
@@ -267,7 +274,7 @@ function Report() {
                 onClick={loadMore}
                 disabled={loading}
               >
-                {loading ? "Loading..." : "Load More"}
+                {loading ? t("loading", "Loading...") : t("loadMore", "Load More")}
               </button>
             )}
           </>
@@ -281,7 +288,7 @@ function Report() {
       <UploadOptionsSheet
         open={showUploadOptions}
         onClose={() => setShowUploadOptions(false)}
-        onSelect={handleOptionSelect} // ← Change IonSelect to onSelect
+        onSelect={handleOptionSelect}
       />
     </div>
   );

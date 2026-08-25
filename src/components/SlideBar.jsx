@@ -9,6 +9,7 @@ import Box from "@mui/material/Box";
 import { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext";
 
 // MUI Icons
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
@@ -26,59 +27,71 @@ import { useMediaQuery } from "@mui/material";
 
 import "./SlideBar.css";
 
-const menuItems = [
-  {
-    label: "Home",
-    icon: <HomeOutlinedIcon />,
-    route: "/home",
-  },
-  { label: "My Profiles", icon: <PersonOutlineIcon />, route: "/profile" },
-  {
-    label: "My Appointments",
-    icon: <ContactPageOutlinedIcon />,
-    route: "/my-appointments",
-  },
-  {
-    label: "All Doctors",
-    icon: <GroupsOutlinedIcon />,
-    route: "/doctorList",
-  },
-  {
-    label: "Your Reports",
-    icon: <NoteAddOutlinedIcon />,
-    route: "/reports",
-  },
-  {
-    label: "Health Profile",
-    icon: <FavoriteBorderOutlinedIcon />,
-    route: "/health-profile",
-  },
-
-  {
-    label: "Give Feedback",
-    icon: <FeedbackOutlinedIcon />,
-    route: "/feedback",
-  },
-  { label: "Support", icon: <SupportAgentOutlinedIcon />, route: "/support" },
-  { label: "Legal Page", icon: <GavelOutlinedIcon />, route: "/terms" },
-];
-
 function SlideBar({ open, onClose, variant = "temporary" }) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const { user, logout } = useContext(AuthContext);
+  const { t } = useLanguage();
   const navigate = useNavigate();
-  const location = useLocation(); // from react-router-dom
+  const location = useLocation();
+
+  const menuItems = [
+    {
+      label: t("home", "Home"),
+      icon: <HomeOutlinedIcon />,
+      route: "/home",
+    },
+    {
+      label: t("myProfiles", "My Profiles"),
+      icon: <PersonOutlineIcon />,
+      route: "/profile",
+    },
+    {
+      label: t("myAppointments", "My Appointments"),
+      icon: <ContactPageOutlinedIcon />,
+      route: "/my-appointments",
+    },
+    {
+      label: t("allDoctors", "All Doctors"),
+      icon: <GroupsOutlinedIcon />,
+      route: "/doctorList",
+    },
+    {
+      label: t("yourReports", "Your Reports"),
+      icon: <NoteAddOutlinedIcon />,
+      route: "/reports",
+    },
+    {
+      label: t("healthProfile", "Health Profile"),
+      icon: <FavoriteBorderOutlinedIcon />,
+      route: "/health-profile",
+    },
+    {
+      label: t("giveFeedback", "Give Feedback"),
+      icon: <FeedbackOutlinedIcon />,
+      route: "/feedback",
+    },
+    {
+      label: t("support", "Support"),
+      icon: <SupportAgentOutlinedIcon />,
+      route: "/support",
+    },
+    {
+      label: t("legalPage", "Legal Page"),
+      icon: <GavelOutlinedIcon />,
+      route: "/terms",
+    },
+  ];
 
   const handleNav = (route) => {
     if (isMobile) {
-      onClose(); // Only close on mobile
+      onClose();
     }
     navigate(route);
   };
 
   const handleLogout = () => {
     if (isMobile) {
-      onClose(); // Only close on mobile
+      onClose();
     }
     logout();
     navigate("/login");
@@ -116,7 +129,7 @@ function SlideBar({ open, onClose, variant = "temporary" }) {
         <Box className="slidebar-user">
           <Avatar className="slidebar-avatar">{getInitials(user?.name)}</Avatar>
           <Box className="slidebar-user-info">
-            <h5 className="slidebar-name">{user?.name || "Patient"}</h5>
+            <h5 className="slidebar-name">{user?.name || "User"}</h5>
             <p className="slidebar-phone">{user?.phone || user?.email || ""}</p>
           </Box>
           <button
@@ -129,13 +142,13 @@ function SlideBar({ open, onClose, variant = "temporary" }) {
           </button>
         </Box>
 
-        <Divider sx={{ mx: 2 }} />
+        <Divider sx={{ mx: 2, borderColor: "var(--border)" }} />
 
         {/* Menu Items */}
         <List className="slidebar-list">
           {menuItems.map((item) => (
             <ListItem
-              key={item.label}
+              key={item.route}
               className={`slidebar-list-item ${location.pathname === item.route ? "active" : ""}`}
               onClick={() => handleNav(item.route)}
             >
@@ -144,9 +157,9 @@ function SlideBar({ open, onClose, variant = "temporary" }) {
                 primary={item.label}
                 primaryTypographyProps={{
                   fontSize: 14,
-                  fontWeight: 600,
+                  fontWeight: 700,
                   fontFamily: "Nunito, sans-serif",
-                  color: "var(--black, #010101)",
+                  color: "var(--text-primary)",
                 }}
               />
             </ListItem>
@@ -159,7 +172,7 @@ function SlideBar({ open, onClose, variant = "temporary" }) {
         {/* Logout */}
         <button className="slidebar-logout-btn" onClick={handleLogout}>
           <LogoutIcon sx={{ fontSize: 18 }} />
-          Log out
+          {t("logout", "Log out")}
         </button>
 
         <Box className="slidebar-safe-bottom" />

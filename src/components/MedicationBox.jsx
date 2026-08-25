@@ -6,12 +6,14 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 import "./MedicationBox.css";
+import { useLanguage } from "../context/LanguageContext";
 
 function MedicationBox() {
   const [meds, setMeds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const { t } = useLanguage();
 
   useEffect(() => {
     fetchMed(1);
@@ -103,12 +105,12 @@ function MedicationBox() {
     }
   };
 
-  if (loading) return <p>Loading medications...</p>;
+  if (loading) return <p style={{ padding: "16px", color: "var(--text-muted)" }}>{t("loading", "Loading...")}</p>;
 
   return (
     <div className="med-box">
       <div className="med-box-header">
-        <h3 className="med-box-title">Medication Schedule</h3>
+        <h3 className="med-box-title">{t("medicationSchedule", "Medication Schedule")}</h3>
       </div>
       <List>
         {meds.map((med) => (
@@ -124,7 +126,7 @@ function MedicationBox() {
               className={`med-badge ${med.taken ? "taken" : "pending"}`}
               onClick={() => toggleTaken(med._id, med.taken)}
             >
-              {med.taken ? "✓ Taken" : "Pending"}
+              {med.taken ? t("taken", "✓ Taken") : t("pending", "Pending")}
             </button>
           </ListItem>
         ))}
@@ -136,7 +138,7 @@ function MedicationBox() {
           onClick={loadMore} 
           disabled={loading}
         >
-          {loading ? "Loading..." : "Load More"}
+          {loading ? t("loading", "Loading...") : t("loadMore", "Load More")}
         </button>
       )}
     </div>
