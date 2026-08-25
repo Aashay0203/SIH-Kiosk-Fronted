@@ -37,8 +37,8 @@ export default function KioskStart() {
     setLoading(true);
     try {
       const res = await api.post("/kiosk/start", {
-        patientId: user?._id,
-        appointmentId,
+        patientId: user.id,
+
         language,
         mode,
       });

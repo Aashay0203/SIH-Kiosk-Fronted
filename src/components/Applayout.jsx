@@ -4,7 +4,7 @@ import { useMediaQuery } from "@mui/material";
 import Navbar from "./Navbar";
 import SlideBar from "./SlideBar";
 import { SidebarContext } from "./useSidebarContext";
-import "./AppLayout.css";
+import "./Applayout.css";
 
 // ─── AppLayout ────────────────────────────────────────────────────────────────
 export default function AppLayout() {
