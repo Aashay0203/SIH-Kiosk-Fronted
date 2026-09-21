@@ -105,8 +105,6 @@ function Home() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
         >
-          <MedicalCoreOrb3D />
-
           <div className="home-hero-badge">
             <ShieldCheck size={14} className="text-sky-400" />
             <span>AI-Assisted Kiosk Health Network</span>
@@ -194,8 +192,6 @@ function Home() {
           </>
         )}
       </div>
-
-      <MedicationBox />
       <UpcomingAppBox />
     </motion.div>
   );

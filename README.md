@@ -53,3 +53,8 @@ SaharaMed is a comprehensive healthcare management application built with React 
 - `npm run build`: Bundles the app for production.
 - `npm run preview`: Previews the production build locally.
 - `npm run lint`: Runs ESLint for code quality checks.
+
+## Demo login
+
+- `email`: contact.adarshdubey@gmail.com
+- `password` : 123456
